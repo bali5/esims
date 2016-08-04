@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>eSims</title>
+  <link href="styles/site.css" rel="stylesheet" />
+  <link href="libs/material-design-icons/iconfont/material-icons.css" rel="stylesheet" />
+
+  <!-- 1. Load libraries -->
+  <!-- Polyfill(s) for older browsers -->
+  <script src="libs/core-js/client/shim.min.js"></script>
+  <script src="libs/zone.js/dist/zone.js"></script>
+  <script src="libs/reflect-metadata/Reflect.js"></script>
+  <script src="libs/systemjs/dist/system.src.js"></script>
+  <!-- 2. Configure SystemJS -->
+  <script src="scripts/systemjs.config.js"></script>
+  <script>
+    System.import('index').catch(function (err) { console.error(err); });
+    System.import('app').catch(function (err) { console.error(err); });
+    System.import('building').catch(function (err) { console.error(err); });
+    System.import('person').catch(function (err) { console.error(err); });
+    System.import('group').catch(function (err) { console.error(err); });
+  </script>
+</head>
+<body>
+  <div class="fill">
+    <es-app>
+      <div class="loading">
+        <div><i class="material-icons loading-image"> cloud_queue </i></div>
+        <div class="loading-text">Loading...</div>
+      </div>
+    </es-app>
+  </div>
+
+</body>
+</html>

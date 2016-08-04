@@ -1,0 +1,177 @@
+﻿/* -------------------------------------------
+   Global
+   ------------------------------------------- */
+
+.width-fill {
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.height-fill {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.fill {
+  @extend .width-fill;
+  @extend .height-fill;
+}
+
+.fill-5 {
+  @extend .width-fill;
+  @extend .height-fill;
+  top: 5px;
+  bottom: 5px;
+  left: 5px;
+  right: 5px;
+}
+
+.description {
+  font-style: italic;
+  opacity: 0.5;
+  padding-right: 5px !important;
+}
+
+/* -------------------------------------------
+   Element
+   ------------------------------------------- */
+
+input, textarea {
+  color: rgb(250, 250, 250);
+}
+
+button > * {
+  vertical-align: middle;
+}
+
+.resizer {
+  position: absolute;
+  background-color: #333;
+  border-radius: 2px;
+
+  &.resizer-vertical {
+    cursor: e-resize;
+    top: 4px;
+    bottom: 4px;
+    width: 4px;
+  }
+
+  &.resizer-horizontal {
+    cursor: n-resize;
+    left: 4px;
+    right: 4px;
+    height: 4px;
+  }
+}
+
+md-sidenav {
+  max-width: 90%;
+}
+
+md-card {
+  width: 200px;
+  box-sizing: border-box;
+  margin: 10px;
+}
+
+.card-container {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+/* -------------------------------------------
+   Hierarchy
+   ------------------------------------------- */
+
+html {
+  @extend .fill;
+  color: white;
+
+  body {
+    @extend .fill;
+    background: rgb(30,30,30);
+
+    .loading {
+      position: absolute;
+      left: calc(50% - 64px);
+      top: calc(50% - 64px);
+      width: 200px;
+
+      > *:first-child {
+        padding-bottom: 10px;
+      }
+
+      .loading-image {
+        position: absolute;
+        font-size: 64px;
+        animation: loading 2s linear infinite;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+
+      @keyframes loading {
+        0% {
+          left: 0;
+          opacity: 0;
+        }
+
+        30% {
+          opacity: 1;
+        }
+
+        70% {
+          opacity: 1;
+        }
+
+        100% {
+          left: 136px;
+          opacity: 0;
+        }
+      }
+
+      .loading-text {
+        text-align: center;
+        margin-top: 50px;
+        font-size: 25px;
+        font-style: italic;
+      }
+    }
+
+    building {
+      md-toolbar.header {
+        & md-toolbar-row > * {
+          margin-right: 10px;
+        }
+      }
+
+      .menu-circle {
+        position: relative;
+
+        > md-progress-circle {
+          width: 50px;
+          height: 50px;
+        }
+
+        > div {
+          @extend .fill;
+          text-align: center;
+          vertical-align: middle;
+          line-height: 50px;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
