@@ -11,6 +11,10 @@ namespace eSims.Data.Application
     [Key]
     public int Id { get; set; }
 
+    public int UserId { get; set; }
+
+    public string Name { get; set; }
+
     public string SessionId { get; set; }
 
     public string DataFilePath { get; set; }

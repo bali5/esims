@@ -14,36 +14,12 @@ import {MD_LIST_DIRECTIVES} from '@angular2-material/list';
 import {MD_TABS_DIRECTIVES} from '@angular2-material/tabs';
 import {MdIcon, MdIconRegistry} from '@angular2-material/icon';
 
-interface IComponentData {
-  selector?: string;
-  inputs?: string[];
-  outputs?: string[];
-  properties?: string[];
-  events?: string[];
-  host?: {
-    [key: string]: string;
-  };
-  providers?: any[];
-  exportAs?: string;
-  moduleId?: string;
-  queries?: {
-    [key: string]: any;
-  };
-  viewProviders?: any[];
-  changeDetection?: ChangeDetectionStrategy;
-  templateUrl?: string;
-  template?: string;
-  styleUrls?: string[];
-  styles?: string[];
-  animations?: AnimationEntryMetadata[];
-  directives?: Array<Type | any[]>;
-  pipes?: Array<Type | any[]>;
-  encapsulation?: ViewEncapsulation;
-  interpolation?: [string, string];
-  precompile?: Array<Type | any[]>;
-};
+import {IComponentData} from './ui';
+import ui from './ui';
 
 export default function (data: IComponentData): IComponentData {
+  data = ui(data);
+
   if (!data.providers) {
     data.providers = [];
   }

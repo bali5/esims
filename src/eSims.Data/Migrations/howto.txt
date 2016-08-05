@@ -1,0 +1,2 @@
+﻿dotnet ef --startup-project ../eSims/ migrations add 201608051230-CreateDatabase --context ApplicationContext
+dotnet ef --startup-project ../eSims/ migrations add 201608051230-CreateDatabase --context BuildingContext

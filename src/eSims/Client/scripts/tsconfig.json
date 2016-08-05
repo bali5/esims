@@ -11,8 +11,10 @@
     "experimentalDecorators": true
   },
   "files": [
+    "./common/ui.ts",
     "./common/material.ts",
 
+    "./app/app.routes.ts",
     "./app/app.component.ts",
     "./app/app.ts",
 
@@ -20,6 +22,7 @@
     "./building/action.ts",
     "./building/hr.ts",
     "./building/building.ts",
+    "./building/building.list.ts",
 
     "./person/person.service.ts",
     "./person/person.ts",

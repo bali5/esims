@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using eSims.Data.Repository;
 using Microsoft.AspNetCore.Mvc;
+using eSims.Data.Application;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace eSims.Controllers
 {
+  [RepositoryException]
   [Route("api/[controller]")]
   public class GameController : Controller
   {
@@ -21,9 +23,9 @@ namespace eSims.Controllers
 
     // GET: api/values
     [HttpGet]
-    public IEnumerable<string> Get()
+    public IEnumerable<Game> Get()
     {
-      return mRepository.GetGames("");
+      return mRepository.GetGames();
     }
 
     // GET api/values/5
@@ -35,8 +37,9 @@ namespace eSims.Controllers
 
     // POST api/values
     [HttpPost]
-    public void Post([FromBody]string value)
+    public int Post([FromBody]string value)
     {
+      return mRepository.CreateGame(value);
     }
 
     // PUT api/values/5

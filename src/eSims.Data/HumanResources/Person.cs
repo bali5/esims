@@ -60,7 +60,7 @@ namespace eSims.Data.HumanResources
     /// </summary>
     public double Annoyance { get; set; }
 
-    public List<Perk> Perks { get; set; }
+    public List<PersonPerk> Perks { get; set; }
 
     public int? RoomId { get; set; }
 
