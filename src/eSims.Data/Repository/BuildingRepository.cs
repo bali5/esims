@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using eSims.Data.Context;
 using eSims.Data.HumanResources;
+using Microsoft.EntityFrameworkCore;
 
 namespace eSims.Data.Repository
 {
@@ -14,6 +15,7 @@ namespace eSims.Data.Repository
     public BuildingRepository(string path)
     {
       mContext = new BuildingContext(path);
+      mContext.Database.Migrate();
     }
 
     public void ChangePersonTeam(int id, int teamId)
@@ -109,6 +111,8 @@ namespace eSims.Data.Repository
       }
 
       wPerson.State = PersonState.Fired;
+
+      mContext.SaveChanges();
     }
 
     public Person GetPerson(int id)
@@ -125,12 +129,14 @@ namespace eSims.Data.Repository
     {
       var wPerson = GetPerson(id);
 
-      if (wPerson == null || wPerson.State == PersonState.Available)
+      if (wPerson == null || wPerson.State != PersonState.Available)
       {
         throw new RepositoryException("Person can't be an employee.");
       }
 
       wPerson.State = PersonState.Hired;
+
+      mContext.SaveChanges();
     }
 
     public void RemovePersonTeam(int id, int teamId)

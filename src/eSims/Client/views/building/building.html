@@ -17,7 +17,7 @@
     </md-nav-list>
   </md-sidenav>
   <md-sidenav-layout fullscreen>
-    <md-sidenav #sidenav2>
+    <md-sidenav #sidenav2 (close)="currentActionTemplate = null">
       <div [ngSwitch]="currentActionTemplate">
         <es-hr *ngSwitchCase="'es-hr'"></es-hr>
       </div>
@@ -31,6 +31,15 @@
       </span>
       <!-- TODO: status items -->
     </md-toolbar>
-
+    <div style="width: 250px; height: 750px">
+      <div class="fill level">
+        <div style="background-color: yellow; top: 0; z-index: 10"></div>
+        <div style="background-color: orange; top: 250px; z-index: 9"></div>
+        <div style="background-color: red; top: 500px; z-index: 8"></div>
+        <div style="background-color: mediumpurple; top: 750px; z-index: 7"></div>
+        <div style="background-color: rebeccapurple; top: 1000px; z-index: 6"></div>
+        <div style="background-color: purple; top: 1250px; z-index: 5"></div>
+      </div>
+    </div>
   </md-sidenav-layout>
 </md-sidenav-layout>

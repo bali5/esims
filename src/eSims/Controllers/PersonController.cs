@@ -16,26 +16,20 @@ namespace eSims.Controllers
     {
     }
 
-    [HttpGet]
-    public IEnumerable<Person> Get()
+    [HttpGet()]
+    public IEnumerable<Person> Get([FromQuery]string state = "hired")
     {
-      return BuildingRepository.GetPersons(PersonState.Hired);
+      return BuildingRepository.GetPersons((PersonState)Enum.Parse(typeof(PersonState), state, true));
     }
 
-    [HttpGet("/hr")]
-    public IEnumerable<Person> GetHumanResources()
-    {
-      return BuildingRepository.GetPersons(PersonState.Available);
-    }
-
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public Person Get(int id)
     {
       return BuildingRepository.GetPerson(id);
     }
 
-    [HttpPost("{id}")]
-    public void Post(int id)
+    [HttpPost()]
+    public void Post([FromBody]int id)
     {
       BuildingRepository.HirePerson(id);
     }

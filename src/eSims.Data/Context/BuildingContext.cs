@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using eSims.Data.Building;
@@ -11,7 +12,7 @@ namespace eSims.Data.Context
 {
   public class BuildingContext : DbContext
   {
-    private string mPath = ".\temp.sqlite";
+    private string mPath = "./temp.sqlite";
 
     public BuildingContext()
         : base()
@@ -26,7 +27,7 @@ namespace eSims.Data.Context
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-      optionsBuilder.UseSqlite(mPath);
+      optionsBuilder.UseSqlite($"Filename={mPath}");
 
       base.OnConfiguring(optionsBuilder);
     }

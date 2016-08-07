@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using eSims.Data;
@@ -27,10 +28,10 @@ namespace eSims.Controllers
       base.OnActionExecuting(context);
 
       StringValues wValue;
-      if (context.HttpContext.Request.Headers.TryGetValue("ESimsSessionId", out wValue))
+      if (context.HttpContext.Request.Headers.TryGetValue("Referer", out wValue))
       {
-        var wSessionId = wValue.FirstOrDefault();
-        if (string.IsNullOrWhiteSpace(wSessionId) || !InitializeController(wSessionId))
+        var wReferer = wValue.FirstOrDefault();
+        if (string.IsNullOrWhiteSpace(wReferer) || !InitializeController(wReferer))
         {
           context.Result = BadRequest();
         }
@@ -41,13 +42,18 @@ namespace eSims.Controllers
       }
     }
 
-    private bool InitializeController(string sessionId)
+    private bool InitializeController(string referer)
     {
-      Game = ApplicationRepository.GetGame(sessionId);
+      var wUri = new Uri(referer);
+
+      int wId;
+      if (!int.TryParse(Path.GetFileName(wUri.AbsolutePath), out wId)) return false;
+
+      Game = ApplicationRepository.GetGame(wId);
 
       if (Game == null) return false;
 
-      if (!System.IO.File.Exists(Game.DataFilePath)) return false;
+      //if (!System.IO.File.Exists(Game.DataFilePath)) return false;
 
       BuildingRepository = new BuildingRepository(Game.DataFilePath);
 

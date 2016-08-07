@@ -5,8 +5,9 @@ namespace eSims.Data.Repository
 {
   public interface IApplicationRepository
   {
-    Game GetGame(string sessionId);
+    Game GetGame(int id);
     IEnumerable<Game> GetGames();
     int CreateGame(string value);
+    void DeleteGame(int id);
   }
 }

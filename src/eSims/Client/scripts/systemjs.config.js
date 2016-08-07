@@ -40,8 +40,10 @@
   var ngMaterialPackageNames = [
     'core',
     'button',
+    'button-toggle',
     'card',
     'checkbox',
+    'dialog',
     'grid-list',
     'icon',
     'input',
@@ -51,9 +53,11 @@
     'progress-circle',
     'radio',
     'sidenav',
+    'slider',
     'slide-toggle',
     'tabs',
-    'toolbar'
+    'toolbar',
+    'tooltip'
   ];
   // Individual files (~300 requests):
   function packIndex(pkgName) {

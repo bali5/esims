@@ -10,32 +10,13 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
-  "files": [
-    "./common/ui.ts",
-    "./common/material.ts",
-
-    "./app/app.routes.ts",
-    "./app/app.component.ts",
-    "./app/app.ts",
-
-    "./building/building.service.ts",
-    "./building/action.ts",
-    "./building/hr.ts",
-    "./building/building.ts",
-    "./building/building.list.ts",
-
-    "./person/person.service.ts",
-    "./person/person.ts",
-    "./person/person.card.ts",
-    "./person/person.sheet.ts",
-    "./person/person.list.ts",
-
-    "./group/group.service.ts",
-    "./group/group.ts",
-    "./group/group.card.ts",
-    "./group/group.sheet.ts",
-    "./group/group.list.ts"
-
+  "include": [
+    "Client/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "libs",
+    "**/*.spec.ts"
   ],
   "compileOnSave": false
 }

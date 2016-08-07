@@ -91,6 +91,8 @@ namespace eSims.Data.Helpers
         wPerson.Perks.Add(new PersonPerk() { Perk = Perk.Leader });
       }
 
+      wPerson.Pay = (wOriginalPower / 100 * 0.1) * (0.9 + Rng.Random.NextDouble() * 0.2);
+
       return wPerson;
     }
 

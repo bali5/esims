@@ -1,5 +1,6 @@
 ﻿import { Component, ChangeDetectionStrategy, AnimationEntryMetadata, Type, ViewEncapsulation } from '@angular/core';
 import { NgFor } from '@angular/common';
+import { RoundPipe } from './pipes';
 
 export interface IComponentData {
   selector?: string;
@@ -37,5 +38,11 @@ export default function (data: IComponentData): IComponentData {
 
   data.directives.push(NgFor);
 
+  if (!data.pipes) {
+    data.pipes = [];
+  }
+
+  data.pipes.push(RoundPipe);
+  
   return data;
 }

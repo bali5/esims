@@ -88,4 +88,9 @@ export class Person {
   public annoyance: number;
 
   public perks: Perk[];
+
+  public hireTime: number;
+
+  public pay: number;
+
 }

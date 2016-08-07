@@ -28,30 +28,19 @@ namespace eSims.Controllers
       return mRepository.GetGames();
     }
 
-    // GET api/values/5
-    [HttpGet("{id}")]
-    public string Get(int id)
-    {
-      return "value";
-    }
-
     // POST api/values
     [HttpPost]
-    public int Post([FromBody]string value)
+    public int Post([FromBody]string name)
     {
-      return mRepository.CreateGame(value);
-    }
-
-    // PUT api/values/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody]string value)
-    {
+      return mRepository.CreateGame(name);
     }
 
     // DELETE api/values/5
     [HttpDelete("{id}")]
     public void Delete(int id)
     {
+      mRepository.DeleteGame(id);
     }
+
   }
 }

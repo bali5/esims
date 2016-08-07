@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-  <base href="/#">
+  <base href="/">
   <meta charset="utf-8" />
   <title>eSims</title>
   <link href="styles/site.css" rel="stylesheet" />
@@ -16,11 +16,15 @@
   <!-- 2. Configure SystemJS -->
   <script src="scripts/systemjs.config.js"></script>
   <script>
-    System.import('index').catch(function (err) { console.error(err); });
-    System.import('app').catch(function (err) { console.error(err); });
-    System.import('building').catch(function (err) { console.error(err); });
-    System.import('person').catch(function (err) { console.error(err); });
-    System.import('group').catch(function (err) { console.error(err); });
+    function systemError(err) {
+      console.error(err);
+    }
+
+    System.import('index').catch(systemError);
+    System.import('app').catch(systemError);
+    System.import('building').catch(systemError);
+    System.import('person').catch(systemError);
+    System.import('group').catch(systemError);
   </script>
 </head>
 <body>

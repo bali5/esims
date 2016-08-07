@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using eSims.Data.Application;
 using eSims.Data.Context;
 using eSims.Data.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace eSims.Data.Repository
 {
@@ -15,7 +15,8 @@ namespace eSims.Data.Repository
     public ApplicationRepository()
     {
       mContext = new ApplicationContext();
-      mContext.Database.EnsureCreated();
+      mContext.Database.Migrate();
+      mContext.EnsureSeedData();
     }
 
     public int CreateGame(string name)
@@ -23,7 +24,8 @@ namespace eSims.Data.Repository
       var wGame = new Game()
       {
         Name = name,
-        DataFilePath = $@".\Data\{Guid.NewGuid()}.sqlite"
+        DataFilePath = $@"./{Guid.NewGuid()}.sqlite",
+        UserId = mContext.Users.First().Id
       };
 
       wGame = mContext.Games.Add(wGame).Entity;
@@ -32,7 +34,7 @@ namespace eSims.Data.Repository
 
       var wBuildingContext = new BuildingContext(wGame.DataFilePath);
 
-      wBuildingContext.Database.EnsureCreated();
+      wBuildingContext.Database.Migrate();
 
       wBuildingContext.AccountRows.Add(new Building.AccountRow()
       {
@@ -51,12 +53,19 @@ namespace eSims.Data.Repository
       wBuildingContext.Persons.Add(PersonHelper.GetRandomPerson());
       wBuildingContext.Persons.Add(PersonHelper.GetRandomPerson());
 
+      wBuildingContext.SaveChanges();
+
       return wGame.Id;
     }
 
-    public Game GetGame(string sessionId)
+    public void DeleteGame(int id)
     {
-      return mContext.Games.FirstOrDefault(f => f.SessionId == sessionId);
+      mContext.Games.Remove(mContext.Games.FirstOrDefault(f => f.Id == id));
+    }
+
+    public Game GetGame(int id)
+    {
+      return mContext.Games.FirstOrDefault(f => f.Id == id);
     }
 
     public IEnumerable<Game> GetGames()

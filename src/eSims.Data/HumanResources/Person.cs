@@ -8,6 +8,11 @@ namespace eSims.Data.HumanResources
 {
   public class Person
   {
+    public Person()
+    {
+      Perks = new List<PersonPerk>();
+    }
+
     [Key]
     public int Id { get; set; }
 
@@ -65,6 +70,10 @@ namespace eSims.Data.HumanResources
     public int? RoomId { get; set; }
 
     public int? TeamId { get; set; }
+
+    public double? HireTime { get; set; }
+
+    public double Pay { get; set; }
 
   }
 }

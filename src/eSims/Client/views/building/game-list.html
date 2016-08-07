@@ -1,0 +1,37 @@
+﻿<md-sidenav-layout fullscreen>
+  <md-sidenav #sidenav>
+    <md-card>
+      <md-card-title>Create<div class="sub-title">a new building</div></md-card-title>
+      <md-card-content>
+        <form>
+          <md-input #createName placeholder="Name"></md-input>
+        </form>
+      </md-card-content>
+      <md-card-actions align="end">
+        <button md-raised-button color="accent" (click)="sidenav.close(); create(createName.value);">Create</button>
+      </md-card-actions>
+    </md-card>
+  </md-sidenav>
+  <md-toolbar color="primary" class="header">
+    <button color="primary" md-fab (click)="sidenav.open()">
+      <md-icon>add</md-icon>
+    </button>
+    <span>
+      Buildings
+    </span>
+  </md-toolbar>
+  <div class="card-container">
+    <md-card class="hand" *ngFor="let game of games" (click)="onSelect(game)">
+      <md-icon md-card-image>location_city</md-icon>
+      <md-card-title>{{game.name}}</md-card-title>
+      <md-card-content>
+        <div class="details">
+          <div title="Building level"><md-icon>format_align_justify</md-icon><span>{{game.levelCount}}</span></div>
+          <div title="Account balance"><md-icon>directions_car</md-icon><span>{{game.account}}</span></div>
+          <div title="Employee count"><md-icon>people</md-icon><span>{{game.employeeCount}}</span></div>
+          <div title="Avarage happiness"><md-icon>sentiment_neutral</md-icon><span>{{game.avarageHappiness}}</span></div>
+        </div>
+      </md-card-content>
+    </md-card>
+  </div>
+</md-sidenav-layout>

@@ -9,7 +9,7 @@ namespace eSims.Data.Context
 {
   public class ApplicationContext : DbContext
   {
-    private string mPath = ".\app.sqlite";
+    private string mPath = "./app.sqlite";
 
     public ApplicationContext()
         : base()
@@ -18,7 +18,7 @@ namespace eSims.Data.Context
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-      optionsBuilder.UseSqlite(mPath);
+      optionsBuilder.UseSqlite($"Filename={mPath}");
 
       base.OnConfiguring(optionsBuilder);
     }
@@ -26,6 +26,19 @@ namespace eSims.Data.Context
     public DbSet<User> Users { get; set; }
 
     public DbSet<Game> Games { get; set; }
+
+    public void EnsureSeedData()
+    {
+      if (!Users.Any())
+      {
+        Users.Add(new User()
+        {
+          UserName = "admin"
+        });
+
+        SaveChanges();
+      }
+    }
 
   }
 }

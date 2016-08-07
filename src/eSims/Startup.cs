@@ -1,4 +1,5 @@
-﻿using eSims.Data.Repository;
+﻿using System.Threading.Tasks;
+using eSims.Data.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -53,6 +54,12 @@ namespace eSims
       app.UseApplicationInsightsExceptionTelemetry();
 
       app.UseMvc();
+
+      app.Use((context, next) =>
+      {
+        context.Response.Redirect($"http://{context.Request.Host}");
+        return Task.FromResult(true);
+      });
     }
   }
 }

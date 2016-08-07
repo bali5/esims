@@ -8,9 +8,10 @@ using eSims.Data.Context;
 namespace eSims.Data.Migrations.Building
 {
     [DbContext(typeof(BuildingContext))]
-    partial class BuildingContextModelSnapshot : ModelSnapshot
+    [Migration("20160806085615_PersonPay")]
+    partial class PersonPay
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");

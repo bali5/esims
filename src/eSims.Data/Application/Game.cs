@@ -18,5 +18,10 @@ namespace eSims.Data.Application
     public string SessionId { get; set; }
 
     public string DataFilePath { get; set; }
+
+    public int LevelCount { get; set; }
+    public double Account { get; set; }
+    public int EmployeeCount { get; set; }
+    public double AvarageHappiness { get; set; }
   }
 }
