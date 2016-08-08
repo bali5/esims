@@ -35,8 +35,13 @@ var imagesSourcePath = rootSourcePath + 'Client/images/**/*';
 var imagesSourcePaths = [
 
 ];
-var viewsSourcePaths = rootSourcePath + 'Client/views/**/*.html';
-var indexSourcePath = rootSourcePath + 'Client/index.html';
+var viewsSourcePaths = [
+  rootSourcePath + 'Client/views/**/*.html'
+];
+var indexSourcePaths = [
+  rootSourcePath + 'Client/index.html',
+  rootSourcePath + 'Client/favicon.ico'
+];
 
 var rootDestinationPath = './wwwroot/';
 var libsDestinationPath = rootDestinationPath + 'libs/';
@@ -154,7 +159,7 @@ gulp.task('views', ['cleanViews'], function () {
 
 // Copy all static images
 gulp.task('index', ['cleanIndex'], function () {
-  return gulp.src(indexSourcePath)
+  return gulp.src(indexSourcePaths)
     .pipe(gulp.dest(indexDestinationPath));
 });
 
@@ -164,7 +169,7 @@ gulp.task('watch', function () {
   gulp.watch(imagesSourcePaths, ['images']);
   gulp.watch(stylesSourcePath, ['styles']);
   gulp.watch(viewsSourcePaths, ['views']);
-  gulp.watch(indexSourcePath, ['index']);
+  gulp.watch(indexSourcePaths, ['index']);
 });
 
 // The default task (called when you run `gulp` from cli)

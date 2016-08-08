@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using eSims.Data.Building;
 using eSims.Data.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,16 +17,16 @@ namespace eSims.Controllers
 
     // GET api/values
     [HttpGet]
-    public IEnumerable<string> Get()
+    public IEnumerable<Floor> Get()
     {
-      return new string[] { "value1", "value2" };
+      return BuildingRepository.GetFloors();
     }
 
     // GET api/values/5
     [HttpGet("{id}")]
-    public string Get(int id)
+    public Floor Get(int id)
     {
-      return "value";
+      return BuildingRepository.GetFloor(id);
     }
 
     // POST api/values

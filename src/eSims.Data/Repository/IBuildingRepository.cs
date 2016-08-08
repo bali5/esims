@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using eSims.Data.Building;
 using eSims.Data.HumanResources;
 
 namespace eSims.Data.Repository
@@ -13,5 +14,7 @@ namespace eSims.Data.Repository
     void RemovePersonTeam(int id, int teamId);
     void FirePerson(int id);
     void HirePerson(int id);
+    IEnumerable<Floor> GetFloors();
+    Floor GetFloor(int id);
   }
 }

@@ -1,6 +1,4 @@
-﻿import { Component } from '@angular/core';
-
-export class Game {
+﻿export class Game {
   constructor() { }
 
   public id: number;

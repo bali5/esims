@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using eSims.Data.Building;
 using eSims.Data.Context;
 using eSims.Data.HumanResources;
 using Microsoft.EntityFrameworkCore;
@@ -113,6 +114,16 @@ namespace eSims.Data.Repository
       wPerson.State = PersonState.Fired;
 
       mContext.SaveChanges();
+    }
+
+    public Floor GetFloor(int id)
+    {
+      return mContext.Floors.FirstOrDefault(f => f.Id == id);
+    }
+
+    public IEnumerable<Floor> GetFloors()
+    {
+      return mContext.Floors.OrderByDescending(o => o.Level).ToArray();
     }
 
     public Person GetPerson(int id)
