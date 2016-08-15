@@ -9,14 +9,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eSims.Data.Repository
 {
-  public class BuildingRepository : IBuildingRepository
+  public class BuildingRepository : ESimsRepository<BuildingContext>, IBuildingRepository
   {
-    private BuildingContext mContext;
-
     public BuildingRepository(string path)
     {
-      mContext = new BuildingContext(path);
-      mContext.Database.Migrate();
     }
 
     public void ChangePersonTeam(int id, int teamId)
@@ -33,7 +29,7 @@ namespace eSims.Data.Repository
         return;
       }
 
-      var wTeam = mContext.Teams.FirstOrDefault(f => f.Id == teamId);
+      var wTeam = Context.Teams.FirstOrDefault(f => f.Id == teamId);
 
       if (wTeam == null)
       {
@@ -47,15 +43,15 @@ namespace eSims.Data.Repository
 
       if (wPerson.RoomId.HasValue)
       {
-        var wOldRoom = mContext.Rooms.FirstOrDefault(f => f.Id == wPerson.RoomId.Value);
+        var wOldRoom = Context.Rooms.FirstOrDefault(f => f.Id == wPerson.RoomId.Value);
 
-        wOldRoom.Count--;
+        wOldRoom.WorkplaceCount--;
       }
 
       wTeam.Count++;
       wPerson.TeamId = teamId;
 
-      mContext.SaveChanges();
+      Context.SaveChanges();
     }
 
     public void ChangePersonWorkplace(int id, int workplaceId)
@@ -72,34 +68,34 @@ namespace eSims.Data.Repository
         return;
       }
 
-      var wRoom = mContext.Rooms.FirstOrDefault(f => f.Id == workplaceId);
+      var wRoom = Context.Rooms.FirstOrDefault(f => f.Id == workplaceId);
 
       if (wRoom == null)
       {
         throw new RepositoryException("Room is not available.");
       }
 
-      if (wRoom.IsWorkplace)
+      if (wRoom.WorkplaceMaxCount > 0)
       {
         throw new RepositoryException("Room is not a workplace.");
       }
 
-      if (wRoom.Count >= wRoom.MaxCount)
+      if (wRoom.WorkplaceCount >= wRoom.WorkplaceMaxCount)
       {
         throw new RepositoryException("Room is already full.");
       }
 
       if (wPerson.RoomId.HasValue)
       {
-        var wOldRoom = mContext.Rooms.FirstOrDefault(f => f.Id == wPerson.RoomId.Value);
+        var wOldRoom = Context.Rooms.FirstOrDefault(f => f.Id == wPerson.RoomId.Value);
 
-        wOldRoom.Count--;
+        wOldRoom.WorkplaceCount--;
       }
 
-      wRoom.Count++;
+      wRoom.WorkplaceCount++;
       wPerson.RoomId = workplaceId;
 
-      mContext.SaveChanges();
+      Context.SaveChanges();
     }
 
     public void FirePerson(int id)
@@ -113,27 +109,27 @@ namespace eSims.Data.Repository
 
       wPerson.State = PersonState.Fired;
 
-      mContext.SaveChanges();
+      Context.SaveChanges();
     }
 
     public Floor GetFloor(int id)
     {
-      return mContext.Floors.FirstOrDefault(f => f.Id == id);
+      return Context.Floors.FirstOrDefault(f => f.Id == id);
     }
 
     public IEnumerable<Floor> GetFloors()
     {
-      return mContext.Floors.OrderByDescending(o => o.Level).ToArray();
+      return Context.Floors.OrderByDescending(o => o.Level).ToArray();
     }
 
     public Person GetPerson(int id)
     {
-      return mContext.Persons.FirstOrDefault(f => f.Id == id);
+      return Context.Persons.FirstOrDefault(f => f.Id == id);
     }
 
     public IEnumerable<Person> GetPersons(PersonState state)
     {
-      return mContext.Persons.Where(w => w.State == state).ToArray();
+      return Context.Persons.Where(w => w.State == state).ToArray();
     }
 
     public void HirePerson(int id)
@@ -147,7 +143,7 @@ namespace eSims.Data.Repository
 
       wPerson.State = PersonState.Hired;
 
-      mContext.SaveChanges();
+      Context.SaveChanges();
     }
 
     public void RemovePersonTeam(int id, int teamId)
@@ -164,7 +160,7 @@ namespace eSims.Data.Repository
         return;
       }
 
-      var wTeam = mContext.Teams.FirstOrDefault(f => f.Id == teamId);
+      var wTeam = Context.Teams.FirstOrDefault(f => f.Id == teamId);
 
       if (wTeam == null)
       {
@@ -174,7 +170,7 @@ namespace eSims.Data.Repository
       wTeam.Count--;
       wPerson.TeamId = null;
 
-      mContext.SaveChanges();
+      Context.SaveChanges();
     }
 
     public void RemovePersonWorkplace(int id, int workplaceId)
@@ -191,17 +187,17 @@ namespace eSims.Data.Repository
         return;
       }
 
-      var wRoom = mContext.Rooms.FirstOrDefault(f => f.Id == workplaceId);
+      var wRoom = Context.Rooms.FirstOrDefault(f => f.Id == workplaceId);
 
       if (wRoom == null)
       {
         throw new RepositoryException("Room is not available.");
       }
 
-      wRoom.Count--;
+      wRoom.WorkplaceCount--;
       wPerson.RoomId = null;
 
-      mContext.SaveChanges();
+      Context.SaveChanges();
     }
 
   }

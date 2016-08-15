@@ -53,6 +53,8 @@
 
     "angular2-in-memory-web-api": "0.0.14",
 
-    "material-design-icons": "^2.2.3"
+    "material-design-icons": "^2.2.3",
+
+    "numericjs": "^1.2.6"
   }
 }

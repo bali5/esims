@@ -1,6 +1,10 @@
 ﻿import { Component, ChangeDetectionStrategy, AnimationEntryMetadata, Type, ViewEncapsulation } from '@angular/core';
 import { NgFor } from '@angular/common';
 import { RoundPipe } from './pipes';
+import { Border } from './border';
+
+import { Canvas } from './../canvas/canvas';
+import { CanvasBorder } from './../canvas/canvas.border';
 
 export interface IComponentData {
   selector?: string;
@@ -37,6 +41,9 @@ export default function (data: IComponentData): IComponentData {
   }
 
   data.directives.push(NgFor);
+  data.directives.push(Border);
+  data.directives.push(Canvas);
+  data.directives.push(CanvasBorder);
 
   if (!data.pipes) {
     data.pipes = [];

@@ -1,6 +1,15 @@
-﻿<div class="viewbox">
-  <div class="floor" style="border: 3px solid white; font-size: 50px">
-    Almaszörp
+﻿<div #b class="floor fill" (window:resize)="onResize()">
+  <div [style.width.px]="size" [style.height.px]="size">
+    <div class="fill" style="border: 3px solid white;" (mousemove)="onMouseMove($event)">
+      <!--<es-border class="rotating-dashed" [style.left.px]="roomLocation?.x" [style.top.px]="roomLocation?.y">
+      </es-border>-->
+      <esc-canvas class="fill">
+        <esc-border [left]="100" [top]="25" [width]="100" [height]="50" [strokeDash]="[10, 15]" [foreground]="'red'"></esc-border>
+        <esc-border [left]="100" [top]="150" [width]="100" [height]="50" [strokeDash]="[20, 30]" foreground="blue"></esc-border>
+      </esc-canvas>
+    </div>
   </div>
 </div>
-Floor: {{floor?.level + 1}}
+<div class="details">
+  Floor: {{floor?.level + 1}}
+</div>

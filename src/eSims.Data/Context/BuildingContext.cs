@@ -4,32 +4,50 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using eSims.Data.Building;
+using eSims.Data.Helpers;
 using eSims.Data.HumanResources;
 using eSims.Data.Workflow;
 using Microsoft.EntityFrameworkCore;
 
 namespace eSims.Data.Context
 {
-  public class BuildingContext : DbContext
+  public class BuildingContext : ESimsContext
   {
-    private string mPath = "./temp.sqlite";
-
     public BuildingContext()
-        : base()
+      : base("temp")
     {
     }
 
     public BuildingContext(string path)
-            : base()
+      : base(path)
     {
-      mPath = path;
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    protected override void OnEnsureSeedData()
     {
-      optionsBuilder.UseSqlite($"Filename={mPath}");
+      ApplySeed("BaseData", BaseData);
+    }
 
-      base.OnConfiguring(optionsBuilder);
+    private void BaseData()
+    {
+      AccountRows.Add(new AccountRow()
+      {
+        Subject = "Starting funds",
+        Value = 20
+      });
+
+      Floors.Add(new Floor() { Level = 0 });
+
+      Persons.Add(PersonHelper.GetRandomPerson());
+      Persons.Add(PersonHelper.GetRandomPerson());
+      Persons.Add(PersonHelper.GetRandomPerson());
+      Persons.Add(PersonHelper.GetRandomPerson());
+      Persons.Add(PersonHelper.GetRandomPerson());
+      Persons.Add(PersonHelper.GetRandomPerson());
+      Persons.Add(PersonHelper.GetRandomPerson());
+      Persons.Add(PersonHelper.GetRandomPerson());
+      Persons.Add(PersonHelper.GetRandomPerson());
+      Persons.Add(PersonHelper.GetRandomPerson());
     }
 
     public DbSet<AccountRow> AccountRows { get; set; }

@@ -7,38 +7,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eSims.Data.Context
 {
-  public class ApplicationContext : DbContext
+  public class ApplicationContext : ESimsContext
   {
-    private string mPath = "./app.sqlite";
-
     public ApplicationContext()
-        : base()
+        : base("app")
     {
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    protected override void OnEnsureSeedData()
     {
-      optionsBuilder.UseSqlite($"Filename={mPath}");
+      ApplySeed("AddAdmin", AddAdmin);
+    }
 
-      base.OnConfiguring(optionsBuilder);
+    private void AddAdmin()
+    {
+      Users.Add(new User()
+      {
+        UserName = "admin"
+      });
     }
 
     public DbSet<User> Users { get; set; }
 
     public DbSet<Game> Games { get; set; }
-
-    public void EnsureSeedData()
-    {
-      if (!Users.Any())
-      {
-        Users.Add(new User()
-        {
-          UserName = "admin"
-        });
-
-        SaveChanges();
-      }
-    }
 
   }
 }

@@ -1,2 +1,7 @@
 ﻿dotnet ef --startup-project ../eSims/ migrations add <Migration name> --context ApplicationContext
 dotnet ef --startup-project ../eSims/ migrations add <Migration name> --context BuildingContext
+dotnet ef --startup-project ../eSims/ migrations add <Migration name> --context CommonContext
+
+dotnet ef --startup-project ../eSims/ migrations add Initialize --context ApplicationContext
+dotnet ef --startup-project ../eSims/ migrations add Initialize --context BuildingContext
+dotnet ef --startup-project ../eSims/ migrations add Initialize --context CommonContext

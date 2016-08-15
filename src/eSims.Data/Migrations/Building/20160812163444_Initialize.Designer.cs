@@ -8,8 +8,8 @@ using eSims.Data.Context;
 namespace eSims.Data.Migrations.Building
 {
     [DbContext(typeof(BuildingContext))]
-    [Migration("20160806085615_PersonPay")]
-    partial class PersonPay
+    [Migration("20160812163444_Initialize")]
+    partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,35 +47,97 @@ namespace eSims.Data.Migrations.Building
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Count");
+                    b.Property<int>("BathroomCount");
+
+                    b.Property<int>("BathroomMaxCount");
 
                     b.Property<int?>("FloorId");
 
-                    b.Property<bool>("IsWorkplace");
+                    b.Property<int>("Height");
 
-                    b.Property<int>("MaxCount");
+                    b.Property<int>("Left");
 
-                    b.Property<int?>("TemplateId");
+                    b.Property<string>("Name");
+
+                    b.Property<double>("Price");
+
+                    b.Property<int>("RoomTemplateId");
+
+                    b.Property<int>("Rotation");
+
+                    b.Property<int>("SmokeCount");
+
+                    b.Property<int>("SmokeMaxCount");
+
+                    b.Property<int>("Top");
+
+                    b.Property<int>("Width");
+
+                    b.Property<int>("WorkplaceCount");
+
+                    b.Property<int>("WorkplaceMaxCount");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FloorId");
 
-                    b.HasIndex("TemplateId");
-
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("eSims.Data.Building.RoomTemplate", b =>
+            modelBuilder.Entity("eSims.Data.Building.RoomExtension", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("IsWorkplace");
+                    b.Property<string>("Name");
+
+                    b.Property<double>("Price");
+
+                    b.Property<int?>("RoomId");
+
+                    b.Property<int>("Type");
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoomTemplate");
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("RoomExtension");
+                });
+
+            modelBuilder.Entity("eSims.Data.Building.WallExtension", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("Placement");
+
+                    b.Property<double>("Price");
+
+                    b.Property<int?>("RoomId");
+
+                    b.Property<int>("Type");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("WallExtension");
+                });
+
+            modelBuilder.Entity("eSims.Data.Context.SeedHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SeedHistory");
                 });
 
             modelBuilder.Entity("eSims.Data.HumanResources.Person", b =>
@@ -195,10 +257,20 @@ namespace eSims.Data.Migrations.Building
                     b.HasOne("eSims.Data.Building.Floor")
                         .WithMany("Rooms")
                         .HasForeignKey("FloorId");
+                });
 
-                    b.HasOne("eSims.Data.Building.RoomTemplate", "Template")
-                        .WithMany()
-                        .HasForeignKey("TemplateId");
+            modelBuilder.Entity("eSims.Data.Building.RoomExtension", b =>
+                {
+                    b.HasOne("eSims.Data.Building.Room")
+                        .WithMany("RoomExtensions")
+                        .HasForeignKey("RoomId");
+                });
+
+            modelBuilder.Entity("eSims.Data.Building.WallExtension", b =>
+                {
+                    b.HasOne("eSims.Data.Building.Room")
+                        .WithMany("WallExtensions")
+                        .HasForeignKey("RoomId");
                 });
 
             modelBuilder.Entity("eSims.Data.HumanResources.PersonPerk", b =>

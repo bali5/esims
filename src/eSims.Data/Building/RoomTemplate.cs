@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace eSims.Data.Building
 {
@@ -7,6 +11,30 @@ namespace eSims.Data.Building
     [Key]
     public int Id { get; set; }
 
-    public bool IsWorkplace { get; set; }
+    public string Name { get; set; }
+
+    public double Price { get; set; }
+
+    //Position
+
+    public int Width { get; set; }
+    public int Height { get; set; }
+
+    //Functions
+
+    public int WorkplaceMaxCount { get; set; }
+
+    public int BathroomMaxCount { get; set; }
+
+    public int SmokeMaxCount { get; set; }
+
+    //Extensions
+
+    public List<RoomExtension> RoomExtensions { get; set; }
+
+    public List<WallExtension> WallExtensions { get; set; }
+
+
+
   }
 }

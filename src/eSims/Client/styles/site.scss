@@ -34,13 +34,21 @@
   @extend .height-fill;
 }
 
-.fill-5 {
+@mixin fill-margin($margin) {
   @extend .width-fill;
   @extend .height-fill;
-  top: 5px;
-  bottom: 5px;
-  left: 5px;
-  right: 5px;
+  top: $margin;
+  bottom: $margin;
+  left: $margin;
+  right: $margin;
+}
+
+.fill-5 {
+  @include fill-margin(5px);
+}
+
+.fill-10 {
+  @include fill-margin(10px);
 }
 
 .fill-header {
@@ -295,19 +303,18 @@ html {
 }
 
 es-floor-detail {
-  @extend .fill;
-  top: 10px;
+  @extend .fill-10;
   left: 295px;
 
-  .viewbox {
-    width: 510px;
-    height: 225px;
-
-    .floor {
-      width: 500px;
-      height: 500px;
-      transform: matrix3d(0.59761, 0, 0, 0, -0.200797, 0.261355, 0, -0.000796813, 0, 0, 1, 0, 102, 2, 0, 1);
-      transform-origin: 0px 0px 0px;
+  .floor {
+    > div {
+      position: relative;
     }
   }
+}
+
+.rotating-dashed {
+  position: absolute;
+  width: 200px;
+  height: 100px;
 }

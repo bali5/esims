@@ -24,15 +24,13 @@ namespace eSims.Data.Migrations
 
                     b.Property<double>("AvarageHappiness");
 
-                    b.Property<string>("DataFilePath");
+                    b.Property<string>("DataFileName");
 
                     b.Property<int>("EmployeeCount");
 
                     b.Property<int>("LevelCount");
 
                     b.Property<string>("Name");
-
-                    b.Property<string>("SessionId");
 
                     b.Property<int>("UserId");
 
@@ -53,6 +51,20 @@ namespace eSims.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("eSims.Data.Context.SeedHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SeedHistory");
                 });
 
             modelBuilder.Entity("eSims.Data.Application.Game", b =>

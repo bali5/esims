@@ -55,7 +55,7 @@ namespace eSims.Controllers
 
       //if (!System.IO.File.Exists(Game.DataFilePath)) return false;
 
-      BuildingRepository = new BuildingRepository(Game.DataFilePath);
+      BuildingRepository = new BuildingRepository(Game.DataFileName);
 
       return true;
     }

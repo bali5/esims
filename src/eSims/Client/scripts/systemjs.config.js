@@ -10,10 +10,13 @@
     'person': 'scripts/person',
     'group': 'scripts/group',
     'common': 'scripts/common',
+    'canvas': 'scripts/canvas',
     '@angular': 'libs/@angular',
     '@angular2-material': 'libs/@angular2-material',
     'angular2-in-memory-web-api': 'libs/angular2-in-memory-web-api',
-    'rxjs': 'libs/rxjs'
+    'rxjs': 'libs/rxjs',
+    'numericjs': 'libs/numericjs',
+    'reflect-metadata': 'libs/reflect-metadata',
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
@@ -22,8 +25,11 @@
     'person': { main: 'person.js', defaultExtension: 'js' },
     'group': { main: 'group.js', defaultExtension: 'js' },
     'common': { main: 'material.js', defaultExtension: 'js' },
+    'canvas': { main: 'canvas.js', defaultExtension: 'js' },
     'rxjs': { defaultExtension: 'js' },
     'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
+    'numericjs': { main: 'numeric-1.2.6.js', defaultExtension: 'js' },
+    'reflect-metadata': { main: 'Reflect.js', defaultExtension: 'js' },
   };
   var ngPackageNames = [
     'common',

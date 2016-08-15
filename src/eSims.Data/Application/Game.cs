@@ -15,9 +15,7 @@ namespace eSims.Data.Application
 
     public string Name { get; set; }
 
-    public string SessionId { get; set; }
-
-    public string DataFilePath { get; set; }
+    public string DataFileName { get; set; }
 
     public int LevelCount { get; set; }
     public double Account { get; set; }

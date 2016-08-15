@@ -8,18 +8,24 @@ using Newtonsoft.Json;
 
 namespace eSims.Data.Building
 {
-  public class Room
+  public class Room : RoomTemplate
   {
-    [Key]
-    public int Id { get; set; }
+    public int RoomTemplateId { get; set; }
 
-    [JsonIgnore]
-    public RoomTemplate Template {get; set; }
+    //Position
 
-    public bool IsWorkplace { get; set; }
+    public int Left { get; set; }
+    public int Top { get; set; }
 
-    public int Count { get; set; }
+    public int Rotation { get; set; }
 
-    public int MaxCount { get; set; }
+    //Functions
+
+    public int WorkplaceCount { get; set; }
+
+    public int BathroomCount { get; set; }
+
+    public int SmokeCount { get; set; }
+
   }
 }
