@@ -28,10 +28,10 @@ namespace eSims.Controllers
       base.OnActionExecuting(context);
 
       StringValues wValue;
-      if (context.HttpContext.Request.Headers.TryGetValue("Referer", out wValue))
+      if (context.HttpContext.Request.Headers.TryGetValue("esimsbuilding", out wValue))
       {
-        var wReferer = wValue.FirstOrDefault();
-        if (string.IsNullOrWhiteSpace(wReferer) || !InitializeController(wReferer))
+        var wBuildingId = wValue.FirstOrDefault();
+        if (string.IsNullOrWhiteSpace(wBuildingId) || !InitializeController(wBuildingId))
         {
           context.Result = BadRequest();
         }
@@ -42,12 +42,10 @@ namespace eSims.Controllers
       }
     }
 
-    private bool InitializeController(string referer)
+    private bool InitializeController(string id)
     {
-      var wUri = new Uri(referer);
-
       int wId;
-      if (!int.TryParse(Path.GetFileName(wUri.AbsolutePath), out wId)) return false;
+      if (!int.TryParse(id, out wId)) return false;
 
       Game = ApplicationRepository.GetGame(wId);
 

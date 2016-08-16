@@ -17,6 +17,7 @@
     'rxjs': 'libs/rxjs',
     'numericjs': 'libs/numericjs',
     'reflect-metadata': 'libs/reflect-metadata',
+    'lodash': 'libs/lodash',
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
@@ -30,6 +31,7 @@
     'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
     'numericjs': { main: 'numeric-1.2.6.js', defaultExtension: 'js' },
     'reflect-metadata': { main: 'Reflect.js', defaultExtension: 'js' },
+    'lodash': { main: 'lodash.js', defaultExtension: 'js' },
   };
   var ngPackageNames = [
     'common',

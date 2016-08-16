@@ -8,6 +8,8 @@
   <link href="libs/material-design-icons/iconfont/material-icons.css" rel="stylesheet" />
 
   <!-- 1. Load libraries -->
+  <script src="libs/lodash/lodash.js"></script>
+
   <!-- Polyfill(s) for older browsers -->
   <script src="libs/core-js/client/shim.min.js"></script>
   <script src="libs/zone.js/dist/zone.js"></script>
@@ -20,11 +22,7 @@
       console.error(err);
     }
 
-    System.import('index').catch(systemError);
     System.import('app').catch(systemError);
-    System.import('building').catch(systemError);
-    System.import('person').catch(systemError);
-    System.import('group').catch(systemError);
   </script>
 </head>
 <body>

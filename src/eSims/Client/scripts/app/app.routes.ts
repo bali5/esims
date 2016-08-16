@@ -6,7 +6,7 @@ import { Building }  from './../building/building';
 const routes: RouterConfig = [
   { path: '', component: GameList },
   { path: 'buildings', component: GameList },
-  { path: 'building/:session', component: Building }
+  { path: 'building/:id', component: Building }
 ];
 
 export const appRouterProviders = [

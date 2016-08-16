@@ -1,16 +1,11 @@
 ﻿///<reference path="../../../typings/globals/hammerjs/index.d.ts"/>
 
-import { bootstrap }    from '@angular/platform-browser-dynamic';
-import { HTTP_PROVIDERS } from '@angular/http';
-import { disableDeprecatedForms, provideForms } from '@angular/forms';
+//import any global library before bootstrap or it can cause errors
+import 'reflect-metadata';
+//import 'lodash';
 
-import { appRouterProviders } from './app.routes';
-import { AppComponent } from './app.component';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-bootstrap(AppComponent, [
-  disableDeprecatedForms(),
-  provideForms(),
-  HTTP_PROVIDERS,
-  appRouterProviders
-])
-.catch(err => console.error(err));
+import { AppModule } from './app.module';
+
+platformBrowserDynamic().bootstrapModule(AppModule);

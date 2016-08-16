@@ -1,6 +1,11 @@
-﻿import { Input, Directive } from '@angular/core';
+﻿import { Input, Directive, Component } from '@angular/core';
+import { ContentChildren, QueryList, AfterContentInit } from '@angular/core';
 
-export abstract class CanvasElement {
+@Component({
+  selector: 'esc-element',
+  template: '<ng-content></ng-content>'
+})
+export abstract class CanvasElement implements AfterContentInit {
   static inputs: string[] = [
     'left',
     'top',
@@ -10,6 +15,8 @@ export abstract class CanvasElement {
     'background',
     'isAnimated',
   ];
+
+  @ContentChildren(CanvasElement) items: QueryList<CanvasElement>;
 
   @Input() left: number;
   @Input() top: number;
@@ -22,6 +29,12 @@ export abstract class CanvasElement {
   @Input() isAnimated: boolean = false;
   public isChanged: boolean = true;
 
+  ngAfterContentInit() {
+    this.items.changes.subscribe(() => {
+      this.isChanged = true;
+    });
+  }
+
   public draw(context: CanvasRenderingContext2D): void {
     context.save();
 
@@ -29,15 +42,24 @@ export abstract class CanvasElement {
     this.onClear(context);
     this.onDraw(context);
 
+    this.items.forEach((item, index, array) => {
+      if (item == this) return;
+      item.draw(context);
+    });
+
     context.restore();
 
     //this.isChanged = false;
   }
 
-  public animate(context: CanvasRenderingContext2D, elapsedTime: number): void {
+  public animate(elapsedTime: number): void {
     if (this.isAnimated) {
       this.onAnimate(elapsedTime);
-      this.draw(context);
+
+      this.items.forEach((item, index, array) => {
+        if (item == this) return;
+        item.animate(elapsedTime);
+      });
     }
   }
 
@@ -54,9 +76,9 @@ export abstract class CanvasElement {
     context.clearRect(0, 0, this.width, this.height);
     context.fillStyle = this.background;
     context.fill();
-  }  
+  }
 
-  abstract onDraw(context: CanvasRenderingContext2D) : void;
+  abstract onDraw(context: CanvasRenderingContext2D): void;
 
   abstract onAnimate(elapsedTime: number): void;
 }

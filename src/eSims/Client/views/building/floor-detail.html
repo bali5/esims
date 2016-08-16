@@ -4,8 +4,9 @@
       <!--<es-border class="rotating-dashed" [style.left.px]="roomLocation?.x" [style.top.px]="roomLocation?.y">
       </es-border>-->
       <esc-canvas class="fill">
-        <esc-border [left]="100" [top]="25" [width]="100" [height]="50" [strokeDash]="[10, 15]" [foreground]="'red'"></esc-border>
-        <esc-border [left]="100" [top]="150" [width]="100" [height]="50" [strokeDash]="[20, 30]" foreground="blue"></esc-border>
+        <esc-border [left]="100" [top]="25" [width]="200" [height]="150" [strokeDash]="[10, 15]" [foreground]="'red'">
+          <esc-border [left]="20" [top]="20" [width]="50" [height]="50" [strokeDash]="[20, 30]" foreground="blue"></esc-border>
+        </esc-border>
       </esc-canvas>
     </div>
   </div>

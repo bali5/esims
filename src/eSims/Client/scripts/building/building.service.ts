@@ -17,9 +17,13 @@ export class BuildingService {
     return Promise.reject(error.message || error);
   }
 
-  getFloors() {
+  getFloors(buildingId: number) {
+    let headers = new Headers({
+      'eSimsBuilding': buildingId
+    });
+
     return this.http
-      .get(this.controllerUrl)
+      .get(this.controllerUrl, { headers: headers })
       .toPromise()
       .then(r => r.json() as Floor[])
       .catch(this.handleError);

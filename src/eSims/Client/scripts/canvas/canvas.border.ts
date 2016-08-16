@@ -1,10 +1,12 @@
-﻿import { Directive, Input, Injector } from '@angular/core';
-//import { ExtendedDirective } from './../common/extended.directive';
+﻿import { Component, Input, Injector, provide, forwardRef } from '@angular/core';
+import { Inherit } from './../common/inherit';
 import { CanvasElement } from './canvas.element'
 
-@Directive({
+@Inherit()
+@Component({
   selector: 'esc-border',
-  inputs: CanvasElement.inputs
+  template: '<ng-content></ng-content>',
+  providers: [provide(CanvasElement, { useExisting: forwardRef(() => CanvasBorder) })]
 })
 export class CanvasBorder extends CanvasElement {
   @Input() strokeWidth: number = 5;
@@ -13,7 +15,7 @@ export class CanvasBorder extends CanvasElement {
 
   private offset: number = 0;
 
-  constructor(private injector: Injector) {
+  constructor() {
     super();
     this.isAnimated = true;
   }

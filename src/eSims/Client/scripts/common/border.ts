@@ -1,4 +1,4 @@
-﻿import { Component, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+﻿import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'es-border',

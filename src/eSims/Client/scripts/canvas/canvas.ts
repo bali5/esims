@@ -4,11 +4,15 @@ import { CanvasBorder } from './canvas.border'
 
 @Component({
   selector: 'esc-canvas',
-  template: '<canvas #canvas (window:resize)="onResize()"></canvas><ng-content></ng-content>'
+  template: '<canvas #canvas (window:resize)="onResize()"></canvas><ng-content></ng-content>',
+  directives: [
+    CanvasElement,
+    CanvasBorder
+  ]
 })
 export class Canvas implements AfterContentInit, AfterViewInit {
   @ViewChild('canvas') canvas: ElementRef;
-  @ContentChildren(CanvasBorder) items: QueryList<CanvasBorder>;
+  @ContentChildren(CanvasElement) items: QueryList<CanvasElement>;
 
   private canvasElement: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
@@ -58,7 +62,10 @@ export class Canvas implements AfterContentInit, AfterViewInit {
       var elapsed = current - this.animateLastTime;
       this.animateLastTime = current
       this.items.forEach((item, index, array) => {
-        item.animate(this.context, elapsed);
+        item.animate(elapsed);
+      });
+      this.items.forEach((item, index, array) => {
+        item.draw(this.context);
       });
     }
 

@@ -1,4 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
+
+import { ActivatedRoute } from '@angular/router';
+
 import { BuildingService } from './building.service';
 import { Floor } from './floor';
 import { FloorThumb } from './floor.thumb';
@@ -19,7 +22,7 @@ import material from './../common/material';
     FloorDetail
   ]}))
 export class Building implements OnInit {
-  constructor(private service: BuildingService) { }
+  constructor(private route: ActivatedRoute, private service: BuildingService) { }
 
   public id: number;
   public name: string;
@@ -61,7 +64,10 @@ export class Building implements OnInit {
   ];
 
   ngOnInit() {
-    this.service.getFloors().then(t => this.floors = t);
+    this.route.params.subscribe(params => {
+      this.id = +params['id']; // (+) converts string 'id' to a number
+      this.service.getFloors(this.id).then(t => this.floors = t);
+    });
   }
 
 }
