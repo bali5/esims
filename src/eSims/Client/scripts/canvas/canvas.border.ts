@@ -1,17 +1,14 @@
 ﻿import { Component, Input, Injector, provide, forwardRef } from '@angular/core';
 import { Inherit } from './../common/inherit';
-import { CanvasElement } from './canvas.element'
+import { CanvasComponent, CanvasElement } from './canvas.element'
 
-@Inherit()
-@Component({
-  selector: 'esc-border',
-  template: '<ng-content></ng-content>',
-  providers: [provide(CanvasElement, { useExisting: forwardRef(() => CanvasBorder) })]
+@CanvasComponent({
+  selector: 'esc-border'
 })
 export class CanvasBorder extends CanvasElement {
   @Input() strokeWidth: number = 5;
   @Input() strokeDash: number[] = null;
-  @Input() time: number = 5000;
+  @Input() time: number = 10000;
 
   private offset: number = 0;
 

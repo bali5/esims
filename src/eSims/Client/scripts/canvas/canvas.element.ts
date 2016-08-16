@@ -1,21 +1,14 @@
-﻿import { Input, Directive, Component } from '@angular/core';
+﻿import 'reflect-metadata';
+
+import { Input, Output, EventEmitter, Directive, Component, ComponentMetadata, provide, forwardRef } from '@angular/core';
 import { ContentChildren, QueryList, AfterContentInit } from '@angular/core';
 
-@Component({
-  selector: 'esc-element',
-  template: '<ng-content></ng-content>'
+//import * as _ from 'lodash';
+
+@CanvasComponent({
+  selector: 'esc-element'
 })
 export abstract class CanvasElement implements AfterContentInit {
-  static inputs: string[] = [
-    'left',
-    'top',
-    'width',
-    'height',
-    'foreground',
-    'background',
-    'isAnimated',
-  ];
-
   @ContentChildren(CanvasElement) items: QueryList<CanvasElement>;
 
   @Input() left: number;
@@ -27,7 +20,11 @@ export abstract class CanvasElement implements AfterContentInit {
   @Input() background: string | CanvasGradient | CanvasPattern = 'transparent';
 
   @Input() isAnimated: boolean = false;
+
   public isChanged: boolean = true;
+
+  @Output() onclick = new EventEmitter<KeyboardEvent>();
+  @Output() ondblclick = new EventEmitter<KeyboardEvent>();
 
   ngAfterContentInit() {
     this.items.changes.subscribe(() => {
@@ -81,4 +78,38 @@ export abstract class CanvasElement implements AfterContentInit {
   abstract onDraw(context: CanvasRenderingContext2D): void;
 
   abstract onAnimate(elapsedTime: number): void;
+}
+
+export function CanvasComponent(annotation?: any) {
+  return function (target: Function) {
+    if (!annotation) {
+      annotation = {};
+    }
+
+    if (!Object.hasOwnProperty('template')) {
+      annotation.template = '<ng-content></ng-content>';
+    }
+    if (!Object.hasOwnProperty('providers')) {
+      annotation.providers = [];
+    }
+    annotation.providers.push(provide(CanvasElement, { useExisting: forwardRef(() => target) }));
+
+    var _ = window['_'];
+
+    function meta(name, p, t) {
+      var pmeta = Reflect.getMetadata(name, p);
+      var tmeta = Reflect.getMetadata(name, t);
+      Reflect.defineMetadata(name, _.merge({}, pmeta, tmeta), target);
+    }
+
+    var parentTarget = Object.getPrototypeOf(target.prototype).constructor;
+
+    //meta('annotations', parentTarget, target);
+    //meta('design:paramtypes', parentTarget, target);
+    meta('propMetadata', parentTarget, target);
+    //meta('parameters', parentTarget, target);
+
+    var metadata = new ComponentMetadata(annotation);
+    Reflect.defineMetadata('annotations', [metadata], target);
+  }
 }
