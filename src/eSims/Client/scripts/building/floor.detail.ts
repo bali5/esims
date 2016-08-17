@@ -45,4 +45,7 @@ export class FloorDetail implements AfterViewInit {
     return off;
   }
 
+  elementClick(e) {
+  }
+
 }

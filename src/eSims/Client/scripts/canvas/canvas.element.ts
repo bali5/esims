@@ -10,6 +10,7 @@ import { ContentChildren, QueryList, AfterContentInit } from '@angular/core';
 })
 export abstract class CanvasElement implements AfterContentInit {
   @ContentChildren(CanvasElement) items: QueryList<CanvasElement>;
+  public cachedItems: CanvasElement[];
 
   @Input() left: number;
   @Input() top: number;
@@ -23,11 +24,27 @@ export abstract class CanvasElement implements AfterContentInit {
 
   public isChanged: boolean = true;
 
-  @Output() onclick = new EventEmitter<KeyboardEvent>();
-  @Output() ondblclick = new EventEmitter<KeyboardEvent>();
+  @Output() canvasclick = new EventEmitter<MouseEvent>();
+  @Output() canvasdblclick = new EventEmitter<MouseEvent>();
+  @Output() canvasdrag = new EventEmitter<MouseEvent>();
+  @Output() canvasdragend = new EventEmitter<MouseEvent>();
+  @Output() canvasdragenter = new EventEmitter<MouseEvent>();
+  @Output() canvasdragleave = new EventEmitter<MouseEvent>();
+  @Output() canvasdragover = new EventEmitter<MouseEvent>();
+  @Output() canvasdragstart = new EventEmitter<MouseEvent>();
+  @Output() canvasdrop = new EventEmitter<MouseEvent>();
+  @Output() canvasmousedown = new EventEmitter<MouseEvent>();
+  @Output() canvasmousemove = new EventEmitter<MouseEvent>();
+  @Output() canvasmouseout = new EventEmitter<MouseEvent>();
+  @Output() canvasmouseover = new EventEmitter<MouseEvent>();
+  @Output() canvasmouseup = new EventEmitter<MouseEvent>();
+  @Output() canvasscroll = new EventEmitter<MouseEvent>();
+  @Output() canvaswheel = new EventEmitter<MouseEvent>();
 
   ngAfterContentInit() {
+    this.cachedItems = this.items.toArray();
     this.items.changes.subscribe(() => {
+      this.cachedItems = this.items.toArray();
       this.isChanged = true;
     });
   }
@@ -39,7 +56,7 @@ export abstract class CanvasElement implements AfterContentInit {
     this.onClear(context);
     this.onDraw(context);
 
-    this.items.forEach((item, index, array) => {
+    this.cachedItems.forEach((item, index, array) => {
       if (item == this) return;
       item.draw(context);
     });
@@ -53,7 +70,7 @@ export abstract class CanvasElement implements AfterContentInit {
     if (this.isAnimated) {
       this.onAnimate(elapsedTime);
 
-      this.items.forEach((item, index, array) => {
+      this.cachedItems.forEach((item, index, array) => {
         if (item == this) return;
         item.animate(elapsedTime);
       });
@@ -78,6 +95,62 @@ export abstract class CanvasElement implements AfterContentInit {
   abstract onDraw(context: CanvasRenderingContext2D): void;
 
   abstract onAnimate(elapsedTime: number): void;
+
+  contains(x: number, y: number): boolean {
+    let xdiff = x - this.left;
+    let ydiff = y - this.top;
+    return xdiff > 0 && ydiff > 0 && xdiff < this.width && ydiff < this.height;
+  }
+
+  raiseclick(event: MouseEvent) {
+    this.canvasclick.emit(event);
+  }
+  raisedblclick(event: MouseEvent) {
+    this.canvasdblclick.emit(event);
+  }
+  raisedrag(event: MouseEvent) {
+    this.canvasdrag.emit(event);
+  }
+  raisedragend(event: MouseEvent) {
+    this.canvasdragend.emit(event);
+  }
+  raisedragenter(event: MouseEvent) {
+    this.canvasdragenter.emit(event);
+  }
+  raisedragleave(event: MouseEvent) {
+    this.canvasdragleave.emit(event);
+  }
+  raisedragover(event: MouseEvent) {
+    this.canvasdragover.emit(event);
+  }
+  raisedragstart(event: MouseEvent) {
+    this.canvasdragstart.emit(event);
+  }
+  raisedrop(event: MouseEvent) {
+    this.canvasdrop.emit(event);
+  }
+  raisemousedown(event: MouseEvent) {
+    this.canvasmousedown.emit(event);
+  }
+  raisemousemove(event: MouseEvent) {
+    this.canvasmousemove.emit(event);
+  }
+  raisemouseout(event: MouseEvent) {
+    this.canvasmouseout.emit(event);
+  }
+  raisemouseover(event: MouseEvent) {
+    this.canvasmouseover.emit(event);
+  }
+  raisemouseup(event: MouseEvent) {
+    this.canvasmouseup.emit(event);
+  }
+  raisescroll(event: MouseEvent) {
+    this.canvasscroll.emit(event);
+  }
+  raisewheel(event: MouseEvent) {
+    this.canvaswheel.emit(event);
+  }
+
 }
 
 export function CanvasComponent(annotation?: any) {
