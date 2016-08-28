@@ -115,8 +115,11 @@ namespace eSims.Data.Migrations.Building
                         .Annotation("Autoincrement", true),
                     BathroomCount = table.Column<int>(nullable: false),
                     BathroomMaxCount = table.Column<int>(nullable: false),
-                    FloorId = table.Column<int>(nullable: true),
+                    FloorId = table.Column<int>(nullable: false),
                     Height = table.Column<int>(nullable: false),
+                    Icon = table.Column<string>(nullable: true),
+                    KitchenCount = table.Column<int>(nullable: false),
+                    KitchenMaxCount = table.Column<int>(nullable: false),
                     Left = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Price = table.Column<double>(nullable: false),
@@ -137,7 +140,7 @@ namespace eSims.Data.Migrations.Building
                         column: x => x.FloorId,
                         principalTable: "Floors",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

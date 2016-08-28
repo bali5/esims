@@ -27,24 +27,83 @@ namespace eSims.Data.Context
       Rooms.AddRange(new[] {
         new RoomTemplate()
         {
-          Name = "Developer room, mini",
-          Width = 2,
-          Height = 2,
-          WorkplaceMaxCount = 2
-        },
-        new RoomTemplate()
-        {
           Name = "Developer room, small",
           Width = 4,
-          Height = 2,
-          WorkplaceMaxCount = 4
+          Height = 4,
+          WorkplaceMaxCount = 5,
+          Icon = "computer"
         },
         new RoomTemplate()
         {
-          Name = "Developer room, small",
+          Name = "Developer room, medium",
+          Width = 8,
+          Height = 4,
+          WorkplaceMaxCount = 11,
+          Icon = "computer"
+        },
+        new RoomTemplate()
+        {
+          Name = "Developer room, large",
+          Width = 16,
+          Height = 6,
+          WorkplaceMaxCount = 30,
+          Icon = "computer"
+        },
+        new RoomTemplate()
+        {
+          Name = "Bathroom, small",
+          Width = 1,
+          Height = 2,
+          BathroomMaxCount = 1,
+          Icon = "wc"
+        },
+        new RoomTemplate()
+        {
+          Name = "Bathroom, medium",
+          Width = 2,
+          Height = 2,
+          BathroomMaxCount = 1,
+          Icon = "wc"
+        },
+        new RoomTemplate()
+        {
+          Name = "Kitchen, small",
+          Width = 1,
+          Height = 2,
+          KitchenMaxCount = 2,
+          Icon = "kitchen"
+        },
+        new RoomTemplate()
+        {
+          Name = "Kitchen, medium",
+          Width = 2,
+          Height = 3,
+          KitchenMaxCount = 5,
+          Icon = "kitchen"
+        },
+        new RoomTemplate()
+        {
+          Name = "Kitchen, large",
+          Width = 16,
+          Height = 6,
+          KitchenMaxCount = 50,
+          Icon = "kitchen"
+        },
+        new RoomTemplate()
+        {
+          Name = "Smoking room, small",
+          Width = 2,
+          Height = 2,
+          SmokeMaxCount = 3,
+          Icon = "smoking_rooms"
+        },
+        new RoomTemplate()
+        {
+          Name = "Smoking room, medium",
           Width = 2,
           Height = 4,
-          WorkplaceMaxCount = 4
+          BathroomMaxCount = 7,
+          Icon = "smoking_rooms"
         },
       });
     }
@@ -52,5 +111,11 @@ namespace eSims.Data.Context
     public DbSet<RoomTemplate> Rooms { get; set; }
     public DbSet<Person> Persons { get; set; }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+      base.OnModelCreating(modelBuilder);
+
+      modelBuilder.Entity<Floor>().HasMany(h => h.Rooms).WithOne().HasForeignKey(h => h.FloorId);
+    }
   }
 }

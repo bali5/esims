@@ -1,6 +1,6 @@
 ﻿import { Component, ChangeDetectionStrategy, AnimationEntryMetadata, Type, ViewEncapsulation } from '@angular/core';
 import { NgFor } from '@angular/common';
-import { RoundPipe } from './pipes';
+import { RoundPipe, MinPipe, MaxPipe, AbsPipe } from './pipes';
 import { Border } from './border';
 
 import { Canvas } from './../canvas/canvas';
@@ -50,6 +50,9 @@ export default function (data: IComponentData): IComponentData {
   }
 
   data.pipes.push(RoundPipe);
+  data.pipes.push(MinPipe);
+  data.pipes.push(MaxPipe);
+  data.pipes.push(AbsPipe);
   
   return data;
 }

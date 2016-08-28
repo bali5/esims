@@ -8,7 +8,7 @@ using eSims.Data.Context;
 namespace eSims.Data.Migrations.Building
 {
     [DbContext(typeof(BuildingContext))]
-    [Migration("20160812163444_Initialize")]
+    [Migration("20160828181327_Initialize")]
     partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,9 +51,15 @@ namespace eSims.Data.Migrations.Building
 
                     b.Property<int>("BathroomMaxCount");
 
-                    b.Property<int?>("FloorId");
+                    b.Property<int>("FloorId");
 
                     b.Property<int>("Height");
+
+                    b.Property<string>("Icon");
+
+                    b.Property<int>("KitchenCount");
+
+                    b.Property<int>("KitchenMaxCount");
 
                     b.Property<int>("Left");
 
@@ -256,7 +262,8 @@ namespace eSims.Data.Migrations.Building
                 {
                     b.HasOne("eSims.Data.Building.Floor")
                         .WithMany("Rooms")
-                        .HasForeignKey("FloorId");
+                        .HasForeignKey("FloorId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("eSims.Data.Building.RoomExtension", b =>

@@ -12,6 +12,8 @@ namespace eSims.Data.Building
   {
     public int RoomTemplateId { get; set; }
 
+    public int FloorId { get; set; }
+
     //Position
 
     public int Left { get; set; }
@@ -26,6 +28,8 @@ namespace eSims.Data.Building
     public int BathroomCount { get; set; }
 
     public int SmokeCount { get; set; }
+
+    public int KitchenCount { get; set; }
 
   }
 }

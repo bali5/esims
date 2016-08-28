@@ -12,7 +12,7 @@ namespace eSims.Data.Context
 
     protected ESimsContext(string fileName = null)
     {
-      mPath = fileName;
+      Path = fileName;
     }
 
     public void EnsureSeedData()
@@ -40,13 +40,24 @@ namespace eSims.Data.Context
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-      optionsBuilder.UseSqlite($"Filename=./{mPath ?? this.GetType().Name.ToLower().Replace("context", "")}.sqlite");
+      optionsBuilder.UseSqlite($"Filename=./{Path ?? this.GetType().Name.ToLower().Replace("context", "")}.sqlite");
 
       base.OnConfiguring(optionsBuilder);
     }
 
     public DbSet<SeedHistory> SeedHistory { get; set; }
 
+    public string Path
+    {
+      get
+      {
+        return mPath;
+      }
 
+      set
+      {
+        mPath = value;
+      }
+    }
   }
 }

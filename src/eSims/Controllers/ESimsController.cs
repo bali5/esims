@@ -14,8 +14,25 @@ namespace eSims.Controllers
 {
   public abstract class ESimsController : Controller
   {
+    private string mBuildingDataFilePath;
+    private IBuildingRepository mBuildingRepository;
+    private ICommonRepository mCommonRepository;
+
     protected IApplicationRepository ApplicationRepository { get; private set; }
-    protected IBuildingRepository BuildingRepository { get; private set; }
+    protected IBuildingRepository BuildingRepository
+    {
+      get
+      {
+        return mBuildingRepository ?? (mBuildingRepository = new BuildingRepository(mBuildingDataFilePath));
+      }
+    }
+    protected ICommonRepository CommonRepository
+    {
+      get
+      {
+        return mCommonRepository ?? (mCommonRepository = new CommonRepository());
+      }
+    }
     protected Game Game { get; private set; }
 
     protected ESimsController(IApplicationRepository applicationRepository)
@@ -51,9 +68,7 @@ namespace eSims.Controllers
 
       if (Game == null) return false;
 
-      //if (!System.IO.File.Exists(Game.DataFilePath)) return false;
-
-      BuildingRepository = new BuildingRepository(Game.DataFileName);
+      mBuildingDataFilePath = Game.DataFileName;
 
       return true;
     }

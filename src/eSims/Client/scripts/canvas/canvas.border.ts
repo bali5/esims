@@ -1,4 +1,4 @@
-﻿import { Component, Input, Injector, provide, forwardRef } from '@angular/core';
+﻿import { Component, Input, Injector, provide, forwardRef, ElementRef } from '@angular/core';
 import { Inherit } from './../common/inherit';
 import { CanvasComponent, CanvasElement } from './canvas.element'
 
@@ -8,12 +8,12 @@ import { CanvasComponent, CanvasElement } from './canvas.element'
 export class CanvasBorder extends CanvasElement {
   @Input() strokeWidth: number = 5;
   @Input() strokeDash: number[] = null;
-  @Input() time: number = 10000;
+  @Input() pixelPerMilliSeconds: number = 0.05;
 
   private offset: number = 0;
 
-  constructor() {
-    super();
+  constructor(element: ElementRef) {
+    super(element);
     this.isAnimated = true;
   }
 
@@ -23,7 +23,7 @@ export class CanvasBorder extends CanvasElement {
     if (this.strokeDash) {
       context.lineCap = 'round';
       context.setLineDash(this.strokeDash);
-      context.lineDashOffset = -this.offset;
+      context.lineDashOffset = -((0.5 + this.offset) | 0);
     }
 
     context.strokeStyle = this.foreground;
@@ -34,11 +34,12 @@ export class CanvasBorder extends CanvasElement {
 
   onAnimate(elapsedTime: number): void {
     if (this.strokeDash) {
-      var length = this.width * 2 + this.height * 2;
+      var strokeLength = 0;
+      this.strokeDash.forEach((n) => strokeLength += n);
 
-      this.offset += length * elapsedTime / this.time;
-      while (this.offset >= length) {
-        this.offset -= length;
+      this.offset += elapsedTime * this.pixelPerMilliSeconds;
+      while (this.offset >= strokeLength) {
+        this.offset -= strokeLength;
       }
     }
 

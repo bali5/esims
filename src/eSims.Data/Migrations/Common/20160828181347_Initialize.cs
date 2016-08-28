@@ -9,22 +9,16 @@ namespace eSims.Data.Migrations.Common
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Rooms",
+                name: "Floor",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Autoincrement", true),
-                    BathroomMaxCount = table.Column<int>(nullable: false),
-                    Height = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Price = table.Column<double>(nullable: false),
-                    SmokeMaxCount = table.Column<int>(nullable: false),
-                    Width = table.Column<int>(nullable: false),
-                    WorkplaceMaxCount = table.Column<int>(nullable: false)
+                    Level = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rooms", x => x.Id);
+                    table.PrimaryKey("PK_Floor", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,6 +66,63 @@ namespace eSims.Data.Migrations.Common
                 });
 
             migrationBuilder.CreateTable(
+                name: "Rooms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Autoincrement", true),
+                    BathroomMaxCount = table.Column<int>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
+                    Height = table.Column<int>(nullable: false),
+                    Icon = table.Column<string>(nullable: true),
+                    KitchenMaxCount = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Price = table.Column<double>(nullable: false),
+                    SmokeMaxCount = table.Column<int>(nullable: false),
+                    Width = table.Column<int>(nullable: false),
+                    WorkplaceMaxCount = table.Column<int>(nullable: false),
+                    BathroomCount = table.Column<int>(nullable: true),
+                    FloorId = table.Column<int>(nullable: true),
+                    KitchenCount = table.Column<int>(nullable: true),
+                    Left = table.Column<int>(nullable: true),
+                    RoomTemplateId = table.Column<int>(nullable: true),
+                    Rotation = table.Column<int>(nullable: true),
+                    SmokeCount = table.Column<int>(nullable: true),
+                    Top = table.Column<int>(nullable: true),
+                    WorkplaceCount = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rooms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Rooms_Floor_FloorId",
+                        column: x => x.FloorId,
+                        principalTable: "Floor",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PersonPerk",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Autoincrement", true),
+                    Perk = table.Column<int>(nullable: false),
+                    PersonId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PersonPerk", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PersonPerk_Persons_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "Persons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RoomExtension",
                 columns: table => new
                 {
@@ -116,30 +167,15 @@ namespace eSims.Data.Migrations.Common
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "PersonPerk",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
-                    Perk = table.Column<int>(nullable: false),
-                    PersonId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PersonPerk", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PersonPerk_Persons_PersonId",
-                        column: x => x.PersonId,
-                        principalTable: "Persons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_RoomExtension_RoomTemplateId",
                 table: "RoomExtension",
                 column: "RoomTemplateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rooms_FloorId",
+                table: "Rooms",
+                column: "FloorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WallExtension_RoomTemplateId",
@@ -171,6 +207,9 @@ namespace eSims.Data.Migrations.Common
 
             migrationBuilder.DropTable(
                 name: "Persons");
+
+            migrationBuilder.DropTable(
+                name: "Floor");
         }
     }
 }

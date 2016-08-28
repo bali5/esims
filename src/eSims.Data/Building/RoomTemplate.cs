@@ -15,6 +15,8 @@ namespace eSims.Data.Building
 
     public double Price { get; set; }
 
+    public string Icon { get; set; }
+
     //Position
 
     public int Width { get; set; }
@@ -28,13 +30,12 @@ namespace eSims.Data.Building
 
     public int SmokeMaxCount { get; set; }
 
+    public int KitchenMaxCount { get; set; }
+    
     //Extensions
 
     public List<RoomExtension> RoomExtensions { get; set; }
 
     public List<WallExtension> WallExtensions { get; set; }
-
-
-
   }
 }

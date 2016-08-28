@@ -15,8 +15,21 @@ namespace eSims.Data.Repository
     protected ESimsRepository()
     {
       Context = new T();
+      Create();
+    }
+
+    protected ESimsRepository(string path)
+    {
+      Context = new T();
+      Context.Path = path;
+      Create();
+    }
+
+    private void Create()
+    {
       Context.Database.Migrate();
       Context.EnsureSeedData();
     }
+
   }
 }

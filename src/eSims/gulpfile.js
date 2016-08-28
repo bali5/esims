@@ -146,7 +146,7 @@ gulp.task('styles', ['cleanStyles'], function () {
 
 // Copy all static images
 gulp.task('images', ['cleanImages'], function () {
-  return gulp.src(imagesSourcePaths)
+  return gulp.src(imagesSourcePath)
     // Pass in options to the task
     //.pipe(imagemin({ optimizationLevel: 5 }))
     .pipe(gulp.dest(imagesDestinationPath));

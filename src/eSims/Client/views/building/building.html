@@ -20,6 +20,7 @@
     <md-sidenav #sidenav2 (close)="currentActionTemplate = null">
       <div [ngSwitch]="currentActionTemplate">
         <es-hr *ngSwitchCase="'es-hr'"></es-hr>
+        <es-room-template-list *ngSwitchCase="'es-room-template-list'" (selectRoom)="onBuildRoom($event); sidenav2.close();"></es-room-template-list>
       </div>
     </md-sidenav>
     <md-toolbar color="primary" class="header">
@@ -39,7 +40,7 @@
           </div>
         </div>
       </div>
-      <es-floor-detail *ngIf="selectedFloor" [floor]="selectedFloor"></es-floor-detail>
+      <es-floor-detail #floorDetail [floor]="selectedFloor"></es-floor-detail>
     </div>
   </md-sidenav-layout>
 </md-sidenav-layout>

@@ -16,5 +16,10 @@ namespace eSims.Data.Repository
     void HirePerson(int id);
     IEnumerable<Floor> GetFloors();
     Floor GetFloor(int id);
+    IEnumerable<Room> GetRooms();
+    int AddFloor();
+    Room GetRoom(int id);
+    int AddRoom(int levelId, RoomTemplate roomTemplate, int x, int y, int rotation);
+    void RemoveRoom(int id);
   }
 }

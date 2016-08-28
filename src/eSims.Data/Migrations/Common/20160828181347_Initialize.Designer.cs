@@ -8,13 +8,25 @@ using eSims.Data.Context;
 namespace eSims.Data.Migrations.Common
 {
     [DbContext(typeof(CommonContext))]
-    [Migration("20160812163419_Initialize")]
+    [Migration("20160828181347_Initialize")]
     partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
+
+            modelBuilder.Entity("eSims.Data.Building.Floor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Level");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Floor");
+                });
 
             modelBuilder.Entity("eSims.Data.Building.RoomExtension", b =>
                 {
@@ -43,7 +55,14 @@ namespace eSims.Data.Migrations.Common
 
                     b.Property<int>("BathroomMaxCount");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
                     b.Property<int>("Height");
+
+                    b.Property<string>("Icon");
+
+                    b.Property<int>("KitchenMaxCount");
 
                     b.Property<string>("Name");
 
@@ -58,6 +77,8 @@ namespace eSims.Data.Migrations.Common
                     b.HasKey("Id");
 
                     b.ToTable("Rooms");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("RoomTemplate");
                 });
 
             modelBuilder.Entity("eSims.Data.Building.WallExtension", b =>
@@ -158,6 +179,35 @@ namespace eSims.Data.Migrations.Common
                     b.ToTable("PersonPerk");
                 });
 
+            modelBuilder.Entity("eSims.Data.Building.Room", b =>
+                {
+                    b.HasBaseType("eSims.Data.Building.RoomTemplate");
+
+                    b.Property<int>("BathroomCount");
+
+                    b.Property<int>("FloorId");
+
+                    b.Property<int>("KitchenCount");
+
+                    b.Property<int>("Left");
+
+                    b.Property<int>("RoomTemplateId");
+
+                    b.Property<int>("Rotation");
+
+                    b.Property<int>("SmokeCount");
+
+                    b.Property<int>("Top");
+
+                    b.Property<int>("WorkplaceCount");
+
+                    b.HasIndex("FloorId");
+
+                    b.ToTable("Room");
+
+                    b.HasDiscriminator().HasValue("Room");
+                });
+
             modelBuilder.Entity("eSims.Data.Building.RoomExtension", b =>
                 {
                     b.HasOne("eSims.Data.Building.RoomTemplate")
@@ -177,6 +227,14 @@ namespace eSims.Data.Migrations.Common
                     b.HasOne("eSims.Data.HumanResources.Person")
                         .WithMany("Perks")
                         .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("eSims.Data.Building.Room", b =>
+                {
+                    b.HasOne("eSims.Data.Building.Floor")
+                        .WithMany("Rooms")
+                        .HasForeignKey("FloorId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

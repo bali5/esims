@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using eSims.Data.Building;
 using eSims.Data.Context;
 using eSims.Data.HumanResources;
+using eSims.Tools.Mapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace eSims.Data.Repository
@@ -12,7 +13,40 @@ namespace eSims.Data.Repository
   public class BuildingRepository : ESimsRepository<BuildingContext>, IBuildingRepository
   {
     public BuildingRepository(string path)
+      : base(path)
     {
+    }
+
+    public int AddFloor()
+    {
+      var wEntry = Context.Floors.Add(new Floor()
+      {
+        Level = Context.Floors.Count()
+      });
+
+      Context.SaveChanges();
+
+      return wEntry.Entity.Id;
+    }
+
+    public int AddRoom(int levelId, RoomTemplate roomTemplate, int x, int y, int rotation)
+    {
+      var wRoom = new Room()
+      {
+        FloorId = levelId,
+        Left = x,
+        Top = y,
+        Rotation = rotation,
+        RoomTemplateId = roomTemplate.Id,
+      };
+      EmitMapper.Map(roomTemplate, wRoom);
+      wRoom.Id = 0;
+
+      var wRoomEntity = Context.Rooms.Add(wRoom);
+
+      Context.SaveChanges();
+
+      return wRoomEntity.Entity.Id;
     }
 
     public void ChangePersonTeam(int id, int teamId)
@@ -119,7 +153,7 @@ namespace eSims.Data.Repository
 
     public IEnumerable<Floor> GetFloors()
     {
-      return Context.Floors.OrderByDescending(o => o.Level).ToArray();
+      return Context.Floors.Include(i => i.Rooms).OrderByDescending(o => o.Level).ToArray();
     }
 
     public Person GetPerson(int id)
@@ -130,6 +164,16 @@ namespace eSims.Data.Repository
     public IEnumerable<Person> GetPersons(PersonState state)
     {
       return Context.Persons.Where(w => w.State == state).ToArray();
+    }
+
+    public Room GetRoom(int id)
+    {
+      return Context.Rooms.FirstOrDefault(f => f.Id == id);
+    }
+
+    public IEnumerable<Room> GetRooms()
+    {
+      return Context.Rooms.ToArray();
     }
 
     public void HirePerson(int id)
@@ -200,5 +244,9 @@ namespace eSims.Data.Repository
       Context.SaveChanges();
     }
 
+    public void RemoveRoom(int id)
+    {
+      Context.Rooms.Remove(Context.Rooms.FirstOrDefault(f => f.Id == id));
+    }
   }
 }

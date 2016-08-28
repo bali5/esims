@@ -31,8 +31,11 @@ namespace eSims.Controllers
 
     // POST api/values
     [HttpPost]
-    public void Post([FromBody]string value)
+    public Floor Post()
     {
+      var wId = BuildingRepository.AddFloor();
+
+      return BuildingRepository.GetFloor(wId);
     }
 
     // PUT api/values/5

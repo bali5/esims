@@ -15,6 +15,11 @@ namespace eSims.Data.Repository
     {
     }
 
+    public RoomTemplate GetRoomTemplate(int id)
+    {
+      return Context.Rooms.FirstOrDefault(f => f.Id == id);
+    }
+
     public RoomTemplate[] GetRoomTemplates()
     {
       return Context.Rooms.ToArray();

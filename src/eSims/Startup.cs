@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using eSims.Data.Repository;
+using eSims.Tools;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -38,6 +39,7 @@ namespace eSims
       services.AddMvc();
 
       services.AddSingleton<IApplicationRepository, ApplicationRepository>();
+      services.AddSingleton<ILoggerFactory>((s) => ApplicationLogging.LoggerFactory);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline

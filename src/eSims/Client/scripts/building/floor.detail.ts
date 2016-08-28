@@ -1,51 +1,70 @@
-﻿import { Component, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+﻿import { Component, Input, Output, ViewChild, ElementRef, AfterViewInit, EventEmitter } from '@angular/core';
 import { Action } from './action';
 
 import material from './../common/material';
 
 import { Floor } from './floor';
+import { FloorCanvasElement } from './floor.canvas.element';
+import { RoomTemplate } from './room.template';
+
+import { RoomService } from './room.service';
 
 @Component(material({
   selector: 'es-floor-detail',
-  templateUrl: 'views/building/floor-detail.html',
+  templateUrl: 'views/building/floor-detail.html'
 }))
 export class FloorDetail implements AfterViewInit {
+  constructor(private roomService: RoomService) { }
+
   @Input() floor: Floor;
 
   @ViewChild('b') border: ElementRef;
+  @ViewChild('floorCanvas') floorCanvas: FloorCanvasElement;
 
-  public roomLocation: Object;
   public size: number;
+
+  private currentAction: string;
+  private currentActionParameter: any;
 
   ngAfterViewInit() {
     setTimeout(() => this.onResize());
+
+    this.floorCanvas.canvasclick.subscribe(() => {
+      if (this.currentAction == 'build') {
+        this.roomService.addRoom(this.floor.id, this.currentActionParameter.id, this.floorCanvas.selectLeft, this.floorCanvas.selectTop, this.floorCanvas.rotate).then((t) => this.floor.rooms.push(t));
+        this.cancel();
+      }
+    });
   }
 
   onResize() {
     this.size = Math.min(this.border.nativeElement.offsetWidth, this.border.nativeElement.offsetHeight);
   }
 
-  onMouseMove(event: MouseEvent) {
-    var off = this.getOffset(event.srcElement);
+  startBuildingRoom(room: RoomTemplate) {
+    this.currentAction = 'build';
+    this.currentActionParameter = room;
 
-    this.roomLocation = {
-      x: event.offsetX,
-      y: event.offsetY
-    }
+    this.floorCanvas.rotate = 0;
+
+    this.floorCanvas.selectWidth = room.width;
+    this.floorCanvas.selectHeight = room.height;
   }
 
-  getOffset(element: any): { x: number, y: number } {
-    if (!element) return { x: 0, y: 0 };
+  cancel() {
+    this.currentAction = null;
+    this.currentActionParameter = null;
 
-    var off = this.getOffset(element.offsetParent);
-
-    off.x += element.offsetLeft;
-    off.y += element.offsetTop;
-
-    return off;
+    this.floorCanvas.selectWidth = 0;
+    this.floorCanvas.selectHeight = 0;
   }
 
-  elementClick(e) {
+  rotateLeft() {
+    this.floorCanvas.rotate = (this.floorCanvas.rotate - 1) % 4;
+  }
+
+  rotateRight() {
+    this.floorCanvas.rotate = (this.floorCanvas.rotate + 1) % 4;
   }
 
 }

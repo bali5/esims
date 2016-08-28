@@ -11,21 +11,34 @@ export class BuildingService {
   constructor(private http: Http) { }
 
   private controllerUrl = 'api/building';
+  public static buildingId: number;
 
   private handleError(error: any) {
     console.error('An error occurred', error);
     return Promise.reject(error.message || error);
   }
 
-  getFloors(buildingId: number) {
+  getFloors() {
     let headers = new Headers({
-      'eSimsBuilding': buildingId
+      'eSimsBuilding': BuildingService.buildingId
     });
 
     return this.http
       .get(this.controllerUrl, { headers: headers })
       .toPromise()
       .then(r => r.json() as Floor[])
+      .catch(this.handleError);
+  }
+
+  addFloor() {
+    let headers = new Headers({
+      'eSimsBuilding': BuildingService.buildingId
+    });
+
+    return this.http
+      .post(this.controllerUrl, null, { headers: headers })
+      .toPromise()
+      .then(r => r.json() as Floor)
       .catch(this.handleError);
   }
 

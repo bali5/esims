@@ -1,10 +1,17 @@
-﻿export class Room {
-  public id: number;
-  public name: string;
+﻿import { RoomTemplate } from './room.template';
 
-  public isWorkplace: boolean;
-  public count: number;
-  public maxCount: number;
+export class Room extends RoomTemplate {
+  public roomTemplateId: number;
+
+  public left: number;
+  public top: number;
+  public rotation: number;
+
+  public workplaceCount: number;
+
+  public bathroomCount: number;
+
+  public smokeCount: number;
 
 
 }

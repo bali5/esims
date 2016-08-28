@@ -1,55 +1,96 @@
 ﻿import 'reflect-metadata';
 
-import { Input, Output, EventEmitter, Directive, Component, ComponentMetadata, provide, forwardRef } from '@angular/core';
-import { ContentChildren, QueryList, AfterContentInit } from '@angular/core';
+import { ElementRef, Input, Output, EventEmitter, Directive, Component, ComponentMetadata, provide, forwardRef, OnChanges, SimpleChange, ViewChildren } from '@angular/core';
+import { ContentChildren, QueryList, AfterViewInit } from '@angular/core';
+import { CanvasMouseEvent } from './canvas.mouse.event'
 
 //import * as _ from 'lodash';
 
 @CanvasComponent({
   selector: 'esc-element'
 })
-export abstract class CanvasElement implements AfterContentInit {
-  @ContentChildren(CanvasElement) items: QueryList<CanvasElement>;
+export abstract class CanvasElement implements OnChanges, AfterViewInit {
+  @ContentChildren(CanvasElement) contentItems: QueryList<CanvasElement>;
+  @ViewChildren(CanvasElement) viewItems: QueryList<CanvasElement>;
   public cachedItems: CanvasElement[];
 
-  @Input() left: number;
-  @Input() top: number;
-  @Input() width: number;
-  @Input() height: number;
+  @Input() left: number = 0;
+  @Input() top: number = 0;
+  @Input() width: number = 0;
+  @Input() height: number = 0;
 
   @Input() foreground: string | CanvasGradient | CanvasPattern = '#000000';
   @Input() background: string | CanvasGradient | CanvasPattern = 'transparent';
 
   @Input() isAnimated: boolean = false;
 
+  @Input() isHitTestVisible: boolean = true;
+  @Input() isVisible: boolean = true;
+
   public isChanged: boolean = true;
 
-  @Output() canvasclick = new EventEmitter<MouseEvent>();
-  @Output() canvasdblclick = new EventEmitter<MouseEvent>();
-  @Output() canvasdrag = new EventEmitter<MouseEvent>();
-  @Output() canvasdragend = new EventEmitter<MouseEvent>();
-  @Output() canvasdragenter = new EventEmitter<MouseEvent>();
-  @Output() canvasdragleave = new EventEmitter<MouseEvent>();
-  @Output() canvasdragover = new EventEmitter<MouseEvent>();
-  @Output() canvasdragstart = new EventEmitter<MouseEvent>();
-  @Output() canvasdrop = new EventEmitter<MouseEvent>();
-  @Output() canvasmousedown = new EventEmitter<MouseEvent>();
-  @Output() canvasmousemove = new EventEmitter<MouseEvent>();
-  @Output() canvasmouseout = new EventEmitter<MouseEvent>();
-  @Output() canvasmouseover = new EventEmitter<MouseEvent>();
-  @Output() canvasmouseup = new EventEmitter<MouseEvent>();
-  @Output() canvasscroll = new EventEmitter<MouseEvent>();
-  @Output() canvaswheel = new EventEmitter<MouseEvent>();
+  @Output() canvasclick = new EventEmitter<CanvasMouseEvent>();
+  @Output() canvasdblclick = new EventEmitter<CanvasMouseEvent>();
+  @Output() canvasdrag = new EventEmitter<CanvasMouseEvent>();
+  @Output() canvasdragend = new EventEmitter<CanvasMouseEvent>();
+  @Output() canvasdragenter = new EventEmitter<CanvasMouseEvent>();
+  @Output() canvasdragleave = new EventEmitter<CanvasMouseEvent>();
+  @Output() canvasdragover = new EventEmitter<CanvasMouseEvent>();
+  @Output() canvasdragstart = new EventEmitter<CanvasMouseEvent>();
+  @Output() canvasdrop = new EventEmitter<CanvasMouseEvent>();
+  @Output() canvasmousedown = new EventEmitter<CanvasMouseEvent>();
+  @Output() canvasmousemove = new EventEmitter<CanvasMouseEvent>();
+  @Output() canvasmouseout = new EventEmitter<CanvasMouseEvent>();
+  @Output() canvasmouseover = new EventEmitter<CanvasMouseEvent>();
+  @Output() canvasmouseup = new EventEmitter<CanvasMouseEvent>();
+  @Output() canvasscroll = new EventEmitter<CanvasMouseEvent>();
+  @Output() canvaswheel = new EventEmitter<CanvasMouseEvent>();
 
-  ngAfterContentInit() {
-    this.cachedItems = this.items.toArray();
-    this.items.changes.subscribe(() => {
-      this.cachedItems = this.items.toArray();
+  constructor(private element: ElementRef) {
+  }
+
+  ngAfterViewInit() {
+    this.viewItems.changes.subscribe(() => {
+      this.updateCachedItems();
       this.isChanged = true;
     });
+    this.contentItems.changes.subscribe(() => {
+      this.updateCachedItems();
+      this.isChanged = true;
+    });
+    this.updateCachedItems();
+  }
+
+  ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
+    for (let propName in changes) {
+      let chng = changes[propName];
+      this.onPropertyChange(propName, chng.currentValue, chng.previousValue);
+    }
+  }
+
+  onPropertyChange(propertyName: string, newValue: any, oldValue: any) {
+  }
+
+  updateCachedItems() {
+    let array: CanvasElement[] = [];
+    this.contentItems.forEach((item) => {
+      if (item != this) {
+        array.push(item);
+      }
+    });
+    this.viewItems.forEach((item) => {
+      if (item != this) {
+        array.push(item);
+      }
+    });
+    this.cachedItems = array;
   }
 
   public draw(context: CanvasRenderingContext2D): void {
+    if (!this.isVisible) {
+      return;
+    }
+
     context.save();
 
     this.onInitDraw(context);
@@ -57,7 +98,6 @@ export abstract class CanvasElement implements AfterContentInit {
     this.onDraw(context);
 
     this.cachedItems.forEach((item, index, array) => {
-      if (item == this) return;
       item.draw(context);
     });
 
@@ -71,7 +111,6 @@ export abstract class CanvasElement implements AfterContentInit {
       this.onAnimate(elapsedTime);
 
       this.cachedItems.forEach((item, index, array) => {
-        if (item == this) return;
         item.animate(elapsedTime);
       });
     }
@@ -80,16 +119,17 @@ export abstract class CanvasElement implements AfterContentInit {
   onInitDraw(context: CanvasRenderingContext2D): void {
     context.translate(this.left, this.top);
     context.rect(0, 0, this.width, this.height);
-    context.clip();
+    //Memory hog in chrome
+    //context.clip();
 
     context.fillStyle = this.background;
     context.strokeStyle = this.foreground;
   }
 
   onClear(context: CanvasRenderingContext2D): void {
-    context.clearRect(0, 0, this.width, this.height);
-    context.fillStyle = this.background;
-    context.fill();
+    //context.clearRect(0, 0, this.width, this.height);
+    //context.fillStyle = this.background;
+    //context.fill();
   }
 
   abstract onDraw(context: CanvasRenderingContext2D): void;
@@ -97,58 +137,89 @@ export abstract class CanvasElement implements AfterContentInit {
   abstract onAnimate(elapsedTime: number): void;
 
   contains(x: number, y: number): boolean {
+    if (!this.isHitTestVisible) return false;
+
     let xdiff = x - this.left;
     let ydiff = y - this.top;
-    return xdiff > 0 && ydiff > 0 && xdiff < this.width && ydiff < this.height;
+    return xdiff >= 0 && ydiff >= 0 && xdiff < this.width && ydiff < this.height;
   }
 
-  raiseclick(event: MouseEvent) {
+  raiseclick(event: CanvasMouseEvent) {
     this.canvasclick.emit(event);
   }
-  raisedblclick(event: MouseEvent) {
+  raisedblclick(event: CanvasMouseEvent) {
     this.canvasdblclick.emit(event);
   }
-  raisedrag(event: MouseEvent) {
+  raisedrag(event: CanvasMouseEvent) {
     this.canvasdrag.emit(event);
   }
-  raisedragend(event: MouseEvent) {
+  raisedragend(event: CanvasMouseEvent) {
     this.canvasdragend.emit(event);
   }
-  raisedragenter(event: MouseEvent) {
+  raisedragenter(event: CanvasMouseEvent) {
     this.canvasdragenter.emit(event);
   }
-  raisedragleave(event: MouseEvent) {
+  raisedragleave(event: CanvasMouseEvent) {
     this.canvasdragleave.emit(event);
   }
-  raisedragover(event: MouseEvent) {
+  raisedragover(event: CanvasMouseEvent) {
     this.canvasdragover.emit(event);
   }
-  raisedragstart(event: MouseEvent) {
+  raisedragstart(event: CanvasMouseEvent) {
     this.canvasdragstart.emit(event);
   }
-  raisedrop(event: MouseEvent) {
+  raisedrop(event: CanvasMouseEvent) {
     this.canvasdrop.emit(event);
   }
-  raisemousedown(event: MouseEvent) {
+  raisemousedown(event: CanvasMouseEvent) {
     this.canvasmousedown.emit(event);
   }
-  raisemousemove(event: MouseEvent) {
+  raisemousemove(event: CanvasMouseEvent) {
     this.canvasmousemove.emit(event);
   }
-  raisemouseout(event: MouseEvent) {
+  raisemouseout(event: CanvasMouseEvent) {
     this.canvasmouseout.emit(event);
   }
-  raisemouseover(event: MouseEvent) {
+  raisemouseover(event: CanvasMouseEvent) {
     this.canvasmouseover.emit(event);
   }
-  raisemouseup(event: MouseEvent) {
+  raisemouseup(event: CanvasMouseEvent) {
     this.canvasmouseup.emit(event);
   }
-  raisescroll(event: MouseEvent) {
+  raisescroll(event: CanvasMouseEvent) {
     this.canvasscroll.emit(event);
   }
-  raisewheel(event: MouseEvent) {
+  raisewheel(event: CanvasMouseEvent) {
     this.canvaswheel.emit(event);
+  }
+
+  getCanvasPosition(): { x: number, y: number } {
+    var parents = this.getParents();
+
+    var result = { x: 0, y: 0 };
+
+    for (let parent of parents) {
+      result.x += parent.left;
+      result.y += parent.top;
+    }
+
+    return result;
+  }
+
+  getParent(): CanvasElement {
+    let element = <HTMLElement>this.element.nativeElement;
+    return null;
+  }
+
+  getParents(): CanvasElement[] {
+    let parent = this.getParent();
+    if (parent) {
+      let parents = parent.getParents();
+      parents.push(parent);
+      return parents;
+    } else {
+      return [];
+    }
   }
 
 }
@@ -159,10 +230,10 @@ export function CanvasComponent(annotation?: any) {
       annotation = {};
     }
 
-    if (!Object.hasOwnProperty('template')) {
+    if (!annotation.hasOwnProperty('template') && !annotation.hasOwnProperty('templateUrl')) {
       annotation.template = '<ng-content></ng-content>';
     }
-    if (!Object.hasOwnProperty('providers')) {
+    if (!annotation.hasOwnProperty('providers')) {
       annotation.providers = [];
     }
     annotation.providers.push(provide(CanvasElement, { useExisting: forwardRef(() => target) }));

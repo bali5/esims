@@ -1,0 +1,20 @@
+﻿<div class="card-container">
+  <md-card *ngFor="let room of roomTemplates">
+    <md-icon md-card-image>{{room.icon || 'crop_din'}}</md-icon>
+    <md-card-title>{{room.name}}</md-card-title>
+    <md-card-content>
+      <div class="details">
+        <div title="Width"><md-icon>swap_horiz</md-icon><span>{{room.width | round: 0}}</span></div>
+        <div title="Height"><md-icon>swap_vert</md-icon><span>{{room.height | round: 0}}</span></div>
+        <div *ngIf="room.workplaceMaxCount" title="Workplace count"><md-icon>computer</md-icon><span>{{room.workplaceMaxCount | round: 0}}</span></div>
+        <div *ngIf="room.bathroomMaxCount" title="Bathroom count"><md-icon>wc</md-icon><span>{{room.bathroomMaxCount | round: 0}}</span></div>
+        <div *ngIf="room.smokeMaxCount" title="Smokeing place count"><md-icon>smoking_rooms</md-icon><span>{{room.smokeMaxCount | round: 0}}</span></div>
+      </div>
+    </md-card-content>
+    <md-card-actions align="end">
+      <button md-button (click)="build(room)">
+        <div class="value" title="Price"><span>Build</span><md-icon>directions_car</md-icon><span>{{room.price | round}}</span></div>
+      </button>
+    </md-card-actions>
+  </md-card>
+</div>

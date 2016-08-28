@@ -11,6 +11,7 @@ export class PersonService {
   constructor(private http: Http) { }
 
   private controllerUrl = 'api/person';
+  public static buildingId: number;
 
   private handleError(error: any) {
     console.error('An error occurred', error);
@@ -18,8 +19,13 @@ export class PersonService {
   }
 
   getAvailablePersons() {
+    let headers = new Headers({
+      'Content-Type': 'application/json',
+      'eSimsBuilding': PersonService.buildingId
+    });
+
     return this.http
-      .get(this.controllerUrl + '?state=available')
+      .get(this.controllerUrl + '?state=available', { headers: headers })
       .toPromise()
       .then(r => r.json() as Person[])
       .catch(this.handleError);
@@ -27,7 +33,8 @@ export class PersonService {
 
   hirePerson(id) {
     let headers = new Headers({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'eSimsBuilding': PersonService.buildingId
     });
 
     return this.http

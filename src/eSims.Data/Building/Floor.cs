@@ -8,6 +8,11 @@ namespace eSims.Data.Building
 {
   public class Floor
   {
+    public Floor()
+    {
+      Rooms = new List<Room>();
+    }
+
     [Key]
     public int Id { get; set; }
 
