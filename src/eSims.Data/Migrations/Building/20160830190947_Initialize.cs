@@ -118,6 +118,7 @@ namespace eSims.Data.Migrations.Building
                     FloorId = table.Column<int>(nullable: false),
                     Height = table.Column<int>(nullable: false),
                     Icon = table.Column<string>(nullable: true),
+                    IsSystemOnly = table.Column<bool>(nullable: false),
                     KitchenCount = table.Column<int>(nullable: false),
                     KitchenMaxCount = table.Column<int>(nullable: false),
                     Left = table.Column<int>(nullable: false),

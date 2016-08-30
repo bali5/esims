@@ -8,10 +8,8 @@ export class Room extends RoomTemplate {
   public rotation: number;
 
   public workplaceCount: number;
-
   public bathroomCount: number;
-
   public smokeCount: number;
-
+  public kitchenCount: number;
 
 }

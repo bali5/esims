@@ -27,6 +27,21 @@ namespace eSims.Data.Context
       Rooms.AddRange(new[] {
         new RoomTemplate()
         {
+          Name = "Elevator",
+          Width = 4,
+          Height = 4,
+          Icon = "vertical_align_center",
+          IsSystemOnly = true
+        },
+        new RoomTemplate()
+        {
+          Name = "Floor",
+          Width = 1,
+          Height = 1,
+          Icon = "open_with"
+        },
+        new RoomTemplate()
+        {
           Name = "Developer room, small",
           Width = 4,
           Height = 4,
@@ -102,7 +117,7 @@ namespace eSims.Data.Context
           Name = "Smoking room, medium",
           Width = 2,
           Height = 4,
-          BathroomMaxCount = 7,
+          SmokeMaxCount = 7,
           Icon = "smoking_rooms"
         },
       });

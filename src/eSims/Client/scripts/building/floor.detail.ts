@@ -29,10 +29,12 @@ export class FloorDetail implements AfterViewInit {
   ngAfterViewInit() {
     setTimeout(() => this.onResize());
 
-    this.floorCanvas.canvasclick.subscribe(() => {
+    this.floorCanvas.canvasclick.subscribe((e) => {
       if (this.currentAction == 'build') {
         this.roomService.addRoom(this.floor.id, this.currentActionParameter.id, this.floorCanvas.selectLeft, this.floorCanvas.selectTop, this.floorCanvas.rotate).then((t) => this.floor.rooms.push(t));
-        this.cancel();
+        if (!e.event.ctrlKey) {
+          this.cancel();
+        }
       }
     });
   }

@@ -19,10 +19,21 @@ namespace eSims.Data.Repository
 
     public int AddFloor()
     {
-      var wEntry = Context.Floors.Add(new Floor()
+      var wFloor = new Floor()
       {
         Level = Context.Floors.Count()
+      };
+      wFloor.Rooms.Add(new Room()
+      {
+        Left = 6,
+        Top = 6,
+        Width = 4,
+        Height = 4,
+        Name = "Elevator",
+        FloorId = 1
       });
+
+      var wEntry = Context.Floors.Add(wFloor);
 
       Context.SaveChanges();
 

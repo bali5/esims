@@ -22,7 +22,7 @@ namespace eSims.Data.Repository
 
     public RoomTemplate[] GetRoomTemplates()
     {
-      return Context.Rooms.ToArray();
+      return Context.Rooms.Where(w => !w.IsSystemOnly).ToArray();
     }
 
   }

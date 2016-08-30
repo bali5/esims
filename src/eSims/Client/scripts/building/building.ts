@@ -9,6 +9,7 @@ import { Floor } from './floor';
 import { FloorThumb } from './floor.thumb';
 import { FloorDetail } from './floor.detail';
 import { FloorCanvasElement } from './floor.canvas.element';
+import { BackgroundCanvasElement } from './background';
 import { RoomDetail } from './room.detail';
 import { RoomTemplate } from './room.template';
 import { RoomTemplateList } from './room.template.list';
@@ -28,7 +29,8 @@ import material from './../common/material';
     FloorDetail,
     FloorCanvasElement,
     RoomDetail,
-    RoomTemplateList
+    RoomTemplateList,
+    BackgroundCanvasElement
   ]
 }))
 export class Building implements OnInit {

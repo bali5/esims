@@ -167,7 +167,7 @@ gulp.task('index', ['cleanIndex'], function () {
 // Rerun the task when a file changes
 gulp.task('watch', function () {
   gulp.watch(scriptsSourcePath, ['scripts']);
-  gulp.watch(imagesSourcePaths, ['images']);
+  gulp.watch(imagesSourcePath, ['images']);
   gulp.watch(stylesSourcePath, ['styles']);
   gulp.watch(viewsSourcePaths, ['views']);
   gulp.watch(indexSourcePaths, ['index']);

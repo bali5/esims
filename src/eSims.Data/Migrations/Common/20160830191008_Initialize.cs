@@ -75,6 +75,7 @@ namespace eSims.Data.Migrations.Common
                     Discriminator = table.Column<string>(nullable: false),
                     Height = table.Column<int>(nullable: false),
                     Icon = table.Column<string>(nullable: true),
+                    IsSystemOnly = table.Column<bool>(nullable: false),
                     KitchenMaxCount = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Price = table.Column<double>(nullable: false),

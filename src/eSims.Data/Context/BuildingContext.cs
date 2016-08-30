@@ -36,7 +36,19 @@ namespace eSims.Data.Context
         Value = 20
       });
 
-      Floors.Add(new Floor() { Level = 0 });
+      var wFloor = new Floor() { Level = 0 };
+
+      wFloor.Rooms.Add(new Room()
+      {
+        Left = 6,
+        Top = 6,
+        Width = 4,
+        Height = 4,
+        Name = "Elevator",
+        FloorId = 1
+      });
+
+      Floors.Add(wFloor);
 
       Persons.Add(PersonHelper.GetRandomPerson());
       Persons.Add(PersonHelper.GetRandomPerson());

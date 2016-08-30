@@ -8,7 +8,7 @@ using eSims.Data.Context;
 namespace eSims.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20160828181306_Initialize")]
+    [Migration("20160830190927_Initialize")]
     partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

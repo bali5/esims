@@ -37,5 +37,7 @@ namespace eSims.Data.Building
     public List<RoomExtension> RoomExtensions { get; set; }
 
     public List<WallExtension> WallExtensions { get; set; }
+
+    public bool IsSystemOnly { get; set; }
   }
 }

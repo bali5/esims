@@ -24,6 +24,8 @@ export class RoomTemplate {
 
   public smokeMaxCount: number;
 
+  public kitchenMaxCount: number;
+
   //Extensions
 
   public roomExtensions: RoomExtension[];

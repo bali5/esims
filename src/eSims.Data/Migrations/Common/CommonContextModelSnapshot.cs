@@ -61,6 +61,8 @@ namespace eSims.Data.Migrations.Common
 
                     b.Property<string>("Icon");
 
+                    b.Property<bool>("IsSystemOnly");
+
                     b.Property<int>("KitchenMaxCount");
 
                     b.Property<string>("Name");

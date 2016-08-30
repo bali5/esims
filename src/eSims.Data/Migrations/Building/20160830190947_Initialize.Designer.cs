@@ -8,7 +8,7 @@ using eSims.Data.Context;
 namespace eSims.Data.Migrations.Building
 {
     [DbContext(typeof(BuildingContext))]
-    [Migration("20160828181327_Initialize")]
+    [Migration("20160830190947_Initialize")]
     partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,6 +56,8 @@ namespace eSims.Data.Migrations.Building
                     b.Property<int>("Height");
 
                     b.Property<string>("Icon");
+
+                    b.Property<bool>("IsSystemOnly");
 
                     b.Property<int>("KitchenCount");
 
