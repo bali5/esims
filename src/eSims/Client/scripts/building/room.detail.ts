@@ -27,6 +27,8 @@ export class RoomDetail extends CanvasElement {
       url += 'smoke_' + room.width + '_' + room.height;
     } else if (room.workplaceMaxCount) {
       url += 'office_' + room.width + '_' + room.height;
+    } else if (room.kitchenMaxCount) {
+      url += 'kitchen_' + room.width + '_' + room.height;
     }
     url += '.svg';
 
