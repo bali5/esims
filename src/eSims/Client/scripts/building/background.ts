@@ -14,10 +14,14 @@ export class BackgroundCanvasElement extends CanvasElement {
   onDraw(context: CanvasRenderingContext2D): void {
     context.save();
 
-    context.strokeStyle = 'purple';
+    context.globalAlpha = 0.25;
+
+    context.beginPath();
+    context.strokeStyle = this.foreground;
     context.lineWidth = 3;
 
-    for (let i = 0; i < this.height; i += 35) {
+    let limit = this.height + 35;
+    for (let i = 0; i < limit; i += 35) {
       this.drawLine(context, i);
     }
     context.stroke();
@@ -31,8 +35,9 @@ export class BackgroundCanvasElement extends CanvasElement {
     // the canvas.
     context.moveTo(0, yAxis);
 
+    let limit = this.width + 10;
     // Loop to draw segments
-    for (let x = 0; x <= this.width; x += 10) {
+    for (let x = 0; x <= limit; x += 10) {
       //y = Math.random();
       context.lineTo(x, unit + yAxis);
       unit *= -1;

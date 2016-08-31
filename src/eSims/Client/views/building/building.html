@@ -35,7 +35,7 @@
     <div class="fill-header">
       <div class="floors">
         <div class="viewbox" [style.height]="(floors.length * 125) + 'px'">
-          <div *ngFor="let floor of floors; let i = index" class="floor" style="position: absolute" [style.background-color]="floorColors[floor.level]" [style.top]="(250 * i) + 'px'" [style.z-index]="floors.length - i" (click)="selectedFloor = floor">
+          <div *ngFor="let floor of floors; let i = index" class="floor" style="position: absolute" [style.top]="(250 * i) + 'px'" [style.z-index]="floors.length - i" (click)="selectedFloor = floor">
             <es-floor-thumb [floor]="floor"></es-floor-thumb>
           </div>
         </div>

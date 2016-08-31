@@ -3,6 +3,8 @@ import { Action } from './action';
 
 import material from './../common/material';
 
+import { BuildingConfig } from './building.config'
+
 import { Floor } from './floor';
 import { FloorCanvasElement } from './floor.canvas.element';
 import { RoomTemplate } from './room.template';
@@ -14,7 +16,7 @@ import { RoomService } from './room.service';
   templateUrl: 'views/building/floor-detail.html'
 }))
 export class FloorDetail implements AfterViewInit {
-  constructor(private roomService: RoomService) { }
+  constructor(private roomService: RoomService, private buildingConfig: BuildingConfig) { }
 
   @Input() floor: Floor;
 

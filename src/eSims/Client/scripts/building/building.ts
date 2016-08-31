@@ -2,6 +2,7 @@
 
 import { ActivatedRoute } from '@angular/router';
 
+import { BuildingConfig } from './building.config'
 import { BuildingService } from './building.service';
 import { RoomService } from './room.service';
 import { PersonService } from './../person/person.service';
@@ -22,7 +23,7 @@ import material from './../common/material';
 @Component(material({
   selector: 'es-building',
   templateUrl: 'views/building/building.html',
-  providers: [BuildingService, RoomService, PersonService],
+  providers: [BuildingService, RoomService, PersonService, BuildingConfig],
   directives: [
     HumanResources,
     FloorThumb,
@@ -34,7 +35,7 @@ import material from './../common/material';
   ]
 }))
 export class Building implements OnInit {
-  constructor(private route: ActivatedRoute, private buildingService: BuildingService, private roomService: RoomService, private personService: PersonService) { }
+  constructor(private route: ActivatedRoute, private buildingService: BuildingService, private roomService: RoomService, private personService: PersonService, private buildingConfig: BuildingConfig) { }
 
   @ViewChild('floorDetail') floorDetail: FloorDetail;
 
@@ -52,30 +53,6 @@ export class Building implements OnInit {
   public floors: Floor[] = [];
 
   public selectedFloor: Floor;
-
-  public floorColors: string[] = [
-    '#FFFF00',
-    '#FFBF00',
-    '#FF8000',
-    '#FF4000',
-    '#FF0000',
-    '#BF4000',
-    '#808000',
-    '#40BF00',
-    '#00FF00',
-    '#00BF40',
-    '#008080',
-    '#0040BF',
-    '#0000FF',
-    '#4000FF',
-    '#8000FF',
-    '#BF00FF',
-    '#FF00FF',
-    '#BF40FF',
-    '#8080FF',
-    '#40BFFF',
-    '#00FFFF',
-  ];
 
   ngOnInit() {
     this.route.params.subscribe(params => {
