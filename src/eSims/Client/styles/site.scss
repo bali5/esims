@@ -7,6 +7,10 @@
   cursor: default;
 }
 
+.width-100 {
+  width: 100%;
+}
+
 .width-fill {
   overflow: hidden;
   position: absolute;
@@ -313,6 +317,7 @@ es-floor-detail {
 
   .floor {
     left: 48px;
+
     > div {
       position: relative;
     }
@@ -338,4 +343,42 @@ es-floor-detail {
   position: absolute;
   width: 200px;
   height: 100px;
+}
+
+.dialog {
+  @extend .fill;
+  background: rgba(189,189,189,0.6);
+
+  > md-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 300px;
+    max-width: 95%;
+    max-height: 95%;
+    margin: 0;
+
+    md-card-title > * {
+      vertical-align: middle;
+    }
+  }
+
+  &.full {
+    > md-card {
+      width: 95%;
+      height: 95%;
+
+      md-card-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+
+        > * {
+          @extend .fill;
+        }
+      }
+    }
+  }
 }

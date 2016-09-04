@@ -1,0 +1,16 @@
+﻿<div [hidden]="!provider.current" class="dialog" [class.full]="provider.current?.isFullScreen" (click)="cancel()">
+  <md-card (click)="$event.stopPropagation()">
+    <md-card-title class="width-100">
+      <div #header></div>
+      <button *ngIf="provider.current?.canCancel" style="float: right" md-icon-button (click)="cancel()">
+        <md-icon>close</md-icon>
+      </button>
+    </md-card-title>
+    <md-card-content><div #content></div></md-card-content>
+    <md-card-actions align="end">
+      <button *ngFor="let action of provider.current?.actions" md-button (click)="provider.resolve(action)">
+        <div><span>{{action}}</span></div>
+      </button>
+    </md-card-actions>
+  </md-card>
+</div>

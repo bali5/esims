@@ -3,6 +3,12 @@ import { CanvasComponent, CanvasElement } from './../canvas/canvas.element'
 import { CanvasBorder } from './../canvas/canvas.border'
 import { CanvasMouseEvent } from './../canvas/canvas.mouse.event'
 
+import { BuildingConfig } from './building.config'
+
+import { Floor } from './floor';
+
+import { Geometry } from './../common/geometry'
+
 @CanvasComponent({
   selector: 'es-floor-canvas',
   templateUrl: 'views/building/floor-canvas-element.html',
@@ -12,7 +18,9 @@ export class FloorCanvasElement extends CanvasElement {
   public selectTop: number = 0;
   public selectWidth: number = 0;
   public selectHeight: number = 0;
-  private cellSize: number = 0;
+  private selectColor: string;
+  @Input() cellSize: number = 0;
+  @Input() floor: Floor;
 
   private _rotate: number = 0;
   get rotate(): number {
@@ -30,9 +38,11 @@ export class FloorCanvasElement extends CanvasElement {
 
   @ViewChild('select') select: CanvasBorder;
 
-  constructor(element: ElementRef) {
+
+  constructor(element: ElementRef, private buildingConfig: BuildingConfig) {
     super(element);
     this.isAnimated = true;
+    this.selectColor = buildingConfig.activeColor;
   }
 
   ngAfterViewInit() {
@@ -45,21 +55,33 @@ export class FloorCanvasElement extends CanvasElement {
   private mouseMoveEvent: CanvasMouseEvent;
 
   onDraw(context: CanvasRenderingContext2D): void {
-    let cellSize = this.cellSize = this.width / 16;
+    let cellSize = this.cellSize;
     let stroke = Math.max(1, Math.floor(cellSize * 0.8 * 0.05));
     let tokenSize = cellSize * 0.8 - stroke;
     let margin = (cellSize - tokenSize) / 2;
     tokenSize = Math.round(tokenSize);
 
     if (this.selectWidth && this.selectHeight) {
-
-      context.strokeStyle = 'purple';
       context.lineWidth = stroke;
 
-      for (let x = 0; x < 16; x++) {
-        for (let y = 0; y < 16; y++) {
-          context.strokeRect(Math.floor(x * cellSize + margin), Math.floor(y * cellSize + margin), tokenSize, tokenSize);
+      context.strokeStyle = this.buildingConfig.validColor;
+
+      let invalid = [];
+
+      for (let x = 0; x < this.floor.width; x++) {
+        for (let y = 0; y < this.floor.height; y++) {
+          if (!this.floor.rooms.find((f) => Geometry.contains(f, x, y))) {
+            context.strokeRect(Math.floor(x * this.cellSize + margin), Math.floor(y * this.cellSize + margin), tokenSize, tokenSize);
+          } else {
+            invalid.push({ x: x, y: y });
+          }
         }
+      }
+
+      context.strokeStyle = this.buildingConfig.invalidColor;
+
+      for (let point of invalid) {
+        context.strokeRect(Math.floor(point.x * this.cellSize + margin), Math.floor(point.y * this.cellSize + margin), tokenSize, tokenSize);
       }
 
       if (this.mouseMoveEvent) {
@@ -72,23 +94,31 @@ export class FloorCanvasElement extends CanvasElement {
         if (ys < 0) {
           ys = 0;
         }
-        if (xs > 16 - this.selectWidth) {
-          xs = 16 - this.selectWidth;
+        if (xs > this.buildingConfig.maxFloorSize - this.selectWidth) {
+          xs = this.buildingConfig.maxFloorSize - this.selectWidth;
         }
-        if (ys >= 16 - this.selectHeight) {
-          ys = 16 - this.selectHeight;
+        if (ys >= this.buildingConfig.maxFloorSize - this.selectHeight) {
+          ys = this.buildingConfig.maxFloorSize - this.selectHeight;
         }
 
         this.selectLeft = xs;
         this.selectTop = ys;
 
-        context.strokeStyle = 'green';
+        context.strokeStyle = this.buildingConfig.activeColor;
+
+        let isValid = true;
 
         for (let x = 0; x < this.selectWidth; x++) {
           for (let y = 0; y < this.selectHeight; y++) {
-            context.strokeRect(Math.floor((xs + x) * cellSize + margin), Math.floor((ys + y) * cellSize + margin), tokenSize, tokenSize);
+            if (!invalid.find((f) => f.x == xs + x && f.y == ys + y)) {
+              context.strokeRect(Math.floor((xs + x) * cellSize + margin), Math.floor((ys + y) * cellSize + margin), tokenSize, tokenSize);
+            } else {
+              isValid = false;
+            }
           }
         }
+
+        this.selectColor = isValid ? this.buildingConfig.activeColor : this.buildingConfig.invalidColor;
       }
     }
 

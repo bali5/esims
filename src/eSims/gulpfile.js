@@ -21,6 +21,7 @@ var libsSourcePaths = [
   libsSourcePath + 'rxjs**/**/*.js',
   libsSourcePath + 'material-design-icons**/iconfont/*',
   libsSourcePath + 'lodash**/lodash.js',
+  libsSourcePath + 'ng2-table**/**/*.js',
   //Override angular material 2 alpha
   rootSourcePath + 'libs/@angular**/**/*.js'
 ];

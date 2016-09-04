@@ -18,7 +18,8 @@ export class FloorThumb {
   @ViewChild('b') border: ElementRef;
   @ViewChild('floorCanvas') floorCanvas: FloorCanvasElement;
 
-  public size: number;
+  private size: number;
+  private cellSize: number;
 
   private currentAction: string;
   private currentActionParameter: any;
@@ -31,5 +32,6 @@ export class FloorThumb {
 
   onResize() {
     this.size = Math.min(this.border.nativeElement.offsetWidth, this.border.nativeElement.offsetHeight);
+    this.cellSize = (this.size - 4) / this.buildingConfig.maxFloorSize;
   }
 }

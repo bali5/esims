@@ -1,0 +1,24 @@
+﻿= UI
+
+== GLOBAL
+- show funds and stats in header
+
+== ROOM
+- disable rooms if there is no space on selected floor
+- disable rooms if there is no budget for it
+- start position for building on available place
+
+== PERSON
+- person list
+- fire person
+- person to room
+
+== TEAM
+- add team
+- manage team
+- team list
+- person to team
+
+= Server
+
+- price check and accounting

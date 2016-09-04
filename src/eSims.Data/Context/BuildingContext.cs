@@ -36,7 +36,47 @@ namespace eSims.Data.Context
         Value = 20
       });
 
-      var wFloor = new Floor() { Level = 0 };
+      var wFloor = new Floor() {
+        Level = 0,
+        Left = 6,
+        Top = 6,
+        Width = 4,
+        Height = 8
+      };
+
+      wFloor.Rooms.Add(new Room()
+      {
+        Left = 0,
+        Top = 0,
+        Width = 4,
+        Height = 4,
+        Name = "Elevator",
+        FloorId = 1
+      });
+
+      for (var y = 4; y < 8; y++)
+      {
+        for (var x = 0; x < 4; x++)
+        {
+          wFloor.Rooms.Add(new Room()
+          {
+            Left = x,
+            Top = y,
+            Width = 1,
+            Height = 1,
+            Name = "Floor",
+            FloorId = 1
+          });
+        }
+      }
+
+      Floors.Add(wFloor);
+
+      wFloor = new Floor() {
+        Level = 1,
+        Width = 16,
+        Height = 16
+      };
 
       wFloor.Rooms.Add(new Room()
       {
@@ -45,7 +85,7 @@ namespace eSims.Data.Context
         Width = 4,
         Height = 4,
         Name = "Elevator",
-        FloorId = 1
+        FloorId = 2
       });
 
       Floors.Add(wFloor);

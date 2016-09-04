@@ -34,7 +34,15 @@ namespace eSims.Data.Migrations.Building
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("Height");
+
+                    b.Property<int>("Left");
+
                     b.Property<int>("Level");
+
+                    b.Property<int>("Top");
+
+                    b.Property<int>("Width");
 
                     b.HasKey("Id");
 

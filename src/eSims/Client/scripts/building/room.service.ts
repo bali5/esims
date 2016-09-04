@@ -49,4 +49,15 @@ export class RoomService {
       .catch(this.handleError);
   }
 
+  removeRoom(roomId: number) {
+    let headers = new Headers({
+      'eSimsBuilding': RoomService.buildingId
+    });
+
+    return this.http
+      .delete(this.controllerUrl + '/' + roomId, { headers: headers })
+      .toPromise()
+      .catch(this.handleError);
+  }
+
 }

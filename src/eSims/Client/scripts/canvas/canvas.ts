@@ -45,7 +45,7 @@ export class Canvas implements AfterContentInit, AfterViewInit {
   onInit() {
     this.onResize();
     requestAnimationFrame(() => this.animate());
-    setInterval(() => { console.log(this.fps); this.fps = 0; }, 1000);
+    //setInterval(() => { console.log(this.fps); this.fps = 0; }, 1000);
   }
 
   onResize() {
@@ -56,6 +56,13 @@ export class Canvas implements AfterContentInit, AfterViewInit {
   }
 
   draw() {
+    if (this.canvasElement.width != this.element.nativeElement.offsetWidth) {
+      this.canvasElement.width = this.element.nativeElement.offsetWidth;
+    }
+    if (this.canvasElement.height != this.element.nativeElement.offsetHeight) {
+      this.canvasElement.height = this.element.nativeElement.offsetHeight;
+    }
+
     if (this.context) {
       this.context.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
       this.context.save();
@@ -66,10 +73,10 @@ export class Canvas implements AfterContentInit, AfterViewInit {
     }
   }
 
-  private fps = 0;
+  //private fps = 0;
 
   animate() {
-    this.fps++;
+    //this.fps++;
     if (this.context) {
       var current = Date.now();
       var elapsed = current - this.animateLastTime;

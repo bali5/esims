@@ -1,19 +1,43 @@
 ﻿<div #b class="floor fill" (window:resize)="onResize()">
   <div [style.width.px]="size" [style.height.px]="size">
-    <div class="fill" style="border: 3px solid white;">
+    <div class="fill"
+         style="border: 2px solid;"
+         [style.border-color]="buildingConfig.floorColors[floor?.level]"
+         [style.left.px]="cellSize * floor?.left"
+         [style.top.px]="cellSize * floor?.top"
+         [style.width.px]="cellSize * floor?.width"
+         [style.height.px]="cellSize * floor?.height">
       <esc-canvas class="fill">
-        <es-background [width]="size - 6" [height]="size - 6" [isHitTestVisible]="false" [foreground]="buildingConfig.floorColors[floor?.level]"></es-background>
-        <es-room-detail *ngFor="let room of floor?.rooms" [room]="room" [left]="((size - 6) / 16 * room.left) | round: 0" [top]="((size - 6) / 16 * room.top) | round: 0" [width]="((size - 6) / 16 * ((room.rotation % 2) == 0 ? room.width : room.height)) | round: 0" [height]="((size - 6) / 16 * ((room.rotation % 2) == 0 ? room.height : room.width)) | round: 0"></es-room-detail>
-        <es-floor-canvas #floorCanvas [width]="size - 6" [height]="size - 6">
+        <es-background [width]="cellSize * floor?.width"
+                       [height]="cellSize * floor?.height"
+                       [isHitTestVisible]="false"
+                       [foreground]="buildingConfig.floorColors[floor?.level]"></es-background>
+        <es-room-detail *ngFor="let room of floor?.rooms"
+                        [room]="room"
+                        [left]="(cellSize * room.left) | round: 0"
+                        [top]="(cellSize * room.top) | round: 0"
+                        [width]="(cellSize * ((room.rotation % 2) == 0 ? room.width : room.height)) | round: 0"
+                        [height]="(cellSize * ((room.rotation % 2) == 0 ? room.height : room.width)) | round: 0"
+                        [isHitTestVisible]="currentAction != 'build'"
+                        (canvasclick)="selectRoom(room)"></es-room-detail>
+        <esc-border *ngIf="currentAction == 'room'"
+                    [strokeDash]="[10, 15]"
+                    [foreground]="buildingConfig.activeColor"
+                    [left]="(cellSize * currentActionParameter?.left) | round: 0"
+                    [top]="(cellSize * currentActionParameter?.top) | round: 0"
+                    [width]="(cellSize * ((currentActionParameter?.rotation % 2) == 0 ? currentActionParameter?.width : currentActionParameter?.height)) | round: 0"
+                    [height]="(cellSize * ((currentActionParameter?.rotation % 2) == 0 ? currentActionParameter?.height : currentActionParameter?.width)) | round: 0"></esc-border>
+        <es-floor-canvas #floorCanvas [floor]="floor" [cellSize]="cellSize" [width]="cellSize * floor?.width" [height]="cellSize * floor?.height">
         </es-floor-canvas>
-       </esc-canvas>
+      </esc-canvas>
     </div>
   </div>
 </div>
 <div class="tools">
-  <button md-icon-button *ngIf="currentAction == 'build'" (click)="cancel()"><md-icon>cancel</md-icon></button>
-  <button md-icon-button *ngIf="currentAction == 'build'" (click)="rotateLeft()"><md-icon>rotate_left</md-icon></button>
-  <button md-icon-button *ngIf="currentAction == 'build'" (click)="rotateRight()"><md-icon>rotate_right</md-icon></button>
+  <button title="Cancel build" md-icon-button *ngIf="currentAction == 'build'" (click)="cancel()"><md-icon>cancel</md-icon></button>
+  <button title="Rotate left" md-icon-button *ngIf="currentAction == 'build'" (click)="rotateLeft()"><md-icon>rotate_left</md-icon></button>
+  <button title="Rotate right" md-icon-button *ngIf="currentAction == 'build'" (click)="rotateRight()"><md-icon>rotate_right</md-icon></button>
+  <button title="Remove room" md-icon-button *ngIf="currentAction == 'room'" (click)="removeRoom()"><md-icon>delete</md-icon></button>
 </div>
 <div class="details">
 </div>

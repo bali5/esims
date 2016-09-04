@@ -21,7 +21,9 @@ namespace eSims.Data.Repository
     {
       var wFloor = new Floor()
       {
-        Level = Context.Floors.Count()
+        Level = Context.Floors.Count(),
+        Width = 16,
+        Height = 16
       };
       wFloor.Rooms.Add(new Room()
       {
@@ -258,6 +260,7 @@ namespace eSims.Data.Repository
     public void RemoveRoom(int id)
     {
       Context.Rooms.Remove(Context.Rooms.FirstOrDefault(f => f.Id == id));
+      Context.SaveChanges();
     }
   }
 }

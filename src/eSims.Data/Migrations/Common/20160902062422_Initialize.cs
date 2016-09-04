@@ -14,7 +14,11 @@ namespace eSims.Data.Migrations.Common
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Autoincrement", true),
-                    Level = table.Column<int>(nullable: false)
+                    Height = table.Column<int>(nullable: false),
+                    Left = table.Column<int>(nullable: false),
+                    Level = table.Column<int>(nullable: false),
+                    Top = table.Column<int>(nullable: false),
+                    Width = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

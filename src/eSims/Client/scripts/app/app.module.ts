@@ -12,6 +12,9 @@ import { Canvas } from './../canvas/canvas'
 import { CanvasElement } from './../canvas/canvas.element'
 import { CanvasBorder } from './../canvas/canvas.border'
 
+import { DialogTextElement } from './../common/dialog'
+import { PersonList } from './../person/person.list'
+
 @NgModule({
   imports: [BrowserModule],
   declarations: [
@@ -21,6 +24,15 @@ import { CanvasBorder } from './../canvas/canvas.border'
     CanvasBorder
   ],
   bootstrap: [AppComponent],
-  providers: [HTTP_PROVIDERS, disableDeprecatedForms, provideForms, appRouterProviders]
+  providers: [
+    HTTP_PROVIDERS,
+    disableDeprecatedForms,
+    provideForms,
+    appRouterProviders
+  ],
+  entryComponents: [
+    DialogTextElement,
+    PersonList
+  ]
 })
 export class AppModule { }

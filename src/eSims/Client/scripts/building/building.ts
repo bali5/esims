@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BuildingConfig } from './building.config'
 import { BuildingService } from './building.service';
 import { RoomService } from './room.service';
+import { PersonList } from './../person/person.list';
 import { PersonService } from './../person/person.service';
 import { Floor } from './floor';
 import { FloorThumb } from './floor.thumb';
@@ -18,12 +19,21 @@ import { Action } from './action';
 
 import { HumanResources } from './../person/hr'
 
+import { DialogElement } from './../common/dialog';
+import { DialogProvider, Dialog } from './../common/dialog.provider';
+
 import material from './../common/material';
 
 @Component(material({
   selector: 'es-building',
   templateUrl: 'views/building/building.html',
-  providers: [BuildingService, RoomService, PersonService, BuildingConfig],
+  providers: [
+    BuildingService,
+    RoomService,
+    PersonService,
+    BuildingConfig,
+    DialogProvider
+  ],
   directives: [
     HumanResources,
     FloorThumb,
@@ -31,11 +41,12 @@ import material from './../common/material';
     FloorCanvasElement,
     RoomDetail,
     RoomTemplateList,
-    BackgroundCanvasElement
+    BackgroundCanvasElement,
+    DialogElement
   ]
 }))
 export class Building implements OnInit {
-  constructor(private route: ActivatedRoute, private buildingService: BuildingService, private roomService: RoomService, private personService: PersonService, private buildingConfig: BuildingConfig) { }
+  constructor(private route: ActivatedRoute, private buildingService: BuildingService, private roomService: RoomService, private personService: PersonService, private buildingConfig: BuildingConfig, private dialogProvider: DialogProvider) { }
 
   @ViewChild('floorDetail') floorDetail: FloorDetail;
 
@@ -46,6 +57,16 @@ export class Building implements OnInit {
 
   public actions: Action[] = [
     new Action('Hire new employee', 'Hire a new employee from the HR pool', 'person_add', 'person', () => { this.currentActionTemplate = 'es-hr'; return true; }),
+    new Action('Employee list', 'Show hired employees', 'people', 'person', () => {
+      let dialog = new Dialog();
+      dialog.header = 'Employee list';
+      dialog.content = PersonList;
+      dialog.isFullScreen = true;
+      dialog.canCancel = true;
+      this.dialogProvider.show(dialog);
+      return false;
+    }),
+
     new Action('Add a new room', 'Create new work places', 'flip_to_front', 'money', () => { this.currentActionTemplate = 'es-room-template-list'; return true; }),
     new Action('Build a new level', 'Make your tower higher', 'format_indent_increase', 'money', () => { this.addFloor(); this.currentActionTemplate = null; return false; })
   ];

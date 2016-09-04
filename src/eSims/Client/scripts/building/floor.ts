@@ -6,4 +6,9 @@ export class Floor {
 
   public rooms: Room[] = [];
 
+  public left: number;
+  public top: number;
+  public width: number;
+  public height: number;
+
 }

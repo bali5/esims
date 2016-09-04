@@ -16,6 +16,8 @@ import { MD_LIST_DIRECTIVES } from '@angular2-material/list';
 import { MD_TABS_DIRECTIVES } from '@angular2-material/tabs';
 import { MdIcon, MdIconRegistry } from '@angular2-material/icon';
 
+import { NG_TABLE_DIRECTIVES } from 'ng2-table/ng2-table';
+
 import { IComponentData } from './ui';
 import ui from './ui';
 
@@ -45,6 +47,8 @@ export default function (data: IComponentData): IComponentData {
   data.directives.push(MD_LIST_DIRECTIVES);
   data.directives.push(MD_TABS_DIRECTIVES);
   data.directives.push(MdIcon);
+
+  data.directives.push(NG_TABLE_DIRECTIVES);
 
   return data;
 }

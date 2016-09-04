@@ -1,0 +1,9 @@
+﻿<div class="header">
+  <md-input *ngIf="config.filtering" placeholder="Filter"
+            [ngTableFiltering]="config.filtering"
+            (tableChanged)="onChangeTable(config)"></md-input>
+</div>
+<ng-table class="fill" style="top: 48px" [config]="config.sorting"
+          (tableChanged)="onChangeTable(config)"
+          [rows]="rows" [columns]="columns">
+</ng-table>

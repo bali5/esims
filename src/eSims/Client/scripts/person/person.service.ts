@@ -20,12 +20,23 @@ export class PersonService {
 
   getAvailablePersons() {
     let headers = new Headers({
-      'Content-Type': 'application/json',
       'eSimsBuilding': PersonService.buildingId
     });
 
     return this.http
       .get(this.controllerUrl + '?state=available', { headers: headers })
+      .toPromise()
+      .then(r => r.json() as Person[])
+      .catch(this.handleError);
+  }
+
+  getPersons() {
+    let headers = new Headers({
+      'eSimsBuilding': PersonService.buildingId
+    });
+
+    return this.http
+      .get(this.controllerUrl + '?state=hired', { headers: headers })
       .toPromise()
       .then(r => r.json() as Person[])
       .catch(this.handleError);
