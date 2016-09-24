@@ -59,8 +59,8 @@ namespace eSims
 
       app.Use((context, next) =>
       {
-        context.Response.Redirect($"http://{context.Request.Host}");
-        return Task.FromResult(true);
+        //context.Response.Redirect($"http://{context.Request.Host}");
+        return Task.FromResult(false);
       });
     }
   }

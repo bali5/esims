@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
+  },
+  "include": [
+    "scripts/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "bower_components",
+    "libs",
+    "typings",
+    "**/*.spec.ts",
+    "**/*.d.ts"
+  ],
+  "types": [
+    "core-js",
+    "hammerjs",
+    "jasmine",
+    "node",
+    "lodash"
+  ],
+  "compileOnSave": false
+}
