@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
+using System.Linq;
+using eSims.Websockets;
+using System;
 
 namespace eSims
 {
@@ -43,7 +47,7 @@ namespace eSims
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
     {
       loggerFactory.AddConsole(Configuration.GetSection("Logging"));
       loggerFactory.AddDebug();
@@ -55,12 +59,27 @@ namespace eSims
 
       app.UseApplicationInsightsExceptionTelemetry();
 
+      app.UseWebSockets();
+
+      app.Use(async (context, next) =>
+      {
+        if (context.WebSockets.IsWebSocketRequest)
+        {
+          await SimulatorSocket.Create(context, serviceProvider.GetService<IApplicationRepository>());
+        }
+        else
+        {
+          await next();
+        }
+      });
+
       app.UseMvc();
 
-      app.Use((context, next) =>
+      app.Use(async (context, next) =>
       {
-        //context.Response.Redirect($"http://{context.Request.Host}");
-        return Task.FromResult(false);
+        loggerFactory.CreateLogger("Unknown route").LogWarning(context.Request.Path);
+        context.Response.Redirect($"http://{context.Request.Host}");
+        await Task.FromResult(false);
       });
     }
   }

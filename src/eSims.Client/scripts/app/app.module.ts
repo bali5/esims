@@ -55,6 +55,8 @@ import { GameList } from './../building/game.list'
 
 import { HumanResources } from './../person/hr'
 
+import { ScrollPanel } from './../common/scroll.panel'
+
 import { DialogElement } from './../common/dialog';
 import { DialogProvider, Dialog } from './../common/dialog.provider';
 
@@ -116,7 +118,9 @@ import { routing } from './app.routing';
     RoundPipe,
     AbsPipe, 
     MaxPipe, 
-    MinPipe
+    MinPipe,
+    // Common
+    ScrollPanel
   ],
   bootstrap: [AppComponent],
   providers: [

@@ -60,6 +60,8 @@ $theme: md-dark-theme($primary, $accent, $warn);
    Global
    ------------------------------------------- */
 
+@import 'common/scroll.panel';
+
 * {
   user-select: none;
   cursor: default;
@@ -183,18 +185,17 @@ md-card {
   width: 200px;
   box-sizing: border-box;
   margin: 10px;
-  display: flex;
+  display: flex !important;
   flex-direction: column;
 
   > md-icon {
     flex-grow: 0;
-    align-self: flex-start;
     text-align: center;
     font-size: 100px !important;
+    height: 100px;
   }
 
   md-card-title {
-    align-self: flex-start;
     flex-grow: 0;
 
     .sub-title {
@@ -205,7 +206,6 @@ md-card {
 
   md-card-content {
     display: flex;
-    align-self: flex-end;
     flex-grow: 1;
 
     .details {

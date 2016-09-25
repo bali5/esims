@@ -18,7 +18,7 @@ module.exports = function (gulp, plugins, task) {
         .pipe(plugins.sourcemaps.init())
         .pipe(plugins.concat('libs.min.js'))
         //.pipe(plugins.uglify())
-        .pipe(plugins.sourcemaps.write('.', { includeContent: false, sourceRoot: sourceRoot }))
+        .pipe(plugins.sourcemaps.write('.', { includeContent: true }))
         .pipe(gulp.dest(destinationPath));
     },
     clean: function () {

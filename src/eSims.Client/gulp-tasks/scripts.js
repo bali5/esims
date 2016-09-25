@@ -14,14 +14,18 @@
 
   return {
     default: function (callback) {
-      plugins.runSequence(task + ':clean', task + ':build', task + ':bundle', callback);
+      plugins.runSequence(task + ':clean', task + ':build', task + ':bundle', task + ':map', callback);
+    },
+    map: function () {
+      return gulp.src(sourcePath)
+        .pipe(gulp.dest(destinationPath + '../source/'));
     },
     build: function () {
       return project.src(sourcePath)
         .pipe(plugins.sourcemaps.init())
         .pipe(plugins.typescript(project))
         //.pipe(plugins.uglify())
-        .pipe(plugins.sourcemaps.write('.', { includeContent: false, sourceRoot: sourceRoot }))
+        .pipe(plugins.sourcemaps.write('.', { includeContent: true }))
         .pipe(gulp.dest(buildPath));
     },
     bundle: function () {

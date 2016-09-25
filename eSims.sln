@@ -16,6 +16,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "eSims.Data", "src\eSims.Dat
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "eSims.Tools", "src\eSims.Tools\eSims.Tools.xproj", "{DC1ED95C-6C7B-4521-B872-01E2E6235AFC}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "eSims.Simulation", "src\eSims.Simulation\eSims.Simulation.xproj", "{A371CC48-F3F1-4049-8FA7-A77C60A0CEE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,10 @@ Global
 		{DC1ED95C-6C7B-4521-B872-01E2E6235AFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC1ED95C-6C7B-4521-B872-01E2E6235AFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC1ED95C-6C7B-4521-B872-01E2E6235AFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A371CC48-F3F1-4049-8FA7-A77C60A0CEE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A371CC48-F3F1-4049-8FA7-A77C60A0CEE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A371CC48-F3F1-4049-8FA7-A77C60A0CEE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A371CC48-F3F1-4049-8FA7-A77C60A0CEE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,5 +48,6 @@ Global
 		{C7B61C73-52D4-4AF5-A701-C3D2BB9A5C34} = {CDF89AFE-FCC9-4802-AF07-598D279D0622}
 		{6B799F1D-27B7-4C58-8ABA-EAAC8947429F} = {CDF89AFE-FCC9-4802-AF07-598D279D0622}
 		{DC1ED95C-6C7B-4521-B872-01E2E6235AFC} = {CDF89AFE-FCC9-4802-AF07-598D279D0622}
+		{A371CC48-F3F1-4049-8FA7-A77C60A0CEE5} = {CDF89AFE-FCC9-4802-AF07-598D279D0622}
 	EndGlobalSection
 EndGlobal

@@ -17,11 +17,13 @@
     </md-nav-list>
   </md-sidenav>
   <md-sidenav-layout fullscreen>
-    <md-sidenav #sidenav2 (close)="currentActionTemplate = null">
-      <div [ngSwitch]="currentActionTemplate">
-        <es-hr *ngSwitchCase="'es-hr'"></es-hr>
-        <es-room-template-list *ngSwitchCase="'es-room-template-list'" (selectRoom)="onBuildRoom($event); sidenav2.close();"></es-room-template-list>
-      </div>
+    <md-sidenav #sidenav2 (close)="currentActionTemplate = null" style="width: 90vw">
+      <es-scroll-panel>
+        <div [ngSwitch]="currentActionTemplate">
+          <es-hr *ngSwitchCase="'es-hr'"></es-hr>
+          <es-room-template-list *ngSwitchCase="'es-room-template-list'" (selectRoom)="onBuildRoom($event); sidenav2.close();"></es-room-template-list>
+        </div>
+      </es-scroll-panel>
     </md-sidenav>
     <md-toolbar color="primary" class="header">
       <button color="primary" md-fab (click)="sidenav.open()">
@@ -34,11 +36,14 @@
     </md-toolbar>
     <div class="fill-header">
       <div class="floors">
-        <div class="viewbox" [style.height]="(floors.length * 125) + 'px'">
-          <div *ngFor="let floor of floors; let i = index" class="floor" style="position: absolute" [style.top]="(250 * i) + 'px'" [style.z-index]="floors.length - i" (click)="selectedFloor = floor">
-            <es-floor-thumb [floor]="floor"></es-floor-thumb>
+        <es-scroll-panel>
+          <div class="viewbox" [style.height]="(floors.length * 125) + 'px'">
+            <div *ngFor="let floor of floors; let i = index" class="floor" style="position: absolute" [style.top]="(250 * i) + 'px'"
+              [style.z-index]="floors.length - i" (click)="selectedFloor = floor">
+              <es-floor-thumb [floor]="floor"></es-floor-thumb>
+            </div>
           </div>
-        </div>
+        </es-scroll-panel>
       </div>
       <es-floor-detail #floorDetail [floor]="selectedFloor"></es-floor-detail>
     </div>

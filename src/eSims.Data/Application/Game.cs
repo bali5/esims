@@ -16,10 +16,5 @@ namespace eSims.Data.Application
     public string Name { get; set; }
 
     public string DataFileName { get; set; }
-
-    public int LevelCount { get; set; }
-    public double Account { get; set; }
-    public int EmployeeCount { get; set; }
-    public double AvarageHappiness { get; set; }
   }
 }

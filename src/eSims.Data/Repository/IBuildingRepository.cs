@@ -19,6 +19,7 @@ namespace eSims.Data.Repository
     IEnumerable<Room> GetRooms();
     int AddFloor();
     Room GetRoom(int id);
+    BuildingStats GetStats();
     int AddRoom(int levelId, RoomTemplate roomTemplate, int x, int y, int rotation);
     void RemoveRoom(int id);
   }

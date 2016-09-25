@@ -42,4 +42,16 @@ export class BuildingService {
       .catch(this.handleError);
   }
 
+  getStats() {
+    let headers = new Headers({
+      'eSimsBuilding': BuildingService.buildingId
+    });
+
+    return this.http
+      .get(this.controllerUrl + '/stats', { headers: headers })
+      .toPromise()
+      .then(r => r.json() as Floor[])
+      .catch(this.handleError);
+  }
+
 }

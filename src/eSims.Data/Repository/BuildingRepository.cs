@@ -189,6 +189,13 @@ namespace eSims.Data.Repository
       return Context.Rooms.ToArray();
     }
 
+    public BuildingStats GetStats()
+    {
+      return new BuildingStats() {
+        Account = Context.AccountRows.Sum(s => s.Value)
+      };
+    }
+
     public void HirePerson(int id)
     {
       var wPerson = GetPerson(id);
@@ -262,5 +269,11 @@ namespace eSims.Data.Repository
       Context.Rooms.Remove(Context.Rooms.FirstOrDefault(f => f.Id == id));
       Context.SaveChanges();
     }
+
+    public void SaveChanges()
+    {
+      Context.SaveChanges();
+    }
+
   }
 }

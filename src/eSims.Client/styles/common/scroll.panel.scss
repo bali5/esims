@@ -1,0 +1,39 @@
+es-scroll-panel {
+  > div {
+    overflow: hidden;
+
+    > .scroll-content {
+      position: relative;
+      margin-right: 10px;
+    }
+
+    > .scroll-vertical-bar {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 10px;
+
+      background-color: rgba(255,255,255,0.2);
+
+      opacity: 0;
+      transition: opacity 0.2s;
+
+      > .scroll-vertical-thumb {
+        position: absolute;
+        left: 0;
+        right: 0;
+
+        background-color: rgba(255,255,255,1);
+      
+      }
+    }
+
+  }
+
+  &:hover,&.dragging  {
+    > div > .scroll-vertical-bar {
+      opacity: 1;
+    }
+  }
+}

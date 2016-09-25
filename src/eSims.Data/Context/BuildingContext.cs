@@ -30,6 +30,15 @@ namespace eSims.Data.Context
 
     private void BaseData()
     {
+      Stats.Add(new BuildingStats()
+      {
+        Account = 20,
+        StartTime = DateTime.UtcNow,
+        SimulationTime = new DateTime(2016, 1, 1, 8, 0, 0),
+        PlayTime = new TimeSpan(0),
+        Speed = 10
+      });
+
       AccountRows.Add(new AccountRow()
       {
         Subject = "Starting funds",
@@ -101,6 +110,8 @@ namespace eSims.Data.Context
       Persons.Add(PersonHelper.GetRandomPerson());
       Persons.Add(PersonHelper.GetRandomPerson());
     }
+
+    public DbSet<BuildingStats> Stats { get; set; }
 
     public DbSet<AccountRow> AccountRows { get; set; }
 

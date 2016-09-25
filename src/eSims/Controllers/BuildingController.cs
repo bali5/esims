@@ -22,6 +22,12 @@ namespace eSims.Controllers
       return BuildingRepository.GetFloors();
     }
 
+    [HttpGet("/stats")]
+    public BuildingStats GetStats()
+    {
+      return BuildingRepository.GetStats();
+    }
+
     // GET api/values/5
     [HttpGet("{id}")]
     public Floor Get(int id)
