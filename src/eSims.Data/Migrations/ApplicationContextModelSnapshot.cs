@@ -20,15 +20,7 @@ namespace eSims.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<double>("Account");
-
-                    b.Property<double>("AvarageHappiness");
-
                     b.Property<string>("DataFileName");
-
-                    b.Property<int>("EmployeeCount");
-
-                    b.Property<int>("LevelCount");
 
                     b.Property<string>("Name");
 

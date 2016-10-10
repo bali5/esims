@@ -1,6 +1,8 @@
 ﻿import { RoomTemplate } from './room.template';
 
 export class Room extends RoomTemplate {
+  public floorId: number;
+
   public roomTemplateId: number;
 
   public left: number;

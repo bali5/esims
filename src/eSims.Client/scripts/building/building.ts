@@ -4,9 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BuildingConfig } from './building.config'
 import { BuildingService } from './building.service';
-import { RoomService } from './room.service';
 import { PersonList } from './../person/person.list';
-import { PersonService } from './../person/person.service';
+import { Room } from './room';
 import { Floor } from './floor';
 import { FloorThumb } from './floor.thumb';
 import { FloorDetail } from './floor.detail';
@@ -22,6 +21,8 @@ import { HumanResources } from './../person/hr'
 import { DialogElement } from './../common/dialog';
 import { DialogProvider, Dialog } from './../common/dialog.provider';
 
+import * as _ from 'lodash';
+
 @Component({
   selector: 'es-building',
   templateUrl: 'views/building/building.html',
@@ -29,12 +30,14 @@ import { DialogProvider, Dialog } from './../common/dialog.provider';
   ]
 })
 export class Building implements OnInit {
-  constructor(private route: ActivatedRoute, private buildingService: BuildingService, private roomService: RoomService, private personService: PersonService, private buildingConfig: BuildingConfig, private dialogProvider: DialogProvider) { }
+  constructor(private route: ActivatedRoute, private buildingService: BuildingService, private buildingConfig: BuildingConfig, private dialogProvider: DialogProvider) { }
 
   @ViewChild('floorDetail') floorDetail: FloorDetail;
 
   public id: number;
   public name: string;
+  public stats;
+  public date: Date;
 
   public currentActionTemplate: string;
 
@@ -61,18 +64,75 @@ export class Building implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = +params['id']; // (+) converts string 'id' to a number
-      BuildingService.buildingId = this.id;
-      RoomService.buildingId = this.id;
-      PersonService.buildingId = this.id;
+      this.buildingService.setBuildingId(this.id);
+      this.buildingService.getGame().then(t => this.name = t.name);
+      this.buildingService.getStats().then(t => {
+        this.stats = t;
+        this.date = new Date(t.simulationTime);
+      });
       this.buildingService.getFloors().then(t => {
         this.floors = t;
         this.selectedFloor = this.floors[0];
       });
+      this.buildingService.floorChange.subscribe(s => this.floors.splice(0, 0, s));
+      this.buildingService.roomChange.subscribe(s => {
+        switch (s.action) {
+          case 'add':
+            let room = <Room>s.room;
+            this.getFloor(room.floorId).rooms.push(room);
+            break;
+          case 'update':
+            this.updateRoom(<Room>s.room)
+            break;
+          case 'remove':
+            this.removeRoom(<number>s.room);
+            break;
+        }
+      });
+      this.buildingService.statsChange.subscribe(t => {
+        this.stats = t;
+        this.date = new Date(t.simulationTime);
+      });
+      
     });
   }
 
+  getFloor(id: number) {
+    for (let floor of this.floors) {
+      if (floor.id == id) {
+        return floor;
+      }
+    }
+    return null;
+  }
+
+  updateRoom(room: Room) {
+    for (let floor of this.floors) {
+      if (floor.id == room.floorId) {
+        for (let orig of floor.rooms) {
+          if (orig.id == room.id) {
+            _.merge(orig, room);
+            return;
+          }
+        }
+        return;
+      }
+    }
+  }
+
+  removeRoom(id: number) {
+    for (let floor of this.floors) {
+      for (let i = 0; i < floor.rooms.length; i++) {
+        if (floor.rooms[i].id == id) {
+          floor.rooms.splice(i, 1);
+          return;
+        }
+      }
+    }
+  }
+
   addFloor() {
-    this.buildingService.addFloor().then(t => this.floors.splice(0, 0, t));
+    this.buildingService.addFloor();
   }
 
   onBuildRoom(room: RoomTemplate) {

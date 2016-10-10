@@ -27,7 +27,7 @@ export class DialogProvider {
       dialog.reject = (reason?: any) => {
         this.current = this.dialogs.length ? this.dialogs.pop() : null;
         reject(reason);
-      }
+      };
 
       if (this.current) {
         this.dialogs.push(this.current);
@@ -35,6 +35,9 @@ export class DialogProvider {
       this.current = dialog;
       this.currentChanged.emit(dialog);
     });
+
+    // Handle reject without catch
+    promise.catch(() => {});
 
     return promise;
   }

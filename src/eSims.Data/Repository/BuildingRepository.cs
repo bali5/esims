@@ -145,6 +145,11 @@ namespace eSims.Data.Repository
       Context.SaveChanges();
     }
 
+    public double GetAccount()
+    {
+      return Context.AccountRows.Sum(s => s.Value);
+    }
+
     public void FirePerson(int id)
     {
       var wPerson = GetPerson(id);
@@ -191,9 +196,7 @@ namespace eSims.Data.Repository
 
     public BuildingStats GetStats()
     {
-      return new BuildingStats() {
-        Account = Context.AccountRows.Sum(s => s.Value)
-      };
+      return Context.Stats.First();
     }
 
     public void HirePerson(int id)
@@ -264,10 +267,73 @@ namespace eSims.Data.Repository
       Context.SaveChanges();
     }
 
+    int[] mSpeeds = new int[]
+    {
+      0,
+      1,
+      2,
+      5,
+      15,
+      30,
+      60,
+      120,
+      240,
+      480,
+      960,
+      1920,
+      3840,
+      11520,
+      46080
+    };
+
+    public void SpeedPlus()
+    {
+      var wStats = Context.Stats.First();
+      var wIndex = mSpeeds.TakeWhile(s => s < wStats.Speed).Count() + 1;
+
+      if (wIndex < mSpeeds.Length)
+      {
+        wStats.Speed = mSpeeds[wIndex];
+      }
+
+      Context.SaveChanges();
+    }
+
+    public void SpeedMinus()
+    {
+      var wStats = Context.Stats.First();
+      var wIndex = mSpeeds.TakeWhile(s => s < wStats.Speed).Count() - 1;
+
+      if (wIndex >= 0)
+      {
+        wStats.Speed = mSpeeds[wIndex];
+      }
+
+      Context.SaveChanges();
+    }
+
     public void RemoveRoom(int id)
     {
       Context.Rooms.Remove(Context.Rooms.FirstOrDefault(f => f.Id == id));
       Context.SaveChanges();
+    }
+
+    public bool AddAccount(string subject, double value)
+    {
+      if (Context.AccountRows.Sum(s => s.Value) + value > 0d)
+      {
+        Context.AccountRows.Add(new AccountRow()
+        {
+          Subject = subject,
+          Value = value
+        });
+
+        Context.SaveChanges();
+
+        return true;
+      }
+
+      return false;
     }
 
     public void SaveChanges()

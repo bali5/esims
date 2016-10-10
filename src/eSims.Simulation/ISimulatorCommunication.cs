@@ -2,5 +2,6 @@
 {
   public interface ISimulatorCommunication
   {
+    void Send(object data);
   }
 }

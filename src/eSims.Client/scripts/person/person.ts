@@ -1,6 +1,4 @@
-﻿import { PersonService } from './person.service';
-
-const enum PersonState {
+﻿const enum PersonState {
   NotAvailable,
   Available,
   Hired,

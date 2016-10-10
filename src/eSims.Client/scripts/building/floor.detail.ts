@@ -2,13 +2,12 @@
 import { Action } from './action';
 
 import { BuildingConfig } from './building.config'
+import { BuildingService } from './building.service';
 
 import { Floor } from './floor';
 import { FloorCanvasElement } from './floor.canvas.element';
 import { RoomTemplate } from './room.template';
 import { Room } from './room';
-
-import { RoomService } from './room.service';
 
 import { DialogProvider } from './../common/dialog.provider';
 
@@ -17,7 +16,7 @@ import { DialogProvider } from './../common/dialog.provider';
   templateUrl: 'views/building/floor-detail.html'
 })
 export class FloorDetail implements AfterViewInit {
-  constructor(private roomService: RoomService, private buildingConfig: BuildingConfig, private dialogProvider: DialogProvider) { }
+  constructor(private service: BuildingService, private buildingConfig: BuildingConfig, private dialogProvider: DialogProvider) { }
 
   private _floor: Floor;
   get floor(): Floor {
@@ -43,7 +42,7 @@ export class FloorDetail implements AfterViewInit {
 
     this.floorCanvas.canvasclick.subscribe((e) => {
       if (this.currentAction == 'build') {
-        this.roomService.addRoom(this.floor.id, this.currentActionParameter.id, this.floorCanvas.selectLeft, this.floorCanvas.selectTop, this.floorCanvas.rotate).then((t) => this.floor.rooms.push(t));
+        this.service.addRoom(this.floor.id, this.currentActionParameter.id, this.floorCanvas.selectLeft, this.floorCanvas.selectTop, this.floorCanvas.rotate);
         if (!e.event.ctrlKey) {
           this.cancel();
         }
@@ -54,8 +53,10 @@ export class FloorDetail implements AfterViewInit {
   }
 
   onResize() {
-    this.size = Math.min(this.border.nativeElement.offsetWidth, this.border.nativeElement.offsetHeight);
-    this.cellSize = (this.size - 4) / this.buildingConfig.maxFloorSize;
+    let size = Math.min(this.border.nativeElement.offsetWidth, this.border.nativeElement.offsetHeight) - 4;
+    size = size - (size % this.buildingConfig.maxFloorSize);
+    this.size = size + 4;
+    this.cellSize = size / this.buildingConfig.maxFloorSize;
   }
 
   startBuildingRoom(room: RoomTemplate) {
@@ -88,9 +89,7 @@ export class FloorDetail implements AfterViewInit {
     this.dialogProvider.message('Remove room', 'Do you want to remove the room?', ['Yes', 'No']).then((action) => {
       if (action == 'Yes') {
         let room = this.currentActionParameter;
-        this.roomService.removeRoom(room.id).then(() => {
-          this.floor.rooms.splice(this.floor.rooms.indexOf(room), 1);
-        });
+        this.service.removeRoom(room.id);
       }
       this.cancel();
     });

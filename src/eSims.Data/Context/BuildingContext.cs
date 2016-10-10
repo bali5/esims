@@ -35,8 +35,9 @@ namespace eSims.Data.Context
         Account = 20,
         StartTime = DateTime.UtcNow,
         SimulationTime = new DateTime(2016, 1, 1, 8, 0, 0),
-        PlayTime = new TimeSpan(0),
-        Speed = 10
+        PlayTime = 0d,
+        Speed = 120,
+        Persons = 0
       });
 
       AccountRows.Add(new AccountRow()

@@ -1,6 +1,6 @@
 ﻿<esc-border #select [isHitTestVisible]="false" [isVisible]="selectWidth > 0 && selectHeight > 0" [left]="selectLeft * cellSize" [top]="selectTop * cellSize" [width]="cellSize * selectWidth" [height]="cellSize * selectHeight" [strokeDash]="[10, 15]" [foreground]="selectColor">
   <div *ngIf="selectWidth > 0 && selectHeight > 0" style="position: absolute; pointer-events: none;" [style.left.px]="(selectLeft + ((selectWidth - selectHeight) | max: 0) / 2) * cellSize" [style.top.px]="(selectTop + ((selectHeight - selectWidth) | max: 0) / 2) * cellSize" [style.color]="selectColor">
-    <md-icon [style.fontSize.px]="cellSize * (selectWidth | min: selectHeight)" [style.transform]="'rotate('+ (90 * rotate) +'deg)'">get_app</md-icon>
+    <md-icon [style.fontSize.px]="cellSize * (selectWidth | min: selectHeight)" [style.width.px]="cellSize * (selectWidth | min: selectHeight)" [style.height.px]="cellSize * (selectWidth | min: selectHeight)" [style.transform]="'rotate('+ (90 * rotate) +'deg)'">get_app</md-icon>
   </div>
 </esc-border>
 <ng-content></ng-content>

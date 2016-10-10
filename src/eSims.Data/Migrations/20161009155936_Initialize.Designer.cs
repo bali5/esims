@@ -8,7 +8,7 @@ using eSims.Data.Context;
 namespace eSims.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20160902062341_Initialize")]
+    [Migration("20161009155936_Initialize")]
     partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,15 +21,7 @@ namespace eSims.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<double>("Account");
-
-                    b.Property<double>("AvarageHappiness");
-
                     b.Property<string>("DataFileName");
-
-                    b.Property<int>("EmployeeCount");
-
-                    b.Property<int>("LevelCount");
 
                     b.Property<string>("Name");
 

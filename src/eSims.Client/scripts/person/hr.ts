@@ -1,14 +1,13 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { PersonService } from './person.service';
+import { BuildingService } from './../building/building.service';
 import { Person } from './person';
 
 @Component({
   selector: 'es-hr',
-  templateUrl: 'views/person/hr.html',
-  providers: [PersonService ]
+  templateUrl: 'views/person/hr.html'
 })
 export class HumanResources implements OnInit {
-  constructor(private service: PersonService) { }
+  constructor(private service: BuildingService) { }
 
   public availablePersons: Person[] = [
   ];

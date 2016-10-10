@@ -22,3 +22,8 @@
 = Server
 
 - price check and accounting
+
+== PROJECT
+
+- accept project
+- assign ppl to project

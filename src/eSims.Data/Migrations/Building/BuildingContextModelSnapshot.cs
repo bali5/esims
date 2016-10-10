@@ -29,6 +29,28 @@ namespace eSims.Data.Migrations.Building
                     b.ToTable("AccountRows");
                 });
 
+            modelBuilder.Entity("eSims.Data.Building.BuildingStats", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("Account");
+
+                    b.Property<int>("Persons");
+
+                    b.Property<double>("PlayTime");
+
+                    b.Property<DateTime>("SimulationTime");
+
+                    b.Property<int>("Speed");
+
+                    b.Property<DateTime>("StartTime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Stats");
+                });
+
             modelBuilder.Entity("eSims.Data.Building.Floor", b =>
                 {
                     b.Property<int>("Id")

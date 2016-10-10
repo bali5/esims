@@ -8,14 +8,18 @@ export class RoundPipe implements PipeTransform {
       dec = 2;
     }
 
-    let pow = Math.pow(10, dec)
+    let pow = Math.pow(10, dec);
 
     value = Math.round(value * pow) / pow;
 
     let strValue = value.toString();
 
     if (dec > 0) {
-      let zeroes = dec - ((value - Math.floor(value)).toString().length - 2);
+      let pointIndex = strValue.indexOf('.');
+      let zeroes = pointIndex == -1 ? dec : (dec - (strValue.length - pointIndex - 1));
+      if (pointIndex == -1) {
+        strValue += ".";
+      }
       for (let i = 0; i < zeroes; i++) {
         strValue += '0';
       }

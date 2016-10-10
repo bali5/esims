@@ -23,6 +23,24 @@ namespace eSims.Data.Migrations.Building
                 });
 
             migrationBuilder.CreateTable(
+                name: "Stats",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Autoincrement", true),
+                    Account = table.Column<double>(nullable: false),
+                    Persons = table.Column<int>(nullable: false),
+                    PlayTime = table.Column<double>(nullable: false),
+                    SimulationTime = table.Column<DateTime>(nullable: false),
+                    Speed = table.Column<int>(nullable: false),
+                    StartTime = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stats", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Floors",
                 columns: table => new
                 {
@@ -266,6 +284,9 @@ namespace eSims.Data.Migrations.Building
         {
             migrationBuilder.DropTable(
                 name: "AccountRows");
+
+            migrationBuilder.DropTable(
+                name: "Stats");
 
             migrationBuilder.DropTable(
                 name: "RoomExtension");

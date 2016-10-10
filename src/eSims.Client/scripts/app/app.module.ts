@@ -38,9 +38,7 @@ import { DialogTextElement } from './../common/dialog'
 import { BuildingConfig } from './../building/building.config'
 import { BuildingService } from './../building/building.service';
 import { Building } from './../building/building';
-import { RoomService } from './../building/room.service';
 import { PersonList } from './../person/person.list';
-import { PersonService } from './../person/person.service';
 import { Floor } from './../building/floor';
 import { FloorThumb } from './../building/floor.thumb';
 import { FloorDetail } from './../building/floor.detail';
@@ -125,8 +123,6 @@ import { routing } from './app.routing';
   bootstrap: [AppComponent],
   providers: [
     BuildingService,
-    RoomService,
-    PersonService,
     BuildingConfig,
     DialogProvider,
     MdIconRegistry

@@ -38,7 +38,8 @@ namespace eSims.Data.Context
           Name = "Floor",
           Width = 1,
           Height = 1,
-          Icon = "open_with"
+          Icon = "open_with",
+          Price = 0.02
         },
         new RoomTemplate()
         {
@@ -46,7 +47,8 @@ namespace eSims.Data.Context
           Width = 4,
           Height = 4,
           WorkplaceMaxCount = 5,
-          Icon = "computer"
+          Icon = "computer",
+          Price = 2
         },
         new RoomTemplate()
         {
@@ -54,7 +56,8 @@ namespace eSims.Data.Context
           Width = 8,
           Height = 4,
           WorkplaceMaxCount = 11,
-          Icon = "computer"
+          Icon = "computer",
+          Price = 5
         },
         new RoomTemplate()
         {
@@ -62,7 +65,8 @@ namespace eSims.Data.Context
           Width = 16,
           Height = 6,
           WorkplaceMaxCount = 30,
-          Icon = "computer"
+          Icon = "computer",
+          Price = 15
         },
         new RoomTemplate()
         {
@@ -70,7 +74,8 @@ namespace eSims.Data.Context
           Width = 1,
           Height = 2,
           BathroomMaxCount = 1,
-          Icon = "wc"
+          Icon = "wc",
+          Price = 1.5
         },
         new RoomTemplate()
         {
@@ -78,7 +83,8 @@ namespace eSims.Data.Context
           Width = 2,
           Height = 2,
           BathroomMaxCount = 1,
-          Icon = "wc"
+          Icon = "wc",
+          Price = 2
         },
         new RoomTemplate()
         {
@@ -86,7 +92,8 @@ namespace eSims.Data.Context
           Width = 1,
           Height = 2,
           KitchenMaxCount = 2,
-          Icon = "kitchen"
+          Icon = "kitchen",
+          Price = 1.5
         },
         new RoomTemplate()
         {
@@ -94,7 +101,8 @@ namespace eSims.Data.Context
           Width = 2,
           Height = 3,
           KitchenMaxCount = 5,
-          Icon = "kitchen"
+          Icon = "kitchen",
+          Price = 2
         },
         new RoomTemplate()
         {
@@ -102,7 +110,8 @@ namespace eSims.Data.Context
           Width = 16,
           Height = 6,
           KitchenMaxCount = 50,
-          Icon = "kitchen"
+          Icon = "kitchen",
+          Price = 10
         },
         new RoomTemplate()
         {
@@ -110,7 +119,8 @@ namespace eSims.Data.Context
           Width = 2,
           Height = 2,
           SmokeMaxCount = 3,
-          Icon = "smoking_rooms"
+          Icon = "smoking_rooms",
+          Price = 0.5
         },
         new RoomTemplate()
         {
@@ -118,7 +128,8 @@ namespace eSims.Data.Context
           Width = 2,
           Height = 4,
           SmokeMaxCount = 7,
-          Icon = "smoking_rooms"
+          Icon = "smoking_rooms",
+          Price = 1
         },
       });
     }

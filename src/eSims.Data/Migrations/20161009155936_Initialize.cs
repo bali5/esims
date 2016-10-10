@@ -41,11 +41,7 @@ namespace eSims.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Autoincrement", true),
-                    Account = table.Column<double>(nullable: false),
-                    AvarageHappiness = table.Column<double>(nullable: false),
                     DataFileName = table.Column<string>(nullable: true),
-                    EmployeeCount = table.Column<int>(nullable: false),
-                    LevelCount = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     UserId = table.Column<int>(nullable: false)
                 },

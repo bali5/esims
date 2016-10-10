@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using eSims.Data;
-using eSims.Data.Application;
 using eSims.Data.Repository;
 using eSims.Extensions;
+using eSims.Models;
 using eSims.Simulation;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
 
 namespace eSims.Websockets
 {
@@ -22,35 +17,34 @@ namespace eSims.Websockets
   {
     static Dictionary<int, Simulator> mSimulators = new Dictionary<int, Simulator>();
 
-    const int cMaxMessageSize = 4194304;
+    const int cMaxMessageSize = 4096;
 
-    public static async void Create(HttpContext context, IApplicationRepository applicationRepository)
+    CancellationTokenSource mCancellationTokenSource = new CancellationTokenSource();
+
+    public static async Task<bool> Create(HttpContext context, IApplicationRepository applicationRepository)
     {
-      var wResult = await Task.Run<bool>(async () =>
+      int wBuildingId;
+      var path = context.Request.Path.Value.TrimEnd('/');
+
+      if (!int.TryParse(path.Substring(path.LastIndexOf('/') + 1), out wBuildingId)) return false;
+
+      var wSocket = new SimulatorSocket(context);
+      await wSocket.Accept();
+
+      Simulator wSimulator;
+      lock (mSimulators)
       {
-        var wHeader = context.GetHeader("esimsbuilding");
-        int wBuildingId;
-
-        if (!int.TryParse(wHeader, out wBuildingId)) return false;
-
-        var wSocket = new SimulatorSocket(context);
-        await wSocket.Accept();
-
-        Simulator wSimulator;
-        lock (mSimulators)
+        if (!mSimulators.TryGetValue(wBuildingId, out wSimulator))
         {
-          if (!mSimulators.TryGetValue(wBuildingId, out wSimulator))
-          {
-            wSimulator = new Simulator(wBuildingId, applicationRepository);
-            mSimulators.Add(wBuildingId, wSimulator);
-          }
+          wSimulator = new Simulator(wBuildingId, applicationRepository);
+          mSimulators.Add(wBuildingId, wSimulator);
         }
         wSimulator.AddSocket(wSocket);
+      }
 
-        wSocket.Listen(wSimulator);
+      await wSocket.Listen(wSimulator);
 
-        return true;
-      });
+      return true;
     }
 
     private readonly HttpContext mContext;
@@ -71,6 +65,8 @@ namespace eSims.Websockets
     {
       mSimulator = simulator;
 
+      string wRequest = "";
+
       while (mSocket.State == WebSocketState.Open)
       {
         var wToken = CancellationToken.None;
@@ -80,21 +76,91 @@ namespace eSims.Websockets
         switch (wReceived.MessageType)
         {
           case WebSocketMessageType.Text:
-            var request = Encoding.UTF8.GetString(wBuffer.Array, wBuffer.Offset, wBuffer.Count);
+            wRequest += Encoding.UTF8.GetString(wBuffer.Array, wBuffer.Offset, wReceived.Count);
+            if (wReceived.EndOfMessage)
+            {
+              var wAction = JsonConvert.DeserializeObject<ClientAction>(wRequest);
+              wRequest = "";
+              SendAnswer(wAction, DoAction(wAction));
+            }
             break;
           case WebSocketMessageType.Close:
             break;
         }
       }
 
-      mSimulator.RemoveSocket(this);
       lock (mSimulators)
       {
+        mSimulator.RemoveSocket(this);
         if (!mSimulator.HasSocket)
         {
           mSimulators.Remove(mSimulator.BuildingId);
         }
       }
+    }
+
+    private void SendAnswer(ClientAction action, ActionAnswer answer)
+    {
+      Send(new ClientAnswer(action, answer));
+    }
+
+    public void Send(object data)
+    {
+      mSocket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data))), WebSocketMessageType.Text, true, mCancellationTokenSource.Token);
+    }
+
+    private ActionAnswer DoAction(ClientAction action)
+    {
+      switch (action.Action)
+      {
+        case Action.AddFloor:
+          return mSimulator.AddFloor();
+        case Action.AddRoom:
+          var wDataAddRoom = JsonConvert.DeserializeObject<ParentChildPosition>(action.Data);
+          return mSimulator.AddRoom(wDataAddRoom.ParentId, wDataAddRoom.ChildId, wDataAddRoom.X, wDataAddRoom.Y, wDataAddRoom.Rotation);
+        case Action.ChangePersonTeam:
+          break;
+        case Action.ChangePersonWorkplace:
+          break;
+        case Action.GetGame:
+          return mSimulator.GetGame();
+        case Action.GetFloor:
+          return mSimulator.GetFloor(int.Parse(action.Data));
+        case Action.GetFloors:
+          return mSimulator.GetFloors();
+        case Action.GetPerson:
+          return mSimulator.GetPerson(int.Parse(action.Data));
+        case Action.GetPersonsAvailable:
+          return mSimulator.GetPersonsAvailable();
+        case Action.GetPersonsFired:
+          return mSimulator.GetPersonsFired();
+        case Action.GetPersonsHired:
+          return mSimulator.GetPersonsHired();
+        case Action.GetPersonsLeft:
+          return mSimulator.GetPersonsLeft();
+        case Action.GetPersonsNotAvailable:
+          return mSimulator.GetPersonsNotAvailable();
+        case Action.GetRoomTemplates:
+          return mSimulator.GetRoomTemplates();
+        case Action.GetStats:
+          return mSimulator.GetStats();
+        case Action.FirePerson:
+          return mSimulator.FirePerson(int.Parse(action.Data));
+        case Action.HirePerson:
+          return mSimulator.HirePerson(int.Parse(action.Data));
+        case Action.RemovePersonTeam:
+          break;
+        case Action.RemovePersonWorkplace:
+          break;
+        case Action.RemoveRoom:
+          return mSimulator.RemoveRoom(int.Parse(action.Data));
+        case Action.SpeedMinus:
+          return mSimulator.SpeedMinus();
+        case Action.SpeedPlus:
+          return mSimulator.SpeedPlus();
+      }
+
+      return null;
     }
 
   }

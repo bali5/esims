@@ -8,7 +8,7 @@ using eSims.Data.Context;
 namespace eSims.Data.Migrations.Building
 {
     [DbContext(typeof(BuildingContext))]
-    [Migration("20160902062401_Initialize")]
+    [Migration("20161009155942_Initialize")]
     partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,6 +28,28 @@ namespace eSims.Data.Migrations.Building
                     b.HasKey("Id");
 
                     b.ToTable("AccountRows");
+                });
+
+            modelBuilder.Entity("eSims.Data.Building.BuildingStats", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("Account");
+
+                    b.Property<int>("Persons");
+
+                    b.Property<double>("PlayTime");
+
+                    b.Property<DateTime>("SimulationTime");
+
+                    b.Property<int>("Speed");
+
+                    b.Property<DateTime>("StartTime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Stats");
                 });
 
             modelBuilder.Entity("eSims.Data.Building.Floor", b =>

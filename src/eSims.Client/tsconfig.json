@@ -21,12 +21,5 @@
     "**/*.spec.ts",
     "**/*.d.ts"
   ],
-  "types": [
-    "core-js",
-    "hammerjs",
-    "jasmine",
-    "node",
-    "lodash"
-  ],
   "compileOnSave": false
 }

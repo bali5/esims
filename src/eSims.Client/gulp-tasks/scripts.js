@@ -8,7 +8,7 @@
   let buildPath = './build/scripts/';
   let destinationPath = './../eSims/wwwroot/scripts/';
 
-  let project = plugins.typescript.createProject('./scripts/tsconfig.json', {
+  let project = plugins.typescript.createProject('./tsconfig.json', {
     typescript: require('typescript')
   });
 

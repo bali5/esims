@@ -22,5 +22,6 @@ namespace eSims.Data.Repository
     BuildingStats GetStats();
     int AddRoom(int levelId, RoomTemplate roomTemplate, int x, int y, int rotation);
     void RemoveRoom(int id);
+    bool AddAccount(string subject, double value);
   }
 }
