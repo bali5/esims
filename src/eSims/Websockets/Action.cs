@@ -30,5 +30,10 @@ namespace eSims.Websockets
     RemoveRoom,
     SpeedPlus,
     SpeedMinus,
+    GetProjects,
+    AcceptProject,
+    RejectProject,
+    ChangePersonProject,
+    RemovePersonProject,
   }
 }

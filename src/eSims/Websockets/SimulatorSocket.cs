@@ -111,6 +111,7 @@ namespace eSims.Websockets
 
     private ActionAnswer DoAction(ClientAction action)
     {
+      ParentChild wParentChild;
       switch (action.Action)
       {
         case Action.AddFloor:
@@ -119,9 +120,14 @@ namespace eSims.Websockets
           var wDataAddRoom = JsonConvert.DeserializeObject<ParentChildPosition>(action.Data);
           return mSimulator.AddRoom(wDataAddRoom.ParentId, wDataAddRoom.ChildId, wDataAddRoom.X, wDataAddRoom.Y, wDataAddRoom.Rotation);
         case Action.ChangePersonTeam:
-          break;
+          wParentChild = JsonConvert.DeserializeObject<ParentChild>(action.Data);
+          return mSimulator.ChangePersonTeam(wParentChild.ParentId, wParentChild.ChildId);
         case Action.ChangePersonWorkplace:
-          break;
+          wParentChild = JsonConvert.DeserializeObject<ParentChild>(action.Data);
+          return mSimulator.ChangePersonWorkplace(wParentChild.ParentId, wParentChild.ChildId);
+        case Action.ChangePersonProject:
+          wParentChild = JsonConvert.DeserializeObject<ParentChild>(action.Data);
+          return mSimulator.ChangePersonProject(wParentChild.ParentId, wParentChild.ChildId);
         case Action.GetGame:
           return mSimulator.GetGame();
         case Action.GetFloor:
@@ -149,15 +155,23 @@ namespace eSims.Websockets
         case Action.HirePerson:
           return mSimulator.HirePerson(int.Parse(action.Data));
         case Action.RemovePersonTeam:
-          break;
+          return mSimulator.RemovePersonTeam(int.Parse(action.Data));
         case Action.RemovePersonWorkplace:
-          break;
+          return mSimulator.RemovePersonWorkplace(int.Parse(action.Data));
+        case Action.RemovePersonProject:
+          return mSimulator.RemovePersonProject(int.Parse(action.Data));
         case Action.RemoveRoom:
           return mSimulator.RemoveRoom(int.Parse(action.Data));
         case Action.SpeedMinus:
           return mSimulator.SpeedMinus();
         case Action.SpeedPlus:
           return mSimulator.SpeedPlus();
+        case Action.GetProjects:
+          return mSimulator.GetProjects();
+        case Action.AcceptProject:
+          return mSimulator.AcceptProject(int.Parse(action.Data));
+        case Action.RejectProject:
+          return mSimulator.RejectProject(int.Parse(action.Data));
       }
 
       return null;

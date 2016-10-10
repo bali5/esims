@@ -91,7 +91,7 @@ export class ScrollPanel implements DoCheck {
 
   modScrollTop(value) {
     let scrollTop = this.scrollTop + value;
-    if (scrollTop < 0) {
+    if (scrollTop < 0 || this.contentHeight < this.contentVisible) {
       scrollTop = 0;
     } else if (scrollTop > this.contentHeight - this.contentVisible) {
       scrollTop = this.contentHeight - this.contentVisible;

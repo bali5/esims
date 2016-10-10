@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using eSims.Data.Building;
+using eSims.Data.Helpers;
 using eSims.Data.HumanResources;
 using eSims.Data.Workflow;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,18 @@ namespace eSims.Data.Context
     protected override void OnEnsureSeedData()
     {
       ApplySeed("SeedRoomTemplates001", SeedRoomTemplates001);
+      if (File.Exists("persons.csv"))
+      {
+        ApplySeed("SeedPersons", SeedPersons);
+      }
+    }
+
+    private void SeedPersons()
+    {
+      foreach (var wSplit in File.ReadAllLines("persons.csv").Skip(1).Select(s => s.Split(';')))
+      {
+        Persons.Add(PersonHelper.GetPerson(wSplit[0], wSplit[1]));
+      }
     }
 
     private void SeedRoomTemplates001()
@@ -73,7 +86,7 @@ namespace eSims.Data.Context
           Name = "Bathroom, small",
           Width = 1,
           Height = 2,
-          BathroomMaxCount = 1,
+          BathroomMaxCount = 8,
           Icon = "wc",
           Price = 1.5
         },
@@ -82,7 +95,7 @@ namespace eSims.Data.Context
           Name = "Bathroom, medium",
           Width = 2,
           Height = 2,
-          BathroomMaxCount = 1,
+          BathroomMaxCount = 16,
           Icon = "wc",
           Price = 2
         },
@@ -91,7 +104,7 @@ namespace eSims.Data.Context
           Name = "Kitchen, small",
           Width = 1,
           Height = 2,
-          KitchenMaxCount = 2,
+          KitchenMaxCount = 16,
           Icon = "kitchen",
           Price = 1.5
         },
@@ -100,7 +113,7 @@ namespace eSims.Data.Context
           Name = "Kitchen, medium",
           Width = 2,
           Height = 3,
-          KitchenMaxCount = 5,
+          KitchenMaxCount = 32,
           Icon = "kitchen",
           Price = 2
         },
@@ -109,7 +122,7 @@ namespace eSims.Data.Context
           Name = "Kitchen, large",
           Width = 16,
           Height = 6,
-          KitchenMaxCount = 50,
+          KitchenMaxCount = 100,
           Icon = "kitchen",
           Price = 10
         },

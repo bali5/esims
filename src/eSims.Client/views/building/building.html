@@ -35,7 +35,7 @@
       <md-icon>directions_car</md-icon>
       {{stats?.account | round: 2}}
       <md-icon style="margin-left: 20px">people</md-icon>
-      {{stats?.persons}}
+      {{stats?.persons}}/{{stats?.maxPersons}} (<md-icon>wc</md-icon>{{stats?.maxBathroom}}<md-icon style="margin-left: 20px">kitchen</md-icon>{{stats?.maxKitchen}})
       <md-icon style="margin-left: 20px">access_time</md-icon>
       {{date?.getFullYear()}}.{{date?.getMonth() < 9 ? '0' : ''}}{{date?.getMonth()+1}}.{{date?.getDate() < 10 ? '0' : ''}}{{date?.getDate()}} {{date?.getHours() < 10 ? '0' : ''}}{{date?.getHours()}}:{{date?.getMinutes() < 10 ? '0' : ''}}{{date?.getMinutes()}}
       <md-icon style="margin-left: 20px" (click)="buildingService.speedMinus()">fast_rewind</md-icon>

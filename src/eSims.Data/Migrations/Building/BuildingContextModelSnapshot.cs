@@ -36,6 +36,12 @@ namespace eSims.Data.Migrations.Building
 
                     b.Property<double>("Account");
 
+                    b.Property<int>("MaxBathroom");
+
+                    b.Property<int>("MaxKitchen");
+
+                    b.Property<int>("MaxPersons");
+
                     b.Property<int>("Persons");
 
                     b.Property<double>("PlayTime");
@@ -204,11 +210,15 @@ namespace eSims.Data.Migrations.Building
 
                     b.Property<double?>("HireTime");
 
+                    b.Property<string>("Image");
+
                     b.Property<double>("Investigation");
 
                     b.Property<string>("Name");
 
                     b.Property<double>("Pay");
+
+                    b.Property<int?>("ProjectId");
 
                     b.Property<int?>("RoomId");
 
@@ -260,7 +270,13 @@ namespace eSims.Data.Migrations.Building
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("EndTime");
+
+                    b.Property<bool>("IsAccepted");
+
                     b.Property<string>("Name");
+
+                    b.Property<DateTime>("StartTime");
 
                     b.HasKey("Id");
 

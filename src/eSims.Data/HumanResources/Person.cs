@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace eSims.Data.HumanResources
 {
@@ -17,9 +19,14 @@ namespace eSims.Data.HumanResources
     public int Id { get; set; }
 
     public string Name { get; set; }
+    [JsonConverter(typeof(StringEnumConverter))]
     public PersonState State { get; set; }
+    [JsonConverter(typeof(StringEnumConverter))]
     public EmployeeState? EmployeeState { get; set; }
+    [JsonConverter(typeof(StringEnumConverter))]
     public BreakType? CurrentBreak { get; set; }
+
+    public string Image { get; set; }
 
     /// <summary>
     /// How good at coding stories
@@ -70,6 +77,8 @@ namespace eSims.Data.HumanResources
     public int? RoomId { get; set; }
 
     public int? TeamId { get; set; }
+
+    public int? ProjectId { get; set; }
 
     public double? HireTime { get; set; }
 

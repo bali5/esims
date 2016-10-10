@@ -1,3 +1,67 @@
-﻿<div class="header">
+﻿<!--<div class="header">
   <md-input placeholder="Filter"></md-input>
-</div>
+</div>-->
+<!--<vaadin-grid [items]="persons">-->
+<table class="person-list" style="width: calc(100% - 10px)">
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th>
+        <md-icon>code</md-icon>
+      </th>
+      <th>
+        <md-icon>bug_report</md-icon>
+      </th>
+      <th>
+        <md-icon>book</md-icon>
+      </th>
+      <th>
+        <md-icon>lightbulb_outline</md-icon>
+      </th>
+      <th>Pay</th>
+      <th></th>
+    </tr>
+  </thead>
+</table>
+<es-scroll-panel style="position: absolute; left: 0; right: 0; top: 30px; bottom: 0;">
+  <table class="person-list">
+    <tbody>
+      <tr *ngFor="let person of persons">
+        <td>
+          <img *ngIf="person.image" [src]="person.image" />
+          <md-icon *ngIf="!person.image">sentiment_satisfied</md-icon>
+        </td>
+        <td>{{person.name}}</td>
+        <td>{{person.efficiency | round: 0}}</td>
+        <td>{{person.investigation | round: 0}}</td>
+        <td>{{person.administration | round: 0}}</td>
+        <td>{{person.creativity | round: 0}}</td>
+        <td>{{person.pay | round}}</td>
+        <td>
+          <button color="primary" md-fab [md-menu-trigger-for]="menu" (click)="selectedPerson = person">
+            <md-icon>menu</md-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</es-scroll-panel>
+<md-menu #menu x-position="before" y-position="above">
+  <button md-menu-item [md-menu-trigger-for]="project">Assign to Project</button>
+  <button md-menu-item [md-menu-trigger-for]="room">Assign to Room</button>
+  <button md-menu-item (click)="fire(selectedPerson)">Fire</button>
+  <!--<button md-menu-item>Assign to Team</button>-->
+</md-menu>
+<md-menu #project x-position="before" y-position="above">
+  <es-scroll-panel md-menu-item style="width: 248px; height: 150px; padding-top: 20px; padding-bottom: 20px;">
+    <div *ngFor="let project of projects"><button md-button (click)="changeProject(selectedPerson, project)">{{project.name}}</button></div>
+  </es-scroll-panel>
+</md-menu>
+<md-menu #room x-position="before" y-position="above">
+  <es-scroll-panel md-menu-item style="width: 248px; height: 150px; padding-top: 20px; padding-bottom: 20px;">
+    <div *ngFor="let room of rooms"><button md-button (click)="changeRoom(selectedPerson, room)">{{room.name}}</button></div>
+  </es-scroll-panel>
+</md-menu>
+
+<!--</vaadin-grid>-->

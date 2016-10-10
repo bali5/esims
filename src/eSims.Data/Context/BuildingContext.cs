@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using eSims.Data.Building;
 using eSims.Data.Helpers;
 using eSims.Data.HumanResources;
+using eSims.Data.Repository;
 using eSims.Data.Workflow;
+using eSims.Tools.Mapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace eSims.Data.Context
@@ -100,16 +102,43 @@ namespace eSims.Data.Context
 
       Floors.Add(wFloor);
 
-      Persons.Add(PersonHelper.GetRandomPerson());
-      Persons.Add(PersonHelper.GetRandomPerson());
-      Persons.Add(PersonHelper.GetRandomPerson());
-      Persons.Add(PersonHelper.GetRandomPerson());
-      Persons.Add(PersonHelper.GetRandomPerson());
-      Persons.Add(PersonHelper.GetRandomPerson());
-      Persons.Add(PersonHelper.GetRandomPerson());
-      Persons.Add(PersonHelper.GetRandomPerson());
-      Persons.Add(PersonHelper.GetRandomPerson());
-      Persons.Add(PersonHelper.GetRandomPerson());
+      var wCommon = new CommonRepository();
+      var wCommonPersons = wCommon.GetPersons();
+
+      if (wCommonPersons.Any())
+      {
+        var wPersons = wCommonPersons.Select(EmitMapper.Map<Person, Person>).ToArray();
+
+        var wAvailables = new HashSet<int>();
+
+        var wRnd = new Random();
+
+        for (var i = 0; i < wPersons.Length; i++)
+        {
+          wPersons[i].State = PersonState.NotAvailable;
+        }
+        while (wAvailables.Count < 15 && wAvailables.Count < wPersons.Length)
+        {
+          var wIndex = wRnd.Next(wPersons.Length);
+          if (wAvailables.Add(wIndex))
+          {
+            wPersons[wIndex].State = PersonState.Available;
+          }
+        }
+
+        Persons.AddRange(wPersons);
+      }
+      else
+      {
+        for (var i = 0; i < 15; i++)
+        {
+          Persons.Add(PersonHelper.GetRandomPerson(PersonState.Available));
+        }
+        for (var i = 0; i < 95; i++)
+        {
+          Persons.Add(PersonHelper.GetRandomPerson(PersonState.NotAvailable));
+        }
+      }
     }
 
     public DbSet<BuildingStats> Stats { get; set; }

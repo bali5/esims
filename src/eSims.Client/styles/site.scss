@@ -188,6 +188,14 @@ md-card {
   display: flex !important;
   flex-direction: column;
 
+  > img {
+    flex-grow: 0;
+    align-self: center;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+
   > md-icon {
     flex-grow: 0;
     text-align: center;
@@ -432,6 +440,40 @@ es-floor-detail {
         > * {
           @extend .fill;
         }
+      }
+    }
+  }
+}
+
+table.person-list {
+  width: 100%;
+  table-layout: fixed;
+
+  td:nth-child(1),th:nth-child(1),td:nth-child(8),th:nth-child(8) {
+    width: 56px;
+  }
+  td:nth-child(2),th:nth-child(2) {
+    width: 100%;
+  }
+  td:nth-child(3),th:nth-child(3),td:nth-child(4),th:nth-child(4),td:nth-child(5),th:nth-child(5),td:nth-child(6),th:nth-child(6),td:nth-child(7),th:nth-child(7) {
+    width: 50px;
+  }
+
+  tbody {
+    tr {
+      td:nth-child(1) {
+        img {
+          width: 56px;
+          height: 56px;
+        }
+
+        md-icon {
+          font-size: 56px;
+        }
+      }
+
+      td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child(6), td:nth-child(7) {
+        text-align: center;
       }
     }
   }

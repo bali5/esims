@@ -13,6 +13,12 @@ namespace eSims.Data.Workflow
 
     public string Name { get; set; }
 
+    public bool IsAccepted { get; set; }
+
+    public DateTime StartTime { get; set; }
+
+    public DateTime EndTime { get; set; }
+
     public List<Story> Stories { get; set; }
   }
 }

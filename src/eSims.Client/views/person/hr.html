@@ -1,6 +1,7 @@
 ﻿<div class="card-container">
   <md-card *ngFor="let person of availablePersons">
-    <md-icon md-card-image>sentiment_satisfied</md-icon>
+    <img *ngIf="person.image" [src]="person.image" style="width: 100px; height: 100px" />
+    <md-icon *ngIf="!person.image" md-card-image>sentiment_satisfied</md-icon>
     <md-card-title>{{person.name}}</md-card-title>
     <md-card-content>
       <div class="details">

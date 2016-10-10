@@ -98,11 +98,9 @@ namespace eSims.Simulation
 
       var wPersons = mBuildingRepository.GetPersons(PersonState.Hired);
 
-      if (wChanges.Any())
-      {
-        stats.Account = mBuildingRepository.GetAccount();
-        stats.Persons = mBuildingRepository.GetPersons(PersonState.Hired).Count();
-      }
+      // Person
+
+      // Project
 
       wChanges.Stats = stats;
       SendMessage(wChanges);
@@ -205,9 +203,56 @@ namespace eSims.Simulation
       }, $"Add room: {wTemplate.Name}", -wTemplate.Price);
     }
 
+    public ActionAnswer RemovePersonWorkplace(int id)
+    {
+      return SimpleAction(() => {
+        mBuildingRepository.GetPerson(id).RoomId = null;
+        mBuildingRepository.SaveChanges();
+      });
+    }
+
+    public ActionAnswer RemovePersonProject(int id)
+    {
+      return SimpleAction(() => {
+        mBuildingRepository.GetPerson(id).ProjectId = null;
+        mBuildingRepository.SaveChanges();
+      });
+    }
+
+    public ActionAnswer RemovePersonTeam(int id)
+    {
+      return SimpleAction(() => {
+        mBuildingRepository.GetPerson(id).TeamId = null;
+        mBuildingRepository.SaveChanges();
+      });
+    }
+
     public ActionAnswer SpeedPlus()
     {
       return SimpleAction(() => mBuildingRepository.SpeedPlus());
+    }
+
+    public ActionAnswer GetProjects()
+    {
+      return GetAction(() => mBuildingRepository.GetProjects());
+    }
+
+    public ActionAnswer AcceptProject(int id)
+    {
+      return SimpleAction(() =>
+      {
+        var wProject = mBuildingRepository.AcceptProject(id);
+        mActionChanges.UpdatedProjects.Add(wProject);
+      });
+    }
+
+    public ActionAnswer RejectProject(int id)
+    {
+      return SimpleAction(() =>
+      {
+        mBuildingRepository.RejectProject(id);
+        mActionChanges.RemovedProjects.Add(id);
+      });
     }
 
     public ActionAnswer SpeedMinus()
@@ -224,14 +269,34 @@ namespace eSims.Simulation
       });
     }
 
-    public ActionAnswer ChangePersonTeam()
+    public ActionAnswer ChangePersonTeam(int personId, int id)
     {
-      return new ActionAnswer(false);
+      return SimpleAction(() => {
+        var wPerson = mBuildingRepository.GetPerson(personId);
+        wPerson.TeamId = id;
+        mActionChanges.Persons.Add(wPerson);
+        mBuildingRepository.SaveChanges();
+      });
     }
 
-    public ActionAnswer ChangePersonWorkplace()
+    public ActionAnswer ChangePersonWorkplace(int personId, int id)
     {
-      return new ActionAnswer(false);
+      return SimpleAction(() => {
+        var wPerson = mBuildingRepository.GetPerson(personId);
+        wPerson.RoomId = id;
+        mActionChanges.Persons.Add(wPerson);
+        mBuildingRepository.SaveChanges();
+      });
+    }
+
+    public ActionAnswer ChangePersonProject(int personId, int id)
+    {
+      return SimpleAction(() => {
+        var wPerson = mBuildingRepository.GetPerson(personId);
+        wPerson.ProjectId = id;
+        mActionChanges.Persons.Add(wPerson);
+        mBuildingRepository.SaveChanges();
+      });
     }
 
     public ActionAnswer GetFloor(int id)
@@ -295,21 +360,28 @@ namespace eSims.Simulation
 
     public ActionAnswer HirePerson(int id)
     {
-      return SimpleAction(() =>
+      lock (mLock)
       {
-        mBuildingRepository.HirePerson(id);
-        mActionChanges.Persons.Add(mBuildingRepository.GetPerson(id));
-      });
-    }
-
-    public ActionAnswer RemovePersonTeam()
-    {
-      return new ActionAnswer(false);
-    }
-
-    public ActionAnswer RemovePersonWorkplace()
-    {
-      return new ActionAnswer(false);
+        var wStats = mBuildingRepository.GetStats();
+        if (wStats.Persons >= wStats.MaxPersons)
+        {
+          return new ActionAnswer(false, "Max employee limit reached.");
+        }
+        else if (wStats.Persons >= wStats.MaxBathroom)
+        {
+          return new ActionAnswer(false, "Max bathroom limit reached.");
+        }
+        else if (wStats.Persons >= wStats.MaxKitchen)
+        {
+          return new ActionAnswer(false, "Max kitchen limit reached.");
+        }
+        else
+        {
+          mBuildingRepository.HirePerson(id);
+          mActionChanges.Persons.Add(mBuildingRepository.GetPerson(id));
+          return new ActionAnswer(true);
+        }
+      }
     }
 
   }

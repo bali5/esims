@@ -17,5 +17,8 @@ namespace eSims.Data.Building
     public int Speed { get; set; }
     public DateTime StartTime { get; set; }
     public int Persons { get; set; }
+    public int MaxPersons { get; set; }
+    public int MaxKitchen { get; set; }
+    public int MaxBathroom { get; set; }
   }
 }

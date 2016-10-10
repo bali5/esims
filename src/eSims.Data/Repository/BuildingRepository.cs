@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using eSims.Data.Building;
 using eSims.Data.Context;
 using eSims.Data.HumanResources;
+using eSims.Data.Workflow;
 using eSims.Tools.Mapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -56,6 +57,11 @@ namespace eSims.Data.Repository
       wRoom.Id = 0;
 
       var wRoomEntity = Context.Rooms.Add(wRoom);
+
+      var wStats = Context.Stats.First();
+      wStats.MaxBathroom += wRoom.BathroomMaxCount;
+      wStats.MaxKitchen += wRoom.KitchenMaxCount;
+      wStats.MaxPersons += wRoom.WorkplaceMaxCount;
 
       Context.SaveChanges();
 
@@ -161,6 +167,9 @@ namespace eSims.Data.Repository
 
       wPerson.State = PersonState.Fired;
 
+      var wStats = Context.Stats.First();
+      wStats.Persons--;
+
       Context.SaveChanges();
     }
 
@@ -210,6 +219,9 @@ namespace eSims.Data.Repository
 
       wPerson.State = PersonState.Hired;
 
+      var wStats = Context.Stats.First();
+      wStats.Persons++;
+
       Context.SaveChanges();
     }
 
@@ -238,6 +250,25 @@ namespace eSims.Data.Repository
       wPerson.TeamId = null;
 
       Context.SaveChanges();
+    }
+
+    public Project AcceptProject(int id)
+    {
+      var wProject = Context.Projects.First(f => f.Id == id);
+      wProject.IsAccepted = true;
+      Context.SaveChanges();
+      return wProject;
+    }
+
+    public void RejectProject(int id)
+    {
+      Context.Projects.Remove(Context.Projects.First(f => f.Id == id));
+      Context.SaveChanges();
+    }
+
+    public Project[] GetProjects()
+    {
+      return Context.Projects.ToArray();
     }
 
     public void RemovePersonWorkplace(int id, int workplaceId)
@@ -314,7 +345,12 @@ namespace eSims.Data.Repository
 
     public void RemoveRoom(int id)
     {
-      Context.Rooms.Remove(Context.Rooms.FirstOrDefault(f => f.Id == id));
+      var wRoom = Context.Rooms.FirstOrDefault(f => f.Id == id);
+      var wStats = Context.Stats.First();
+      wStats.MaxBathroom -= wRoom.BathroomMaxCount;
+      wStats.MaxKitchen -= wRoom.KitchenMaxCount;
+      wStats.MaxPersons -= wRoom.WorkplaceMaxCount;
+      Context.Rooms.Remove(wRoom);
       Context.SaveChanges();
     }
 
@@ -327,6 +363,9 @@ namespace eSims.Data.Repository
           Subject = subject,
           Value = value
         });
+
+        var wStats = Context.Stats.First();
+        wStats.Account += value;
 
         Context.SaveChanges();
 

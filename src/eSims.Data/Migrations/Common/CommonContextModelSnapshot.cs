@@ -153,11 +153,15 @@ namespace eSims.Data.Migrations.Common
 
                     b.Property<double?>("HireTime");
 
+                    b.Property<string>("Image");
+
                     b.Property<double>("Investigation");
 
                     b.Property<string>("Name");
 
                     b.Property<double>("Pay");
+
+                    b.Property<int?>("ProjectId");
 
                     b.Property<int?>("RoomId");
 

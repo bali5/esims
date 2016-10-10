@@ -1,40 +1,48 @@
 module.exports = function (gulp, plugins, task) {
-  let sourceRoot = './node_modules/';
+  let sourceNode = './node_modules/';
+  let sourceBower = './bower_components/';
   let sourcePath = [
-    sourceRoot + 'core-js/client/shim.min.js',
-    sourceRoot + 'zone.js/dist/zone.js',
-    sourceRoot + 'systemjs/dist/system.src.js',
-    sourceRoot + 'lodash**/lodash.js',
+    sourceNode + 'core-js/client/shim.min.js',
+    sourceNode + 'zone.js/dist/zone.js',
+    sourceNode + 'systemjs/dist/system.src.js',
+    sourceNode + 'lodash**/lodash.js',
+    // sourceBower + 'webcomponentsjs/webcomponents.min.js',
+    // sourceBower + 'vaadin-grid/vaadin-grid.min.js',
     './scripts/system.config.js'
   ];
 
   let mapPathExt = '**/**/*.{js,ts}';
   let mapPath = [
-    sourceRoot + '@angular' + mapPathExt,
-    sourceRoot + '@angular2-material' + mapPathExt,
-    sourceRoot + 'angular2-in-memory-web-api' + mapPathExt,
-    sourceRoot + 'angular2-websocket' + mapPathExt,
-    sourceRoot + 'rxjs' + mapPathExt,
-    sourceRoot + 'ng2-table' + mapPathExt,
-    sourceRoot + 'numericjs' + mapPathExt,
-    sourceRoot + 'reflect-metadata' + mapPathExt,
-    sourceRoot + 'lodash' + mapPathExt,
-    sourceRoot + 'hammerjs' + mapPathExt,
-    sourceRoot + 'core-js' + mapPathExt,
-    sourceRoot + 'zone.js' + mapPathExt,
-    sourceRoot + 'systemjs' + mapPathExt
+    sourceNode + '@angular' + mapPathExt,
+    sourceNode + '@angular2-material' + mapPathExt,
+    sourceNode + 'angular2-in-memory-web-api' + mapPathExt,
+    sourceNode + 'angular2-websocket' + mapPathExt,
+    sourceNode + 'rxjs' + mapPathExt,
+    sourceNode + 'ng2-table' + mapPathExt,
+    sourceNode + 'numericjs' + mapPathExt,
+    sourceNode + 'reflect-metadata' + mapPathExt,
+    sourceNode + 'lodash' + mapPathExt,
+    sourceNode + 'hammerjs' + mapPathExt,
+    sourceNode + 'core-js' + mapPathExt,
+    sourceNode + 'zone.js' + mapPathExt,
+    sourceNode + 'systemjs' + mapPathExt,
+    sourceNode + '@vaadin' + mapPathExt,
   ];
 
   let destinationPath = './../eSims/wwwroot/libs/';
 
   return {
     default: function (callback) {
-      plugins.runSequence(task + ':clean', task + ':build', task + ':map', callback);
+      plugins.runSequence(task + ':clean', task + ':build', task + ':map', task + ':bower', callback);
     },
     map: function () {
       return gulp.src(mapPath)
         .pipe(gulp.dest(destinationPath + '../eSims.Client/node_modules/', { overwrite: false }));
     },
+    bower: function () {
+      return gulp.src('./bower_components/**/*')
+        .pipe(gulp.dest(destinationPath + '../bower_components', { overwrite: false }));
+    }, 
     build: function () {
       return gulp.src(sourcePath)
         .pipe(plugins.sourcemaps.init())
@@ -44,7 +52,7 @@ module.exports = function (gulp, plugins, task) {
         .pipe(gulp.dest(destinationPath));
     },
     clean: function () {
-      return gulp.src([destinationPath])
+      return gulp.src([destinationPath, destinationPath + '../bower_components/'])
         .pipe(plugins.clean({force: true}));
     },
     watch: function () {

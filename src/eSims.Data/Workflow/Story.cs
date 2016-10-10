@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace eSims.Data.Workflow
 {
@@ -13,6 +15,7 @@ namespace eSims.Data.Workflow
 
     public string Name { get; set; }
 
+    [JsonConverter(typeof(StringEnumConverter))]
     public StoryType Type { get; set; }
 
     public double Size { get; set; }

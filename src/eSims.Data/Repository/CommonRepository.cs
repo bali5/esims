@@ -25,5 +25,9 @@ namespace eSims.Data.Repository
       return Context.Rooms.Where(w => !w.IsSystemOnly).ToArray();
     }
 
+    public Person[] GetPersons()
+    {
+      return Context.Persons.ToArray();
+    }
   }
 }

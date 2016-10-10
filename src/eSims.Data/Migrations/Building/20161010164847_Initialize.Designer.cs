@@ -8,7 +8,7 @@ using eSims.Data.Context;
 namespace eSims.Data.Migrations.Building
 {
     [DbContext(typeof(BuildingContext))]
-    [Migration("20161009155942_Initialize")]
+    [Migration("20161010164847_Initialize")]
     partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,12 @@ namespace eSims.Data.Migrations.Building
                         .ValueGeneratedOnAdd();
 
                     b.Property<double>("Account");
+
+                    b.Property<int>("MaxBathroom");
+
+                    b.Property<int>("MaxKitchen");
+
+                    b.Property<int>("MaxPersons");
 
                     b.Property<int>("Persons");
 
@@ -205,11 +211,15 @@ namespace eSims.Data.Migrations.Building
 
                     b.Property<double?>("HireTime");
 
+                    b.Property<string>("Image");
+
                     b.Property<double>("Investigation");
 
                     b.Property<string>("Name");
 
                     b.Property<double>("Pay");
+
+                    b.Property<int?>("ProjectId");
 
                     b.Property<int?>("RoomId");
 
@@ -261,7 +271,13 @@ namespace eSims.Data.Migrations.Building
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("EndTime");
+
+                    b.Property<bool>("IsAccepted");
+
                     b.Property<string>("Name");
+
+                    b.Property<DateTime>("StartTime");
 
                     b.HasKey("Id");
 

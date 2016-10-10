@@ -21,6 +21,7 @@
     'reflect-metadata': 'node_modules/reflect-metadata',
     'lodash': 'node_modules/lodash',
     'hammerjs': 'node_modules/hammerjs',
+    "@vaadin": "node_modules/@vaadin"
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
@@ -38,6 +39,7 @@
     'reflect-metadata': { main: 'Reflect.js', defaultExtension: 'js' },
     'lodash': { main: 'lodash.js', defaultExtension: 'js' },
     'hammerjs': { main: 'hammer.js', defaultExtension: 'js' },
+    '@vaadin/angular2-polymer': { main: 'index.js', defaultExtension: 'js' }
   };
   var ngPackageNames = [
     'common',

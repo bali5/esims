@@ -6,6 +6,7 @@ import './../common/rxjs-extensions';
 
 import { Floor } from './floor';
 import { Person } from './../person/person';
+import { Project } from './../project/project';
 import { Room } from './room';
 import { RoomTemplate } from './room.template';
 
@@ -232,12 +233,41 @@ export class BuildingService {
     return this.action<any>('HirePerson', id);
   }
 
-  speedMinus(id: number) {
+  speedMinus() {
     return this.action<any>('SpeedMinus');
   }
 
-  speedPlus(id: number) {
+  speedPlus() {
     return this.action<any>('SpeedPlus');
   }
+
+  getProjects() {
+    return this.action<Project[]>('GetProjects');
+  }
+
+  acceptProject(id: number) {
+    return this.action<any>('AcceptProject', id);
+  }
+
+  rejectProject(id: number) {
+    return this.action<any>('RejectProject', id);
+  }
+
+  changePersonProject(personId: number, projectId: number) {
+    return this.action<any>('ChangePersonProject', { parentId: personId, childId: projectId });
+  }
+
+  changePersonWorkplace(personId: number, workplaceId: number) {
+    return this.action<any>('ChangePersonWorkplace', { parentId: personId, childId: workplaceId });
+  }
+
+  changePersonTeam(personId: number, teamId: number) {
+    return this.action<any>('ChangePersonTeam', { parentId: personId, childId: teamId });
+  }
+
+  firePerson(id: number) {
+    return this.action<any>('FirePerson', id);
+  }
+
 
 }

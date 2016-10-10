@@ -9,8 +9,38 @@ namespace eSims.Data.Helpers
   public static class PersonHelper
   {
 
-    public static Person GetRandomPerson(double? power = null)
+    public static Person GetRandomPerson(PersonState state, double? power = null)
     {
+      var wPerson = new Person()
+      {
+        Name = GetRandomName(),
+        State = state
+      };
+
+      InitPerson(wPerson);
+
+      return wPerson;
+    }
+
+    public static Person GetPerson(string name, string image)
+    {
+      var wPerson = new Person()
+      {
+        Name = name,
+        State = PersonState.NotAvailable,
+        Image = image
+      };
+
+      InitPerson(wPerson);
+
+      return wPerson;
+    }
+
+    private static void InitPerson(Person person, double? power = null)
+    {
+      person.Happiness = 100d;
+      person.Annoyance = 0d;
+
       if (!power.HasValue)
       {
         //Default power
@@ -20,41 +50,33 @@ namespace eSims.Data.Helpers
       var wOriginalPower = power.Value;
       var wRemainingPower = wOriginalPower;
 
-      var wPerson = new Person()
-      {
-        Name = GetRandomName(),
-        State = PersonState.Available,
-        Happiness = 100d,
-        Annoyance = 0d
-      };
-
       //Assign abilities
       var wCurrentPower = wRemainingPower * Rng.Random.NextDouble();
-      wPerson.Efficiency = wCurrentPower;
+      person.Efficiency = wCurrentPower;
       wRemainingPower -= wCurrentPower;
 
       wCurrentPower = wRemainingPower * Rng.Random.NextDouble();
-      wPerson.Investigation = wCurrentPower;
+      person.Investigation = wCurrentPower;
       wRemainingPower -= wCurrentPower;
 
       wCurrentPower = wRemainingPower * Rng.Random.NextDouble();
-      wPerson.Administration = wCurrentPower;
+      person.Administration = wCurrentPower;
       wRemainingPower -= wCurrentPower;
 
-      wPerson.Creativity = wRemainingPower;
+      person.Creativity = wRemainingPower;
 
       //Assign attributes
       wRemainingPower = wOriginalPower;
 
       wCurrentPower = wRemainingPower * Rng.Random.NextDouble();
-      wPerson.Vitality = wCurrentPower;
+      person.Vitality = wCurrentPower;
       wRemainingPower -= wCurrentPower;
 
       wCurrentPower = wRemainingPower * Rng.Random.NextDouble();
-      wPerson.Charisma = wCurrentPower;
+      person.Charisma = wCurrentPower;
       wRemainingPower -= wCurrentPower;
 
-      wPerson.Empathy = wRemainingPower;
+      person.Empathy = wRemainingPower;
 
       //Perks
 
@@ -63,37 +85,35 @@ namespace eSims.Data.Helpers
       if (Rng.GetChance(0.1 * wChanceModifier))
       {
         wChanceModifier *= 0.9;
-        wPerson.Perks.Add(new PersonPerk() { Perk = Rng.GetChance(0.3) ? Perk.Chimney : Perk.Smoker });
+        person.Perks.Add(new PersonPerk() { Perk = Rng.GetChance(0.3) ? Perk.Chimney : Perk.Smoker });
       }
       if (Rng.GetChance(0.1 * wChanceModifier))
       {
         wChanceModifier *= 0.9;
-        wPerson.Perks.Add(new PersonPerk() { Perk = Perk.TeamPlayer });
+        person.Perks.Add(new PersonPerk() { Perk = Perk.TeamPlayer });
       }
       if (Rng.GetChance(0.1 * wChanceModifier))
       {
         wChanceModifier *= 0.9;
-        wPerson.Perks.Add(new PersonPerk() { Perk = Perk.PartyPeople });
+        person.Perks.Add(new PersonPerk() { Perk = Perk.PartyPeople });
       }
       else if (Rng.GetChance(0.1 * wChanceModifier))
       {
         wChanceModifier *= 0.9;
-        wPerson.Perks.Add(new PersonPerk() { Perk = Perk.PartyPooper });
+        person.Perks.Add(new PersonPerk() { Perk = Perk.PartyPooper });
       }
       if (Rng.GetChance(0.1 * wChanceModifier))
       {
         wChanceModifier *= 0.9;
-        wPerson.Perks.Add(new PersonPerk() { Perk = Perk.LoneWolf });
+        person.Perks.Add(new PersonPerk() { Perk = Perk.LoneWolf });
       }
       if (Rng.GetChance(0.1 * wChanceModifier))
       {
         wChanceModifier *= 0.9;
-        wPerson.Perks.Add(new PersonPerk() { Perk = Perk.Leader });
+        person.Perks.Add(new PersonPerk() { Perk = Perk.Leader });
       }
 
-      wPerson.Pay = (wOriginalPower / 100 * 0.1) * (0.9 + Rng.Random.NextDouble() * 0.2);
-
-      return wPerson;
+      person.Pay = (wOriginalPower / 100 * 0.1) * (0.9 + Rng.Random.NextDouble() * 0.2);
     }
 
     public static string GetRandomName()
